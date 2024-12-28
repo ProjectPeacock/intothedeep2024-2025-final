@@ -35,6 +35,11 @@ public class HWProfile {
 
     //CH3 is odo pod y axis
 
+    public final double EXTENSION_TICKS_PER_DEGREE =
+            28 // number of encoder ticks per rotation of the bare motor
+                    * 13.7/1  // This is the exact gear ratio of the 50.9:1 Yellow Jacket gearbox
+                    * 100.0 / 20.0 // This is the external gear reduction, a 20T pinion gear that drives a 100T hub-mount gear
+                    * 1/360.0; // we want ticks per degree, not per rotation
 
     /* This constant is the number of encoder ticks for each degree of rotation of the arm.
     To find this, we first need to consider the total gear reduction powering our arm.
@@ -63,6 +68,11 @@ public class HWProfile {
     public final double LIFT_SCORE_HIGH_BASKET = 100;
     public final double LIFT_SCORE_SPECIMEN = 1000;
 
+    public final double EXTENSION_RESET = 0;
+    public final double EXTENSION_MAX = 1300;
+    public final double EXTENSION_TEST = 100;
+
+
 
     /* Variables to store the positions that the wrist should be set to when folding in, or folding out. */
     public final double INTAKE_WRIST_FOLDED_IN   = 0.1667;
@@ -77,7 +87,6 @@ public class HWProfile {
     public final double INTAKE_CLAW_PARTIAL_OPEN = .6;
 
     public final double SCORE_CLAW_OPEN = 0;
-    public final double SCORE_CLAW_CLOSED = 1;
 
 
     final public double INTAKE_RIGHT_FOREBAR_DOWN = 0;
