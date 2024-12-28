@@ -68,9 +68,6 @@ public class HWProfile {
     public final double LIFT_SCORE_HIGH_BASKET = 100;
     public final double LIFT_SCORE_SPECIMEN = 1000;
 
-    public final double EXTENSION_RESET = 0;
-    public final double EXTENSION_MAX = 1300;
-    public final double EXTENSION_TEST = 100;
 
 
 
@@ -105,8 +102,8 @@ public class HWProfile {
 
     public final double EXTENSION_TICKS_PER_MM = (111132.0 / 289.0) / 120.0;
     public final double EXTENSION_COLLAPSED = 0 * EXTENSION_TICKS_PER_MM;
-    public final double EXTENSION_SCORING_IN_LOW_BASKET = 0 * EXTENSION_TICKS_PER_MM;
-    public final double EXTENSION_SCORING_IN_HIGH_BASKET = 490 * EXTENSION_TICKS_PER_MM;
+    public final double EXTENSION_MAX = 1300;
+    public final double EXTENSION_TEST = 1800;
     public final int    EXTENSION_DOWN_MAX         = 1300;
 
 
@@ -204,7 +201,7 @@ public class HWProfile {
 
 
         /*This sets the maximum current that the control hub will apply to the arm before throwing a flag */
-
+/*
         extGrabServo = hwMap.get(Servo.class, "extGrabServo");
 
         extRotateServo = hwMap.get(Servo.class, "extRotateServo");
@@ -220,7 +217,7 @@ public class HWProfile {
         scoreForeLeftServo = hwMap.get(Servo.class, "scoreForeLeft");
 
 
-
+*/
 
 
 

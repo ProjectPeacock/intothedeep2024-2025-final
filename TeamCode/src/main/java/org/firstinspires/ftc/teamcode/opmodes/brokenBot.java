@@ -73,7 +73,6 @@ public class brokenBot extends LinearOpMode {
     double looptime = 0;
     double oldtime = 0;
 
-    double elbowLiftComp = 0;
 
 
     /* Variables that are used to set the arm to a specific position */
@@ -96,10 +95,7 @@ public class brokenBot extends LinearOpMode {
 
         robot.init(hardwareMap, true);
 
-        telemetry.addData("Status:", "Initialized");
-        telemetry.update();
 
-        robot.extendMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
 
 
@@ -173,7 +169,9 @@ public class brokenBot extends LinearOpMode {
             robot.leftBackDrive.setPower(backLeftPower);
             robot.rightFrontDrive.setPower(frontRightPower);
             robot.rightBackDrive.setPower(backRightPower);
-            robot.extendMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.extendMotor.setPower(1);
+            robot.extendMotor.setTargetPosition((int)extensionPosition);
+
 
 
 
@@ -224,12 +222,12 @@ public class brokenBot extends LinearOpMode {
 
             if (gamepad1.a) {
                 /* This is the intaking/collecting arm position */
-
                 extensionPosition = robot.EXTENSION_TEST;
                 //servoWristPosition = robot.WRIST_FOLDED_OUT;
 
-            } else if (gamepad1.b){
+            } else if (gamepad1.b) {
                 extensionPosition = robot.EXTENSION_COLLAPSED;
+            }
                 //} else if (gamepad1.b) {
                     /*This is about 20° up from the collecting position to clear the barrier
                     Note here that we don't set the wrist position or the intake power when we
@@ -259,7 +257,7 @@ public class brokenBot extends LinearOpMode {
                 }
             }
 
-*/
+*/             robot.extendMotor.setPower(1);
             /*
             This is probably my favorite piece of code on this robot. It's a clever little software
             solution to a problem the robot has.
@@ -275,12 +273,12 @@ public class brokenBot extends LinearOpMode {
             to a value.
              */
 
-           /* if (elbowPosition < 45 * robot.ELBOW_TICKS_PER_DEGREE){
-                elbowLiftComp = (.25568 * extensionPosition); //0.25568
-            }
-            else{
-                elbowLiftComp = 0;
-            }
+           // if (elbowPosition < 45 * robot.ELBOW_TICKS_PER_DEGREE){
+             //   elbowLiftComp = (.25568 * extensionPosition); //0.25568
+            //}
+            //else{
+            //    elbowLiftComp = 0;
+            //}
 
            /* Here we set the target position of our arm to match the variable that was selected
             by the driver. We add the armPosition Variable to our armPositionFudgeFactor, before adding
@@ -313,10 +311,9 @@ public class brokenBot extends LinearOpMode {
              */
 
                 // If the button is pressed and liftPosition is not surpassing the range it should be in, then liftPosition is changed accordingly.
-/*          telemetry.addData("Extend Arm = ", "gamepad2.Right_Bumper");
-            telemetry.addData("Retract Arm = ", "gamepad2.Left_Bumper");
+
             // If the button is pressed and liftPosition is not surpassing the range it should be in, then liftPosition is changed accordingly.
-            if (gamepad2.right_bumper && (extensionPosition + 20) < robot.EXTENSION_SCORING_IN_HIGH_BASKET){
+            if (gamepad2.right_bumper && (extensionPosition + 20) < robot.EXTENSION_TEST){
                 extensionPosition += 20;
 //                liftPosition += 2800 * cycletime;
             }
@@ -328,7 +325,7 @@ public class brokenBot extends LinearOpMode {
             // Double check.
             // Checks again if liftPosition is beyond its boundries or not.
             // If it is outside the boundries, then it limits it to the boundries between 0 and the high bucket lift position.
-            if (extensionPosition < 0) {
+            /*if (extensionPosition < 0) {
                 extensionPosition = 0;
             } else if(elbowPosition <= robot.ELBOW_TRAVERSE){
                 if(extensionPosition >= robot.EXTENSION_DOWN_MAX){
@@ -394,6 +391,9 @@ public class brokenBot extends LinearOpMode {
                 /* send telemetry to the driver of the arm's current position and target position */
                 //telemetry.addData("arm Target Position: ", robot.armMotor.getTargetPosition());
                 //telemetry.addData("arm Encoder: ", robot.armMotor.getCurrentPosition());\
+            telemetry.addData("extension Target Position",robot.extendMotor.getTargetPosition());
+            telemetry.addData("extension current Position",robot.extendMotor.getCurrentPosition());
+            telemetry.update();
                 /*
                 telemetry.addLine("Gamepad 1:");
                 telemetry.addLine("Driving is Enabled.");
@@ -415,4 +415,4 @@ public class brokenBot extends LinearOpMode {
 
             }
         }
-    }}
+    }
