@@ -22,6 +22,10 @@
 
 package org.firstinspires.ftc.teamcode.opmodes;
 
+import static org.firstinspires.ftc.teamcode.Libs.LiftControlClass.params;
+
+
+import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -34,6 +38,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.teamcode.hardware.HWProfile;
+import org.firstinspires.ftc.teamcode.hardware.CSAutoParams;
 
 import java.util.Locale;
 
@@ -72,6 +77,8 @@ public class brokenBot extends LinearOpMode {
     double cycletime = 0;
     double looptime = 0;
     double oldtime = 0;
+
+    public int offset;
 
 
 
@@ -169,6 +176,8 @@ public class brokenBot extends LinearOpMode {
             robot.leftBackDrive.setPower(backLeftPower);
             robot.rightFrontDrive.setPower(frontRightPower);
             robot.rightBackDrive.setPower(backRightPower);
+            robot.motorLiftBack.setPower(1);
+            robot.motorLiftBack.setTargetPosition((int)liftPosition);
             robot.extendMotor.setPower(1);
             robot.extendMotor.setTargetPosition((int)extensionPosition);
 
@@ -225,10 +234,19 @@ public class brokenBot extends LinearOpMode {
                 extensionPosition = robot.EXTENSION_TEST;
                 //servoWristPosition = robot.WRIST_FOLDED_OUT;
 
+            }
+            if (gamepad2.left_trigger > 0.05 && (extensionPosition + (40 * -gamepad2.right_stick_y)) > 0 && (extensionPosition + (40 * -gamepad2.right_stick_y)) < robot.EXTENSION_DOWN_MAX){
+                extensionPosition += (40 * -gamepad2.right_stick_y);
             } else if (gamepad1.b) {
                 extensionPosition = robot.EXTENSION_COLLAPSED;
             }
-                //} else if (gamepad1.b) {
+
+            if (gamepad2.right_trigger > 0.05 && (liftPosition + (20 * -gamepad2.right_stick_y)) < robot.LIFT_SCORE_HIGH_BASKET && (liftPosition + (20 * -gamepad2.right_stick_y)) > robot.LIFT_RESET){
+                liftPosition += (20 * -gamepad2.right_stick_y);
+            }
+
+
+            //} else if (gamepad1.b) {
                     /*This is about 20° up from the collecting position to clear the barrier
                     Note here that we don't set the wrist position or the intake power when we
                     select this "mode", this means that the intake and wrist will continue what
@@ -375,7 +393,7 @@ public class brokenBot extends LinearOpMode {
                 oldtime = looptime;
 
                 //Rumble controller for endgame and flash controller light red
-           /* if(totalRuntime.time() > 90 && totalRuntime.time()<90.25){
+            if(totalRuntime.time() > 90 && totalRuntime.time()<90.25){
                 gamepad1.rumble(50);
                 gamepad1.setLedColor(255,0,0,50);
             } else if(totalRuntime.time() > 91 && totalRuntime.time()<91.25){
@@ -387,7 +405,7 @@ public class brokenBot extends LinearOpMode {
             } else if(totalRuntime.time() > 93) {
                 gamepad1.setLedColor(255, 0, 0, 30000);
             }
-*/
+
                 /* send telemetry to the driver of the arm's current position and target position */
                 //telemetry.addData("arm Target Position: ", robot.armMotor.getTargetPosition());
                 //telemetry.addData("arm Encoder: ", robot.armMotor.getCurrentPosition());\

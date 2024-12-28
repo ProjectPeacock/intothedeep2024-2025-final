@@ -21,7 +21,7 @@ public class HWProfile {
     public DcMotor  rightBackDrive   = null; //motorRR EH1
     public DcMotor  extendMotor      = null; //motorExtend EX3
     public MotorEx  motorLiftFront       = null; //motorLiftF CH2
-    public MotorEx  motorLiftBack       = null; //motorLiftR EX2, with X axis odo pod
+    public DcMotor  motorLiftBack       = null; //motorLiftR EX2, with X axis odo pod
     public IMU      imu              = null;
     public GoBildaPinpointDriver pinpoint; // pinoint CH i2C port 1    public Servo extRotateServo = null; // extRotateServo
     public Servo  extForeRightServo = null; // extForeRight
@@ -70,7 +70,6 @@ public class HWProfile {
 
 
 
-
     /* Variables to store the positions that the wrist should be set to when folding in, or folding out. */
     public final double INTAKE_WRIST_FOLDED_IN   = 0.1667;
     public final double INTAKE_WRIST_FOLDED_OUT  = 0.5;
@@ -104,7 +103,8 @@ public class HWProfile {
     public final double EXTENSION_COLLAPSED = 0 * EXTENSION_TICKS_PER_MM;
     public final double EXTENSION_MAX = 1300;
     public final double EXTENSION_TEST = 1800;
-    public final int    EXTENSION_DOWN_MAX         = 1300;
+    public final int    EXTENSION_DOWN_MAX = 1300;
+
 
 
 
@@ -154,17 +154,23 @@ public class HWProfile {
             rightBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             rightBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-            motorLiftFront  = new MotorEx(ahwMap,"motorLiftF", Motor.GoBILDA.RPM_435);
+           /* motorLiftFront  = new MotorEx(ahwMap,"motorLiftF", Motor.GoBILDA.RPM_435);
             motorLiftFront.setRunMode(Motor.RunMode.RawPower);
-            motorLiftFront.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
+            motorLiftFront.setZeroPowerBehavior(Motor.ZeroPowerBehavior.FLOAT);
             motorLiftFront.resetEncoder();
+            */
+
+            motorLiftBack  = hwMap.dcMotor.get("motorLiftR");
+            motorLiftBack.setTargetPosition(0);
+            motorLiftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            motorLiftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
-            motorLiftBack  = new MotorEx(ahwMap,"motorLiftF", Motor.GoBILDA.RPM_435);
+           /* motorLiftBack  = new MotorEx(ahwMap,"motorLiftF", Motor.GoBILDA.RPM_435);
             motorLiftBack.setRunMode(Motor.RunMode.RawPower);
             motorLiftBack.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
             motorLiftBack.resetEncoder();
-
+*/
             extendMotor = hwMap.dcMotor.get("motorExtend");
             extendMotor.setDirection(DcMotorSimple.Direction.REVERSE);
             extendMotor.setTargetPosition(0);
@@ -172,11 +178,11 @@ public class HWProfile {
             extendMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
 
-            lift = new MotorGroup(motorLiftFront, motorLiftBack);
+           /* lift = new MotorGroup(motorLiftFront, motorLiftBack);
             lift.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
             lift.set(0);
             lift.resetEncoder();
-
+*/
             /* Setting zeroPowerBehavior to BRAKE enables a "brake mode". This causes the motor to slow down
             much faster when it is coasting. This creates a much more controllable drivetrain. As the robot
             stops much quicker. */
