@@ -1,31 +1,27 @@
 /*   MIT License
- *   Copyright (c) [2024] [Base 10 Assets, LLC]
- *
- *   Permission is hereby granted, free of charge, to any person obtaining a copy
- *   of this software and associated documentation files (the "Software"), to deal
- *   in the Software without restriction, including without limitation the rights
- *   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *   copies of the Software, and to permit persons to whom the Software is
- *   furnished to do so, subject to the following conditions:
+         *   Copyright (c) [2024] [Base 10 Assets, LLC]
+         *
+         *   Permission is hereby granted, free of charge, to any person obtaining a copy
+         *   of this software and associated documentation files (the "Software"), to deal
+         *   in the Software without restriction, including without limitation the rights
+         *   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+         *   copies of the Software, and to permit persons to whom the Software is
+         *   furnished to do so, subject to the following conditions:
 
- *   The above copyright notice and this permission notice shall be included in all
- *   copies or substantial portions of the Software.
+         *   The above copyright notice and this permission notice shall be included in all
+         *   copies or substantial portions of the Software.
 
- *   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- *   SOFTWARE.
- */
+         *   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+         *   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+         *   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+         *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+         *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+         *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+         *   SOFTWARE.
+         */
 
-package org.firstinspires.ftc.teamcode.opmodes;
+        package org.firstinspires.ftc.teamcode.opmodes;
 
-import static org.firstinspires.ftc.teamcode.Libs.LiftControlClass.params;
-
-
-import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -38,7 +34,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.teamcode.hardware.HWProfile;
-import org.firstinspires.ftc.teamcode.hardware.CSAutoParams;
 
 import java.util.Locale;
 
@@ -78,8 +73,7 @@ public class brokenBot extends LinearOpMode {
     double looptime = 0;
     double oldtime = 0;
 
-    public int offset;
-
+    double elbowLiftComp = 0;
 
 
     /* Variables that are used to set the arm to a specific position */
@@ -102,7 +96,10 @@ public class brokenBot extends LinearOpMode {
 
         robot.init(hardwareMap, true);
 
+        telemetry.addData("Status:", "Initialized");
+        telemetry.update();
 
+        robot.extendMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
 
 
@@ -176,11 +173,7 @@ public class brokenBot extends LinearOpMode {
             robot.leftBackDrive.setPower(backLeftPower);
             robot.rightFrontDrive.setPower(frontRightPower);
             robot.rightBackDrive.setPower(backRightPower);
-            robot.motorLiftBack.setPower(1);
-            robot.motorLiftBack.setTargetPosition((int)liftPosition);
-            robot.extendMotor.setPower(1);
-            robot.extendMotor.setTargetPosition((int)extensionPosition);
-
+            robot.extendMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
 
 
@@ -231,22 +224,13 @@ public class brokenBot extends LinearOpMode {
 
             if (gamepad1.a) {
                 /* This is the intaking/collecting arm position */
+
                 extensionPosition = robot.EXTENSION_TEST;
                 //servoWristPosition = robot.WRIST_FOLDED_OUT;
 
-            }
-            if (gamepad2.left_trigger > 0.05 && (extensionPosition + (40 * -gamepad2.right_stick_y)) > 0 && (extensionPosition + (40 * -gamepad2.right_stick_y)) < robot.EXTENSION_DOWN_MAX){
-                extensionPosition += (40 * -gamepad2.right_stick_y);
-            } else if (gamepad1.b) {
+            } else if (gamepad1.b){
                 extensionPosition = robot.EXTENSION_COLLAPSED;
-            }
-
-            if (gamepad2.right_trigger > 0.05 && (liftPosition + (20 * -gamepad2.right_stick_y)) < robot.LIFT_SCORE_HIGH_BASKET && (liftPosition + (20 * -gamepad2.right_stick_y)) > robot.LIFT_RESET){
-                liftPosition += (20 * -gamepad2.right_stick_y);
-            }
-
-
-            //} else if (gamepad1.b) {
+                //} else if (gamepad1.b) {
                     /*This is about 20° up from the collecting position to clear the barrier
                     Note here that we don't set the wrist position or the intake power when we
                     select this "mode", this means that the intake and wrist will continue what
@@ -275,7 +259,7 @@ public class brokenBot extends LinearOpMode {
                 }
             }
 
-*/             robot.extendMotor.setPower(1);
+*/
             /*
             This is probably my favorite piece of code on this robot. It's a clever little software
             solution to a problem the robot has.
@@ -291,12 +275,12 @@ public class brokenBot extends LinearOpMode {
             to a value.
              */
 
-           // if (elbowPosition < 45 * robot.ELBOW_TICKS_PER_DEGREE){
-             //   elbowLiftComp = (.25568 * extensionPosition); //0.25568
-            //}
-            //else{
-            //    elbowLiftComp = 0;
-            //}
+           /* if (elbowPosition < 45 * robot.ELBOW_TICKS_PER_DEGREE){
+                elbowLiftComp = (.25568 * extensionPosition); //0.25568
+            }
+            else{
+                elbowLiftComp = 0;
+            }
 
            /* Here we set the target position of our arm to match the variable that was selected
             by the driver. We add the armPosition Variable to our armPositionFudgeFactor, before adding
@@ -329,9 +313,10 @@ public class brokenBot extends LinearOpMode {
              */
 
                 // If the button is pressed and liftPosition is not surpassing the range it should be in, then liftPosition is changed accordingly.
-
+/*          telemetry.addData("Extend Arm = ", "gamepad2.Right_Bumper");
+            telemetry.addData("Retract Arm = ", "gamepad2.Left_Bumper");
             // If the button is pressed and liftPosition is not surpassing the range it should be in, then liftPosition is changed accordingly.
-            if (gamepad2.right_bumper && (extensionPosition + 20) < robot.EXTENSION_TEST){
+            if (gamepad2.right_bumper && (extensionPosition + 20) < robot.EXTENSION_SCORING_IN_HIGH_BASKET){
                 extensionPosition += 20;
 //                liftPosition += 2800 * cycletime;
             }
@@ -343,7 +328,7 @@ public class brokenBot extends LinearOpMode {
             // Double check.
             // Checks again if liftPosition is beyond its boundries or not.
             // If it is outside the boundries, then it limits it to the boundries between 0 and the high bucket lift position.
-            /*if (extensionPosition < 0) {
+            if (extensionPosition < 0) {
                 extensionPosition = 0;
             } else if(elbowPosition <= robot.ELBOW_TRAVERSE){
                 if(extensionPosition >= robot.EXTENSION_DOWN_MAX){
@@ -393,7 +378,7 @@ public class brokenBot extends LinearOpMode {
                 oldtime = looptime;
 
                 //Rumble controller for endgame and flash controller light red
-            if(totalRuntime.time() > 90 && totalRuntime.time()<90.25){
+           /* if(totalRuntime.time() > 90 && totalRuntime.time()<90.25){
                 gamepad1.rumble(50);
                 gamepad1.setLedColor(255,0,0,50);
             } else if(totalRuntime.time() > 91 && totalRuntime.time()<91.25){
@@ -405,13 +390,10 @@ public class brokenBot extends LinearOpMode {
             } else if(totalRuntime.time() > 93) {
                 gamepad1.setLedColor(255, 0, 0, 30000);
             }
-
+*/
                 /* send telemetry to the driver of the arm's current position and target position */
                 //telemetry.addData("arm Target Position: ", robot.armMotor.getTargetPosition());
                 //telemetry.addData("arm Encoder: ", robot.armMotor.getCurrentPosition());\
-            telemetry.addData("extension Target Position",robot.extendMotor.getTargetPosition());
-            telemetry.addData("extension current Position",robot.extendMotor.getCurrentPosition());
-            telemetry.update();
                 /*
                 telemetry.addLine("Gamepad 1:");
                 telemetry.addLine("Driving is Enabled.");
@@ -433,4 +415,4 @@ public class brokenBot extends LinearOpMode {
 
             }
         }
-    }
+    }}

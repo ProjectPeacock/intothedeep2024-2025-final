@@ -18,7 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public final class TuningOpModes {
-    public static final Class<?> DRIVE_CLASS = MecanumDrive.class; // TODO: change to your drive class i.e. PinpointDrive if using pinpoint
+    public static final Class<?> DRIVE_CLASS = PinpointDrive.class; // TODO: change to your drive class i.e. PinpointDrive if using pinpoint
 
     public static final String GROUP = "quickstart";
     public static final boolean DISABLED = false;
@@ -38,7 +38,42 @@ public final class TuningOpModes {
         if (DISABLED) return;
 
         DriveViewFactory dvf;
-        if (DRIVE_CLASS.equals(MecanumDrive.class)) {
+        if (DRIVE_CLASS.equals(PinpointDrive.class)) {
+                dvf = hardwareMap -> {
+                    PinpointDrive pd = new PinpointDrive(hardwareMap, new Pose2d(0, 0, 0));
+
+                    List<Encoder> leftEncs = new ArrayList<>(), rightEncs = new ArrayList<>();
+                    List<Encoder> parEncs = new ArrayList<>(), perpEncs = new ArrayList<>();
+                    parEncs.add(new PinpointEncoder(pd.pinpoint,false, pd.leftBack));
+                    perpEncs.add(new PinpointEncoder(pd.pinpoint,true, pd.leftBack));
+
+                    return new DriveView(
+                            DriveType.MECANUM,
+                            MecanumDrive.PARAMS.inPerTick,
+                            MecanumDrive.PARAMS.maxWheelVel,
+                            MecanumDrive.PARAMS.minProfileAccel,
+                            MecanumDrive.PARAMS.maxProfileAccel,
+                            hardwareMap.getAll(LynxModule.class),
+                            Arrays.asList(
+                                    pd.leftFront,
+                                    pd.leftBack
+                            ),
+                            Arrays.asList(
+                                    pd.rightFront,
+                                    pd.rightBack
+                            ),
+                            leftEncs,
+                            rightEncs,
+                            parEncs,
+                            perpEncs,
+                            pd.lazyImu,
+                            pd.voltageSensor,
+                            () -> new MotorFeedforward(MecanumDrive.PARAMS.kS,
+                                    MecanumDrive.PARAMS.kV / MecanumDrive.PARAMS.inPerTick,
+                                    MecanumDrive.PARAMS.kA / MecanumDrive.PARAMS.inPerTick)
+                    );
+                };
+        } else if (DRIVE_CLASS.equals(MecanumDrive.class)) {
             dvf = hardwareMap -> {
                 MecanumDrive md = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
 
@@ -143,6 +178,7 @@ public final class TuningOpModes {
         manager.register(metaForClass(LateralRampLogger.class), new LateralRampLogger(dvf));
         manager.register(metaForClass(ManualFeedforwardTuner.class), new ManualFeedforwardTuner(dvf));
         manager.register(metaForClass(MecanumMotorDirectionDebugger.class), new MecanumMotorDirectionDebugger(dvf));
+        manager.register(metaForClass(DeadWheelDirectionDebugger.class), new DeadWheelDirectionDebugger(dvf));
 
         manager.register(metaForClass(ManualFeedbackTuner.class), ManualFeedbackTuner.class);
         manager.register(metaForClass(SplineTest.class), SplineTest.class);

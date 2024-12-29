@@ -104,7 +104,7 @@ public class HWProfile {
     public final double EXTENSION_MAX = 1300;
     public final double EXTENSION_TEST = 1800;
     public final int    EXTENSION_DOWN_MAX = 1300;
-
+    public final double EXTENSION_RESET = 0;
 
 
 
