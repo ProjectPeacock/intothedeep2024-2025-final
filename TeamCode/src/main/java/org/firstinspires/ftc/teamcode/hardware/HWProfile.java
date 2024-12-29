@@ -24,13 +24,14 @@ public class HWProfile {
     public DcMotor  motorLiftBack       = null; //motorLiftR EX2, with X axis odo pod
     public IMU      imu              = null;
     public GoBildaPinpointDriver pinpoint; // pinoint CH i2C port 1    public Servo extRotateServo = null; // extRotateServo
-    public Servo  extForeRightServo = null; // extForeRight
-    public Servo  extForeLeftServo = null; // extForeLeft
-    public Servo extGrabServo = null; // extGrabServo
-    public Servo extRotateServo = null; //extRotateServo
-    public Servo  scoreGrabServo = null; // scoreGrab
-    public Servo scoreForeLeftServo = null; // scoreForeLeft
-    public Servo scoreForeRightServo = null; // scoreForeRight
+    public Servo  extForeRightServo = null; // extForeRight EH3
+    public Servo  extForeLeftServo = null; // extForeLeft EH4
+    public Servo extGrabServo = null; // extGrabServo EH0
+    public Servo extRotateServo = null; //extRotateServo EH1
+    public Servo extPitchServo = null;// extPitchServo EH2
+    public Servo  scoreGrabServo = null; // scoreGrab CH0
+    public Servo scoreForeLeftServo = null; // scoreForeLeft CH1
+    public Servo scoreForeRightServo = null; // scoreForeRight CH2
     public MotorGroup lift = null;
 
     //CH3 is odo pod y axis
