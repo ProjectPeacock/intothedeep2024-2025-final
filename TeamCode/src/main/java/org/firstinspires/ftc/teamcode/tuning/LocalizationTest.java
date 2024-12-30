@@ -12,10 +12,8 @@ import org.firstinspires.ftc.teamcode.*;
 
 public class LocalizationTest extends LinearOpMode {
     @Override
-     public void runOpMode() throws InterruptedException {
+    public void runOpMode() throws InterruptedException {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-
-        waitForStart();
 
         PinpointDrive drive = new PinpointDrive(hardwareMap, new Pose2d(0, 0, 0));
 
