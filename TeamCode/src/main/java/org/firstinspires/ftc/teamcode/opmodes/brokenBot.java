@@ -1,26 +1,4 @@
-/*   MIT License
-         *   Copyright (c) [2024] [Base 10 Assets, LLC]
-         *
-         *   Permission is hereby granted, free of charge, to any person obtaining a copy
-         *   of this software and associated documentation files (the "Software"), to deal
-         *   in the Software without restriction, including without limitation the rights
-         *   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-         *   copies of the Software, and to permit persons to whom the Software is
-         *   furnished to do so, subject to the following conditions:
-
-         *   The above copyright notice and this permission notice shall be included in all
-         *   copies or substantial portions of the Software.
-
-         *   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-         *   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-         *   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-         *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-         *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-         *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-         *   SOFTWARE.
-         */
-
-        package org.firstinspires.ftc.teamcode.opmodes;
+package org.firstinspires.ftc.teamcode.opmodes;
 
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -91,7 +69,7 @@ public class brokenBot extends LinearOpMode {
         double forward;
         double rotate;
         double max;
-        double servoWristPosition = robot.INTAKE_WRIST_FOLDED_IN;
+        double servoWristPosition = robot.INTAKE_WRIST_FOLDED_ZERO;
 
 
         robot.init(hardwareMap, true);
@@ -108,6 +86,7 @@ public class brokenBot extends LinearOpMode {
         telemetry.update();
         /* Wait for the game driver to press play */
         waitForStart();
+        tightenStrings();
         double botHeading = robot.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 
         // Initializes ElapsedTimes. One for total runtime of the program and the others set up for toggles.
@@ -174,6 +153,8 @@ public class brokenBot extends LinearOpMode {
             robot.rightFrontDrive.setPower(frontRightPower);
             robot.rightBackDrive.setPower(backRightPower);
             robot.extendMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.motorLiftBack.setTargetPosition((int)liftPosition);
+            robot.motorLiftBack.setPower(1);
 
 
 
@@ -227,9 +208,12 @@ public class brokenBot extends LinearOpMode {
 
                 extensionPosition = robot.EXTENSION_TEST;
                 //servoWristPosition = robot.WRIST_FOLDED_OUT;
+            } else if (gamepad1.y){
+                liftPosition = robot.LIFT_SCORE_HIGH_BASKET;
 
-            } else if (gamepad1.b){
-                extensionPosition = robot.EXTENSION_COLLAPSED;
+            } else if (gamepad1.dpad_down){
+                liftPosition = robot.LIFT_SCORE_SPECIMEN;
+            }
                 //} else if (gamepad1.b) {
                     /*This is about 20° up from the collecting position to clear the barrier
                     Note here that we don't set the wrist position or the intake power when we
@@ -237,7 +221,18 @@ public class brokenBot extends LinearOpMode {
                     they were doing before we clicked left bumper. */
                 //elbowPosition = robot.ELBOW_CLEAR_BARRIER;
 
-                //} else if (gamepad1.x) {
+            if (gamepad2.left_trigger > 0.05 && (extensionPosition + (40 * -gamepad2.right_stick_y)) > 0 && (extensionPosition + (40 * -gamepad2.right_stick_y)) < robot.EXTENSION_DOWN_MAX){
+                extensionPosition += (40 * -gamepad2.right_stick_y);
+            } else if (gamepad1.b) {
+                extensionPosition = robot.EXTENSION_COLLAPSED;
+            }
+
+        if (gamepad2.right_trigger > 0.05 && (liftPosition + (20 * -gamepad2.right_stick_y)) < robot.LIFT_SCORE_HIGH_BASKET && (liftPosition + (20 * -gamepad2.right_stick_y)) > robot.LIFT_RESET){
+            liftPosition += (20 * -gamepad2.right_stick_y);
+        }
+
+
+        //} else if (gamepad1.x) {
                 /* This is the correct height to score the sample in the HIGH BASKET */
                 //elbowPosition = robot.ELBOW_SCORE_SAMPLE_IN_LOW;
                 //liftPosition = LIFT_SCORING_IN_HIGH_BASKET;
@@ -415,4 +410,49 @@ public class brokenBot extends LinearOpMode {
 
             }
         }
-    }}
+
+
+        public void tightenStrings(){
+        boolean extensionRetraction = false;
+        boolean liftRetraction = false;
+        int extensionPosition = 0;
+        int liftPosition = 0;
+
+
+
+        robot.motorLiftBack.setPower(1);
+        robot.motorLiftBack.setTargetPosition(0);
+        robot.extendMotor.setPower(1);
+        robot.extendMotor.setTargetPosition(0);
+
+        while(!extensionRetraction && !liftRetraction){
+            if(!extensionRetraction) {
+                extensionPosition = extensionPosition - 10;
+                robot.extendMotor.setTargetPosition(extensionPosition);
+                if(robot.extendMotor.getCurrent(CurrentUnit.AMPS) > 1){
+                    extensionRetraction = true;
+                    robot.extendMotor.setPower(0);
+                    robot.extendMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                    robot.extendMotor.setTargetPosition(0);
+                    robot.extendMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.extendMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                }
+                if(!liftRetraction) {
+                    liftPosition = liftPosition - 10;
+                    robot.motorLiftBack.setTargetPosition(liftPosition);
+                    if (robot.motorLiftBack.getCurrent(CurrentUnit.AMPS) > 1) {
+                        liftRetraction = true;
+                        robot.motorLiftBack.setPower(0);
+                        robot.motorLiftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                        robot.motorLiftBack.setTargetPosition(0);
+                        robot.motorLiftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                        robot.motorLiftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                    }
+                }
+            }
+
+        }
+
+
+        }
+    }

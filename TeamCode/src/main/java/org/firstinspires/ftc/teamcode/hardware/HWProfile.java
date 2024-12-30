@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode.hardware;
 
+import com.acmerobotics.roadrunner.ftc.GoBildaPinpointDriverRR;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.hardware.motors.MotorGroup;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
@@ -19,9 +21,9 @@ public class HWProfile {
     public DcMotor  rightFrontDrive  = null; //motorRF EH0
     public DcMotor  leftBackDrive    = null; //motorLR CH1
     public DcMotor  rightBackDrive   = null; //motorRR EH1
-    public DcMotor  extendMotor      = null; //motorExtend EX3
+    public DcMotorEx  extendMotor      = null; //motorExtend EX3
     public MotorEx  motorLiftFront       = null; //motorLiftF CH2
-    public DcMotor  motorLiftBack       = null; //motorLiftR EX2, with X axis odo pod
+    public DcMotorEx motorLiftBack       = null; //motorLiftR EX2
     public IMU      imu              = null;
     public GoBildaPinpointDriver pinpoint; // pinpoint CH i2C port 1
     public Servo  extForeRightServo = null; // extForeRight EH3
@@ -29,7 +31,7 @@ public class HWProfile {
     public Servo extGrabServo = null; // extGrabServo EH0
     public Servo extRotateServo = null; //extRotateServo EH1
     public Servo extPitchServo = null;// extPitchServo EH2
-    public Servo  scoreGrabServo = null; // scoreGrab CH0
+    public Servo scoreGrabServo = null; // scoreGrab CH0
     public Servo scoreForeLeftServo = null; // scoreForeLeft CH1
     public Servo scoreForeRightServo = null; // scoreForeRight CH2
     public MotorGroup lift = null;
@@ -72,9 +74,11 @@ public class HWProfile {
 
 
     /* Variables to store the positions that the wrist should be set to when folding in, or folding out. */
-    public final double INTAKE_WRIST_FOLDED_IN   = 0.1667;
-    public final double INTAKE_WRIST_FOLDED_OUT  = 0.5;
+    public final double INTAKE_WRIST_FOLDED_ZERO   = 0;
+    public final double INTAKE_WRIST_FOLDED_NINETY  = 0.5;
+    public final double INTAKE_WRIST_FOLDED_180  = 0.5;
     public final double INTAKE_WRIST_FOLDED_PARTIAL = .25;
+
 
 
     /* A number in degrees that the triggers can adjust the arm position by */
@@ -84,19 +88,20 @@ public class HWProfile {
     public final double INTAKE_CLAW_PARTIAL_OPEN = .6;
 
     public final double SCORE_CLAW_OPEN = 0;
+    public final double SCORE_CLAW_CLOSED = .5;
 
 
-    final public double INTAKE_RIGHT_FOREBAR_DOWN = 0;
-    final public double INTAKE_RIGHT_FOREBAR_UP = 0.5;
-    final public double INTAKE_LEFT_FOREBAR_DOWN = 0.25;
-    final public double INTAKE_LEFT_FOREBAR_UP = 1;
+    final public double INTAKE_RIGHT_FOREBAR_DEPLOY = 0.5;
+    final public double INTAKE_RIGHT_FOREBAR_RETRACT = 0.5;
+    final public double INTAKE_LEFT_FOREBAR_DEPLOY = 0.5;
+    final public double INTAKE_LEFT_FOREBAR_RETRACT = 0.5;
 
-    final public double SCORE_RIGHT_FOREBAR_RESET = 0;
-    final public double SCORE_RIGHT_FOREBAR_SPECIMEN = 0.5;
+    final public double SCORE_RIGHT_FOREBAR_RESET = 0.25;
+    final public double SCORE_RIGHT_FOREBAR_SPECIMEN = 0.25;
     final public double SCORE_RIGHT_FOREBAR_HALF = 0.25;
     final public double SCORE_LEFT_FOREBAR_SPECIMEN = 0.25;
-    final public double SCORE_LEFT_FOREBAR_RESET = 1;
-    final public double SCORE_LEFT_FOREBAR_HALF = 0.5;
+    final public double SCORE_LEFT_FOREBAR_RESET = 0.25;
+    final public double SCORE_LEFT_FOREBAR_HALF = 0.25;
 
 
 
@@ -161,8 +166,11 @@ public class HWProfile {
             motorLiftFront.resetEncoder();
             */
 
-            motorLiftBack  = hwMap.dcMotor.get("motorLiftR");
+            motorLiftBack  = ahwMap.get(DcMotorEx.class, "motorLiftR");
+            motorLiftBack.setDirection(DcMotorSimple.Direction.FORWARD);
             motorLiftBack.setTargetPosition(0);
+            motorLiftBack.setPower(0);
+            motorLiftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             motorLiftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             motorLiftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
@@ -172,7 +180,7 @@ public class HWProfile {
             motorLiftBack.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
             motorLiftBack.resetEncoder();
 */
-            extendMotor = hwMap.dcMotor.get("motorExtend");
+            extendMotor = ahwMap.get(DcMotorEx.class, "extendMotor");
             extendMotor.setDirection(DcMotorSimple.Direction.REVERSE);
             extendMotor.setTargetPosition(0);
             extendMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -196,8 +204,8 @@ public class HWProfile {
             imu  = hwMap.get(IMU.class, "imu");
             // Adjust the orientation parameters to match your robot
             IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-                    RevHubOrientationOnRobot.LogoFacingDirection.UP,
-                    RevHubOrientationOnRobot.UsbFacingDirection.LEFT));
+                    RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
+                    RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD));
             // Without this, the REV Hub's orientation is assumed to be logo up / USB forward
             imu.initialize(parameters);
             pinpoint = hwMap.get(GoBildaPinpointDriver.class,"pinpoint");
