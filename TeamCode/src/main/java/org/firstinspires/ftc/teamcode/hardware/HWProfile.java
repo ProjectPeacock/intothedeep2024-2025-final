@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.hardware;
 
 import com.acmerobotics.roadrunner.ftc.GoBildaPinpointDriverRR;
+import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.hardware.motors.MotorGroup;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -19,7 +20,7 @@ public class HWProfile {
     public DcMotor  leftBackDrive    = null; //motorLR CH1
     public DcMotor  rightBackDrive   = null; //motorRR EH1
     public DcMotorEx  extendMotor      = null; //motorExtend EX3
-    public MotorEx  motorLiftFront       = null; //motorLiftF CH2
+    public DcMotorEx  motorLiftFront       = null; //motorLiftF CH2
     public DcMotorEx motorLiftBack       = null; //motorLiftR EX2
     public IMU      imu              = null;
     public GoBildaPinpointDriverRR pinpoint; // pinpoint CH i2C port 1
@@ -79,28 +80,28 @@ public class HWProfile {
 
     public final double INTAKE_CLAW_PITCH_GRAB = 1;
     public final double INTAKE_CLAW_PITCH_HOLDING = 0.5;
-    public final double INTAKE_CLAW_PITCH_TRANSFER = 0;
+    public final double INTAKE_CLAW_PITCH_TRANSFER = 0.5;
 
 
 
     /* A number in degrees that the triggers can adjust the arm position by */
 
     public final double INTAKE_CLAW_OPEN = .5;
-    public final double INTAKE_CLAW_CLOSED = 0;
+    public final double INTAKE_CLAW_CLOSED = .1;
     public final double INTAKE_CLAW_PARTIAL_OPEN = .6;
 
 
-    public final double SCORE_CLAW_OPEN = 0;
-    public final double SCORE_CLAW_CLOSED = .5;
+    public final double SCORE_CLAW_OPEN = 0.75;
+    public final double SCORE_CLAW_CLOSED = 0;
 
 
     final public double INTAKE_RIGHT_FOREBAR_DEPLOY = .1; //started at 0
-    final public double INTAKE_RIGHT_FOREBAR_RETRACT = .9; // started at 1
-    final public double INTAKE_LEFT_FOREBAR_DEPLOY = .9; //started at 1
+    final public double INTAKE_RIGHT_FOREBAR_RETRACT = .5; // started at 1
+    final public double INTAKE_LEFT_FOREBAR_DEPLOY = .5; //started at 1
     final public double INTAKE_LEFT_FOREBAR_RETRACT = .1; // started at 0
 
     final public double SCORE_RIGHT_FOREBAR_RESET = 0.25;
-    final public double SCORE_RIGHT_FOREBAR_SPECIMEN = 0.25;
+    final public double SCORE_RIGHT_FOREBAR_SPECIMEN = 0.75;
     final public double SCORE_RIGHT_FOREBAR_HALF = 0.25;
     final public double SCORE_LEFT_FOREBAR_SPECIMEN = 0.25;
     final public double SCORE_LEFT_FOREBAR_RESET = 0.25;
@@ -113,7 +114,7 @@ public class HWProfile {
     public final double EXTENSION_MAX = 1300;
     public final double EXTENSION_TEST = 1600;
     public final int    EXTENSION_DOWN_MAX = 1600;
-    public final double EXTENSION_RESET = 0;
+    public final double EXTENSION_RESET = 15;
 
 
 
@@ -167,39 +168,10 @@ public class HWProfile {
             rightBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             rightBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-           /* motorLiftFront  = new MotorEx(ahwMap,"motorLiftF", Motor.GoBILDA.RPM_435);
-            motorLiftFront.setRunMode(Motor.RunMode.RawPower);
-            motorLiftFront.setZeroPowerBehavior(Motor.ZeroPowerBehavior.FLOAT);
-            motorLiftFront.resetEncoder();
-            */
-
-            motorLiftBack  = ahwMap.get(DcMotorEx.class, "motorLiftR");
-            motorLiftBack.setDirection(DcMotorSimple.Direction.FORWARD);
-            motorLiftBack.setTargetPosition(0);
-            motorLiftBack.setPower(0);
-            motorLiftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            motorLiftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            motorLiftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
-           /* motorLiftBack  = new MotorEx(ahwMap,"motorLiftF", Motor.GoBILDA.RPM_435);
-            motorLiftBack.setRunMode(Motor.RunMode.RawPower);
-            motorLiftBack.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
-            motorLiftBack.resetEncoder();
-*/
-            extendMotor = ahwMap.get(DcMotorEx.class, "motorExtend");
-            extendMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-            extendMotor.setTargetPosition(0);
-            extendMotor.setPower(0);
-            extendMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            extendMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
 
-           /* lift = new MotorGroup(motorLiftFront, motorLiftBack);
-            lift.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
-            lift.set(0);
-            lift.resetEncoder();
-*/
             /* Setting zeroPowerBehavior to BRAKE enables a "brake mode". This causes the motor to slow down
             much faster when it is coasting. This creates a much more controllable drivetrain. As the robot
             stops much quicker. */
@@ -221,6 +193,57 @@ public class HWProfile {
 
 
         }
+
+
+        motorLiftFront = ahwMap.get(DcMotorEx.class, "motorLiftF");
+        motorLiftFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        motorLiftFront.setTargetPosition(0);
+        motorLiftFront.setPower(0);
+        motorLiftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorLiftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        motorLiftBack = ahwMap.get(DcMotorEx.class, "motorLiftR");
+        motorLiftBack.setDirection(DcMotorSimple.Direction.FORWARD);
+        motorLiftBack.setTargetPosition(0);
+        motorLiftBack.setPower(0);
+        motorLiftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorLiftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            /*
+            motorLiftFront  = new MotorEx(ahwMap, "motorLiftF", Motor.GoBILDA.RPM_435);
+            motorLiftFront.setRunMode(Motor.RunMode.RawPower);
+            motorLiftFront.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
+            motorLiftFront.resetEncoder();
+
+            motorLiftBack  = new MotorEx (ahwMap,"motorLiftR", Motor.GoBILDA.RPM_435);
+            motorLiftBack.setRunMode(Motor.RunMode.RawPower);
+            motorLiftBack.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
+            motorLiftBack.resetEncoder();
+            */
+
+        extendMotor = ahwMap.get(DcMotorEx.class, "motorExtend");
+        extendMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        extendMotor.setTargetPosition(0);
+        extendMotor.setPower(0);
+        extendMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        extendMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+
+            /*lift = new MotorGroup(motorLiftFront, motorLiftBack);
+            lift.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
+            lift.set(0);
+            lift.resetEncoder();
+*/
+
+        lift = new MotorGroup(
+                new Motor(hwMap, "motorLiftF", Motor.GoBILDA.RPM_435),
+                new Motor(hwMap, "motorLiftR", Motor.GoBILDA.RPM_435)
+        );
+        lift.setTargetPosition(0);
+        lift.set(0);
+        lift.setRunMode(Motor.RunMode.PositionControl);
+
+
 
 
         /*This sets the maximum current that the control hub will apply to the arm before throwing a flag */

@@ -10,6 +10,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.teamcode.hardware.HWProfile;
+import org.firstinspires.ftc.teamcode.Libs.RRMechOps;
 
 import java.util.Locale;
 
@@ -41,7 +42,10 @@ import java.util.Locale;
 //@Disabled
 public class brokenBot extends LinearOpMode {
 
+
     private final static HWProfile robot = new HWProfile();
+    private final LinearOpMode opMode = this;
+    private final RRMechOps mechOps = new RRMechOps(robot,opMode);
 
     double extensionPosition = robot.EXTENSION_COLLAPSED;
 
@@ -75,14 +79,17 @@ public class brokenBot extends LinearOpMode {
         telemetry.addData("Status:", "Initialized");
         telemetry.update();
 
-        robot.extendMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
 
         /* Send telemetry message to signify robot waiting */
         telemetry.addLine("Robot Ready.");
         telemetry.update();
         /* Wait for the game driver to press play */
         waitForStart();
+        mechOps.extForeBarRetract();
+        mechOps.extClawRotateZero();
+        mechOps.extClawOpen();
+        mechOps.scoreClawOpen();
+        tightenStrings();
         double botHeading = robot.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 
         // Initializes ElapsedTimes. One for total runtime of the program and the others set up for toggles.
@@ -148,10 +155,10 @@ public class brokenBot extends LinearOpMode {
             robot.leftBackDrive.setPower(backLeftPower);
             robot.rightFrontDrive.setPower(frontRightPower);
             robot.rightBackDrive.setPower(backRightPower);
-            robot.extendMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.motorLiftFront.setTargetPosition((int)liftPosition);
             robot.motorLiftBack.setTargetPosition((int)liftPosition);
+            robot.motorLiftFront.setPower(1);
             robot.motorLiftBack.setPower(1);
-            robot.extendMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.extendMotor.setTargetPosition((int)extensionPosition);
             robot.extendMotor.setPower(1);
 
@@ -213,14 +220,15 @@ public class brokenBot extends LinearOpMode {
                 extensionPosition = robot.EXTENSION_RESET;
                 robot.extForeRightServo.setPosition(robot.INTAKE_RIGHT_FOREBAR_RETRACT);
                 robot.extForeLeftServo.setPosition(robot.INTAKE_LEFT_FOREBAR_RETRACT);
-                robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_HOLDING);
+                robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_TRANSFER);
 
                 //servoWristPosition = robot.WRIST_FOLDED_OUT;
             } else if (gamepad1.y){
                 liftPosition = robot.LIFT_SCORE_HIGH_BASKET;
 
             } else if (gamepad1.dpad_down){
-                robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_HOLDING);
+                robot.scoreForeLeftServo.setPosition(robot.SCORE_LEFT_FOREBAR_RESET);
+
             } else if (gamepad1.b) {
                 //extensionPosition = robot.EXTENSION_COLLAPSED;
                 liftPosition = robot.LIFT_RESET;
@@ -234,11 +242,14 @@ public class brokenBot extends LinearOpMode {
                 //boolean toggle for extension in and out
             } else if (gamepad1.dpad_left) {
                 robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_GRAB);
+
             } else if (gamepad2.dpad_down){
                 liftPosition = robot.LIFT_SCORE_SPECIMEN;
 
-            } else if (gamepad2.dpad_left){
-
+            } else if (gamepad2.dpad_left) {
+                robot.scoreGrabServo.setPosition(robot.SCORE_CLAW_CLOSED);
+            }else if (gamepad2.dpad_right){
+                robot.scoreGrabServo.setPosition(robot.SCORE_CLAW_OPEN);
             } else if (gamepad2.b){
                 robot.extForeRightServo.setPosition(robot.INTAKE_RIGHT_FOREBAR_RETRACT);
                 robot.extForeLeftServo.setPosition(robot.INTAKE_LEFT_FOREBAR_RETRACT);
@@ -431,6 +442,8 @@ public class brokenBot extends LinearOpMode {
                 telemetry.addData("backLeft", robot.leftBackDrive.getCurrentPosition());
                 telemetry.addData("frontRight", robot.rightFrontDrive.getCurrentPosition());
                 telemetry.addData("backRight", robot.rightBackDrive.getCurrentPosition());
+                telemetry.addData("motor Lift Front Current", robot.motorLiftFront.getCurrent(CurrentUnit.AMPS));
+                telemetry.addData("motor Lift Back Current", robot.motorLiftBack.getCurrent(CurrentUnit.AMPS));
                 telemetry.update();
                 /* send telemetry to the driver of the arm's current position and target position */
                 //telemetry.addData("arm Target Position: ", robot.armMotor.getTargetPosition());
@@ -471,9 +484,9 @@ public class brokenBot extends LinearOpMode {
         robot.extendMotor.setTargetPosition(0);
 
         while(opModeIsActive() && !extensionRetraction){
-                extensionPosition = extensionPosition - 10;
+                extensionPosition = extensionPosition - 25;
                 robot.extendMotor.setTargetPosition(extensionPosition);
-                if(robot.extendMotor.getCurrent(CurrentUnit.AMPS) > 2){
+                if(robot.extendMotor.getCurrent(CurrentUnit.AMPS) > 3){
                     extensionRetraction = true;
                     robot.extendMotor.setPower(0);
                     robot.extendMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -483,7 +496,7 @@ public class brokenBot extends LinearOpMode {
                 }
 
             }
-
+            robot.extendMotor.setTargetPosition((int)robot.EXTENSION_RESET);
 
 
 

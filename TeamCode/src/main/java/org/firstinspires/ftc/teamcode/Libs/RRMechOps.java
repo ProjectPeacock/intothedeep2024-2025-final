@@ -64,6 +64,13 @@ public class RRMechOps {
 
     }
 
+    public void scoreClawOpen(){
+        robot.scoreGrabServo.setPosition(robot.SCORE_CLAW_OPEN);
+    }
+
+    public void scoreClawClosed(){
+        robot.scoreGrabServo.setPosition(robot.SCORE_CLAW_CLOSED);
+    }
     public void sampleHandoff(){
         //close extension claw
         //set wrist rotation 0
