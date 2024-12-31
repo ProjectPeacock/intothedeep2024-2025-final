@@ -80,13 +80,11 @@ public class brokenBot extends LinearOpMode {
         robot.extendMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
 
-
         /* Send telemetry message to signify robot waiting */
         telemetry.addLine("Robot Ready.");
         telemetry.update();
         /* Wait for the game driver to press play */
         waitForStart();
-        tightenStrings();
         double botHeading = robot.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 
         // Initializes ElapsedTimes. One for total runtime of the program and the others set up for toggles.
@@ -106,7 +104,7 @@ public class brokenBot extends LinearOpMode {
 
         // booleans for keeping track of toggles
         boolean clawOpened = false;
-        boolean clawRotated = true;
+        boolean clawRotated = false;
         boolean armRetracted = true;
         boolean armClimb = false;
 
@@ -155,6 +153,9 @@ public class brokenBot extends LinearOpMode {
             robot.extendMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.motorLiftBack.setTargetPosition((int)liftPosition);
             robot.motorLiftBack.setPower(1);
+            robot.extendMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.extendMotor.setTargetPosition((int)extensionPosition);
+            robot.extendMotor.setPower(1);
 
 
 
@@ -205,14 +206,25 @@ public class brokenBot extends LinearOpMode {
 
             if (gamepad1.a) {
                 /* This is the intaking/collecting arm position */
-
                 extensionPosition = robot.EXTENSION_TEST;
+            }else if (gamepad1.x){
+                extensionPosition = robot.EXTENSION_RESET;
                 //servoWristPosition = robot.WRIST_FOLDED_OUT;
             } else if (gamepad1.y){
                 liftPosition = robot.LIFT_SCORE_HIGH_BASKET;
 
             } else if (gamepad1.dpad_down){
                 liftPosition = robot.LIFT_SCORE_SPECIMEN;
+            } else if (gamepad1.b) {
+                //extensionPosition = robot.EXTENSION_COLLAPSED;
+                liftPosition = robot.LIFT_RESET;
+            }
+            if (gamepad1.dpad_right) {
+                servoWristPosition = robot.INTAKE_WRIST_FOLDED_ZERO;
+
+            } else if (gamepad1.dpad_up) {
+                servoWristPosition = robot.INTAKE_WRIST_FOLDED_NINETY;
+                //boolean toggle for extension in and out
             }
                 //} else if (gamepad1.b) {
                     /*This is about 20° up from the collecting position to clear the barrier
@@ -223,8 +235,6 @@ public class brokenBot extends LinearOpMode {
 
             if (gamepad2.left_trigger > 0.05 && (extensionPosition + (40 * -gamepad2.right_stick_y)) > 0 && (extensionPosition + (40 * -gamepad2.right_stick_y)) < robot.EXTENSION_DOWN_MAX){
                 extensionPosition += (40 * -gamepad2.right_stick_y);
-            } else if (gamepad1.b) {
-                extensionPosition = robot.EXTENSION_COLLAPSED;
             }
 
         if (gamepad2.right_trigger > 0.05 && (liftPosition + (20 * -gamepad2.right_stick_y)) < robot.LIFT_SCORE_HIGH_BASKET && (liftPosition + (20 * -gamepad2.right_stick_y)) > robot.LIFT_RESET){
@@ -240,21 +250,19 @@ public class brokenBot extends LinearOpMode {
 
                 //boolean toggle for claw rotation
 
-            /*} else if (gamepad1.right_stick_button && rotateClawRuntime.time() > 0.15) {
+            if (gamepad1.right_stick_button && rotateClawRuntime.time() > 0.15) {
                 if (clawRotated) {
-                    servoWristPosition = robot.WRIST_FOLDED_OUT;
+                    servoWristPosition = robot.INTAKE_WRIST_FOLDED_ZERO;
                     clawRotated = false;
                 } else if (!clawRotated) {
-                    servoWristPosition = robot.WRIST_FOLDED_IN;
+                    servoWristPosition = robot.INTAKE_WRIST_FOLDED_NINETY;
                     clawRotated = true;
 
                     rotateClawRuntime.reset();
-
-                    //boolean toggle for extension in and out
                 }
             }
 
-*/
+
             /*
             This is probably my favorite piece of code on this robot. It's a clever little software
             solution to a problem the robot has.
@@ -386,6 +394,12 @@ public class brokenBot extends LinearOpMode {
                 gamepad1.setLedColor(255, 0, 0, 30000);
             }
 */
+
+                telemetry.addData("frontLeft", robot.leftFrontDrive.getCurrentPosition());
+                telemetry.addData("backLeft", robot.leftBackDrive.getCurrentPosition());
+                telemetry.addData("frontRight", robot.rightFrontDrive.getCurrentPosition());
+                telemetry.addData("backRight", robot.rightBackDrive.getCurrentPosition());
+                telemetry.update();
                 /* send telemetry to the driver of the arm's current position and target position */
                 //telemetry.addData("arm Target Position: ", robot.armMotor.getTargetPosition());
                 //telemetry.addData("arm Encoder: ", robot.armMotor.getCurrentPosition());\
@@ -414,22 +428,20 @@ public class brokenBot extends LinearOpMode {
 
         public void tightenStrings(){
         boolean extensionRetraction = false;
-        boolean liftRetraction = false;
+
         int extensionPosition = 0;
-        int liftPosition = 0;
 
 
 
-        robot.motorLiftBack.setPower(1);
-        robot.motorLiftBack.setTargetPosition(0);
+
+
         robot.extendMotor.setPower(1);
         robot.extendMotor.setTargetPosition(0);
 
-        while(!extensionRetraction && !liftRetraction){
-            if(!extensionRetraction) {
+        while(opModeIsActive() && !extensionRetraction){
                 extensionPosition = extensionPosition - 10;
                 robot.extendMotor.setTargetPosition(extensionPosition);
-                if(robot.extendMotor.getCurrent(CurrentUnit.AMPS) > 1){
+                if(robot.extendMotor.getCurrent(CurrentUnit.AMPS) > 2){
                     extensionRetraction = true;
                     robot.extendMotor.setPower(0);
                     robot.extendMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -437,21 +449,10 @@ public class brokenBot extends LinearOpMode {
                     robot.extendMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     robot.extendMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 }
-                if(!liftRetraction) {
-                    liftPosition = liftPosition - 10;
-                    robot.motorLiftBack.setTargetPosition(liftPosition);
-                    if (robot.motorLiftBack.getCurrent(CurrentUnit.AMPS) > 1) {
-                        liftRetraction = true;
-                        robot.motorLiftBack.setPower(0);
-                        robot.motorLiftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                        robot.motorLiftBack.setTargetPosition(0);
-                        robot.motorLiftBack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                        robot.motorLiftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                    }
-                }
+
             }
 
-        }
+
 
 
         }

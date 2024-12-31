@@ -25,7 +25,7 @@ public class HWProfile {
     public MotorEx  motorLiftFront       = null; //motorLiftF CH2
     public DcMotorEx motorLiftBack       = null; //motorLiftR EX2
     public IMU      imu              = null;
-    public GoBildaPinpointDriver pinpoint; // pinpoint CH i2C port 1
+    public GoBildaPinpointDriverRR pinpoint; // pinpoint CH i2C port 1
     public Servo  extForeRightServo = null; // extForeRight EH3
     public Servo  extForeLeftServo = null; // extForeLeft EH4
     public Servo extGrabServo = null; // extGrabServo EH0
@@ -68,7 +68,7 @@ public class HWProfile {
 
     public final double LIFT_RESET                = 0;
     public final double LIFT_SPECIMEN_PREP          = 135 ;
-    public final double LIFT_SCORE_HIGH_BASKET = 100;
+    public final double LIFT_SCORE_HIGH_BASKET = 3250;
     public final double LIFT_SCORE_SPECIMEN = 1000;
 
 
@@ -83,9 +83,10 @@ public class HWProfile {
 
     /* A number in degrees that the triggers can adjust the arm position by */
 
-    public final double INTAKE_CLAW_OPEN = .25;
-    public final double INTAKE_CLAW_CLOSED = 1;
+    public final double INTAKE_CLAW_OPEN = .5;
+    public final double INTAKE_CLAW_CLOSED = 0;
     public final double INTAKE_CLAW_PARTIAL_OPEN = .6;
+
 
     public final double SCORE_CLAW_OPEN = 0;
     public final double SCORE_CLAW_CLOSED = .5;
@@ -108,7 +109,7 @@ public class HWProfile {
     public final double EXTENSION_TICKS_PER_MM = (111132.0 / 289.0) / 120.0;
     public final double EXTENSION_COLLAPSED = 0 * EXTENSION_TICKS_PER_MM;
     public final double EXTENSION_MAX = 1300;
-    public final double EXTENSION_TEST = 1800;
+    public final double EXTENSION_TEST = 1600;
     public final int    EXTENSION_DOWN_MAX = 1300;
     public final double EXTENSION_RESET = 0;
 
@@ -143,20 +144,24 @@ public class HWProfile {
             */
             leftFrontDrive  = hwMap.dcMotor.get("motorLF");
             leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
+            leftFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             leftFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             leftFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
             leftBackDrive   = hwMap.dcMotor.get("motorLR");
             leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
+            leftBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             leftBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             leftBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
             rightFrontDrive = hwMap.dcMotor.get("motorRF");
+            rightFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             rightFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             rightFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
             rightBackDrive  = hwMap.dcMotor.get("motorRR");
+            rightBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             rightBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             rightBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
@@ -180,9 +185,10 @@ public class HWProfile {
             motorLiftBack.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
             motorLiftBack.resetEncoder();
 */
-            extendMotor = ahwMap.get(DcMotorEx.class, "extendMotor");
-            extendMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+            extendMotor = ahwMap.get(DcMotorEx.class, "motorExtend");
+            extendMotor.setDirection(DcMotorSimple.Direction.FORWARD);
             extendMotor.setTargetPosition(0);
+            extendMotor.setPower(0);
             extendMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             extendMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
@@ -208,7 +214,7 @@ public class HWProfile {
                     RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD));
             // Without this, the REV Hub's orientation is assumed to be logo up / USB forward
             imu.initialize(parameters);
-            pinpoint = hwMap.get(GoBildaPinpointDriver.class,"pinpoint");
+            pinpoint = hwMap.get(GoBildaPinpointDriverRR.class,"pinpoint");
             pinpoint.resetPosAndIMU();
 
 
@@ -216,7 +222,7 @@ public class HWProfile {
 
 
         /*This sets the maximum current that the control hub will apply to the arm before throwing a flag */
-/*
+
         extGrabServo = hwMap.get(Servo.class, "extGrabServo");
 
         extRotateServo = hwMap.get(Servo.class, "extRotateServo");
@@ -232,7 +238,7 @@ public class HWProfile {
         scoreForeLeftServo = hwMap.get(Servo.class, "scoreForeLeft");
 
 
-*/
+
 
 
 
