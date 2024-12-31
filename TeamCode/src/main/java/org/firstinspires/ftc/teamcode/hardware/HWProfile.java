@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.hardware;
 
 import com.acmerobotics.roadrunner.ftc.GoBildaPinpointDriverRR;
-import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.hardware.motors.MotorGroup;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -11,8 +10,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
-
-import org.firstinspires.ftc.teamcode.GoBilda.GoBildaPinpointDriver;
 
 public class HWProfile {
 
@@ -74,10 +71,15 @@ public class HWProfile {
 
 
     /* Variables to store the positions that the wrist should be set to when folding in, or folding out. */
-    public final double INTAKE_WRIST_FOLDED_ZERO   = 0;
-    public final double INTAKE_WRIST_FOLDED_NINETY  = 0.5;
-    public final double INTAKE_WRIST_FOLDED_180  = 0.5;
+    public final double INTAKE_WRIST_ROTATED_ZERO = 0;
+    public final double INTAKE_WRIST_ROTATED_NINETY = 0.25;
+    public final double INTAKE_WRIST_ROTATED_180  = 0.6;
     public final double INTAKE_WRIST_FOLDED_PARTIAL = .25;
+
+
+    public final double INTAKE_CLAW_PITCH_GRAB = 1;
+    public final double INTAKE_CLAW_PITCH_HOLDING = 0.5;
+    public final double INTAKE_CLAW_PITCH_TRANSFER = 0;
 
 
 
@@ -92,10 +94,10 @@ public class HWProfile {
     public final double SCORE_CLAW_CLOSED = .5;
 
 
-    final public double INTAKE_RIGHT_FOREBAR_DEPLOY = 0.5;
-    final public double INTAKE_RIGHT_FOREBAR_RETRACT = 0.5;
-    final public double INTAKE_LEFT_FOREBAR_DEPLOY = 0.5;
-    final public double INTAKE_LEFT_FOREBAR_RETRACT = 0.5;
+    final public double INTAKE_RIGHT_FOREBAR_DEPLOY = .1; //started at 0
+    final public double INTAKE_RIGHT_FOREBAR_RETRACT = .9; // started at 1
+    final public double INTAKE_LEFT_FOREBAR_DEPLOY = .9; //started at 1
+    final public double INTAKE_LEFT_FOREBAR_RETRACT = .1; // started at 0
 
     final public double SCORE_RIGHT_FOREBAR_RESET = 0.25;
     final public double SCORE_RIGHT_FOREBAR_SPECIMEN = 0.25;
@@ -110,7 +112,7 @@ public class HWProfile {
     public final double EXTENSION_COLLAPSED = 0 * EXTENSION_TICKS_PER_MM;
     public final double EXTENSION_MAX = 1300;
     public final double EXTENSION_TEST = 1600;
-    public final int    EXTENSION_DOWN_MAX = 1300;
+    public final int    EXTENSION_DOWN_MAX = 1600;
     public final double EXTENSION_RESET = 0;
 
 
@@ -231,11 +233,15 @@ public class HWProfile {
 
         extForeRightServo = hwMap.get(Servo.class, "extForeRight");
 
+        extPitchServo = hwMap.get(Servo.class, "extPitchServo");
+
         scoreGrabServo = hwMap.get(Servo.class, "scoreGrab");
 
         scoreForeRightServo = hwMap.get(Servo.class, "scoreForeRight");
 
         scoreForeLeftServo = hwMap.get(Servo.class, "scoreForeLeft");
+
+
 
 
 

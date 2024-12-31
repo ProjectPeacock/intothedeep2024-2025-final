@@ -27,15 +27,15 @@ public class RRMechOps {
     }
 
     public void extClawRotateZero(){
-        robot.extRotateServo.setPosition(robot.INTAKE_WRIST_FOLDED_ZERO);
+        robot.extRotateServo.setPosition(robot.INTAKE_WRIST_ROTATED_ZERO);
     }
 
     public void extClawRotateNinety(){
-        robot.extRotateServo.setPosition(robot.INTAKE_WRIST_FOLDED_NINETY);
+        robot.extRotateServo.setPosition(robot.INTAKE_WRIST_ROTATED_NINETY);
     }
 
     public void extClawRotate180(){
-        robot.extRotateServo.setPosition(robot.INTAKE_WRIST_FOLDED_180);
+        robot.extRotateServo.setPosition(robot.INTAKE_WRIST_ROTATED_180);
     }
 
     public void extForeBarDeploy(){

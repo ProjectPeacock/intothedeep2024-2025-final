@@ -1,10 +1,8 @@
 package org.firstinspires.ftc.teamcode.opmodes;
 
-import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -69,7 +67,7 @@ public class brokenBot extends LinearOpMode {
         double forward;
         double rotate;
         double max;
-        double servoWristPosition = robot.INTAKE_WRIST_FOLDED_ZERO;
+        double servoWristPosition = robot.INTAKE_WRIST_ROTATED_ZERO;
 
 
         robot.init(hardwareMap, true);
@@ -207,24 +205,58 @@ public class brokenBot extends LinearOpMode {
             if (gamepad1.a) {
                 /* This is the intaking/collecting arm position */
                 extensionPosition = robot.EXTENSION_TEST;
+                robot.extForeRightServo.setPosition(robot.INTAKE_RIGHT_FOREBAR_DEPLOY);
+                robot.extForeLeftServo.setPosition(robot.INTAKE_LEFT_FOREBAR_DEPLOY);
+                robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_GRAB);
+
             }else if (gamepad1.x){
                 extensionPosition = robot.EXTENSION_RESET;
+                robot.extForeRightServo.setPosition(robot.INTAKE_RIGHT_FOREBAR_RETRACT);
+                robot.extForeLeftServo.setPosition(robot.INTAKE_LEFT_FOREBAR_RETRACT);
+                robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_HOLDING);
+
                 //servoWristPosition = robot.WRIST_FOLDED_OUT;
             } else if (gamepad1.y){
                 liftPosition = robot.LIFT_SCORE_HIGH_BASKET;
 
             } else if (gamepad1.dpad_down){
-                liftPosition = robot.LIFT_SCORE_SPECIMEN;
+                robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_HOLDING);
             } else if (gamepad1.b) {
                 //extensionPosition = robot.EXTENSION_COLLAPSED;
                 liftPosition = robot.LIFT_RESET;
             }
             if (gamepad1.dpad_right) {
-                servoWristPosition = robot.INTAKE_WRIST_FOLDED_ZERO;
+                robot.extRotateServo.setPosition(robot.INTAKE_WRIST_ROTATED_ZERO);
 
             } else if (gamepad1.dpad_up) {
-                servoWristPosition = robot.INTAKE_WRIST_FOLDED_NINETY;
+                robot.extRotateServo.setPosition(robot.INTAKE_WRIST_ROTATED_NINETY);
+
                 //boolean toggle for extension in and out
+            } else if (gamepad1.dpad_left) {
+                robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_GRAB);
+            } else if (gamepad2.dpad_down){
+                liftPosition = robot.LIFT_SCORE_SPECIMEN;
+
+            } else if (gamepad2.dpad_left){
+
+            } else if (gamepad2.b){
+                robot.extForeRightServo.setPosition(robot.INTAKE_RIGHT_FOREBAR_RETRACT);
+                robot.extForeLeftServo.setPosition(robot.INTAKE_LEFT_FOREBAR_RETRACT);
+            } else if (gamepad2.y){
+                robot.extForeRightServo.setPosition(robot.INTAKE_RIGHT_FOREBAR_DEPLOY);
+                robot.extForeLeftServo.setPosition(robot.INTAKE_LEFT_FOREBAR_DEPLOY);
+            }
+
+            if (gamepad2.left_stick_button){
+                robot.leftBackDrive.setPower(1);
+                robot.leftFrontDrive.setPower(1);
+                robot.rightBackDrive.setPower(1);
+                robot.rightFrontDrive.setPower(1);
+                sleep(500);
+                robot.leftBackDrive.setPower(0);
+                robot.leftFrontDrive.setPower(0);
+                robot.rightBackDrive.setPower(0);
+                robot.rightFrontDrive.setPower(0);
             }
                 //} else if (gamepad1.b) {
                     /*This is about 20° up from the collecting position to clear the barrier
@@ -252,10 +284,10 @@ public class brokenBot extends LinearOpMode {
 
             if (gamepad1.right_stick_button && rotateClawRuntime.time() > 0.15) {
                 if (clawRotated) {
-                    servoWristPosition = robot.INTAKE_WRIST_FOLDED_ZERO;
+                    servoWristPosition = robot.INTAKE_WRIST_ROTATED_ZERO;
                     clawRotated = false;
                 } else if (!clawRotated) {
-                    servoWristPosition = robot.INTAKE_WRIST_FOLDED_NINETY;
+                    servoWristPosition = robot.INTAKE_WRIST_ROTATED_NINETY;
                     clawRotated = true;
 
                     rotateClawRuntime.reset();
