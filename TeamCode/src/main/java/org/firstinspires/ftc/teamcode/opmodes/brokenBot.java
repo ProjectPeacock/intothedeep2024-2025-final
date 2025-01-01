@@ -86,9 +86,11 @@ public class brokenBot extends LinearOpMode {
         /* Wait for the game driver to press play */
         waitForStart();
         mechOps.extForeBarRetract();
+        mechOps.scoreForeGrab();
         mechOps.extClawRotateZero();
         mechOps.extClawOpen();
         mechOps.scoreClawOpen();
+        mechOps.extClawClose();
         tightenStrings();
         double botHeading = robot.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 
@@ -221,13 +223,16 @@ public class brokenBot extends LinearOpMode {
                 robot.extForeRightServo.setPosition(robot.INTAKE_RIGHT_FOREBAR_RETRACT);
                 robot.extForeLeftServo.setPosition(robot.INTAKE_LEFT_FOREBAR_RETRACT);
                 robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_TRANSFER);
+                mechOps.scoreForeGrab();
 
-                //servoWristPosition = robot.WRIST_FOLDED_OUT;
             } else if (gamepad1.y){
                 liftPosition = robot.LIFT_SCORE_HIGH_BASKET;
+                mechOps.scoreForeSample();
 
             } else if (gamepad1.dpad_down){
+                robot.scoreForeRightServo.setPosition(robot.SCORE_RIGHT_FOREBAR_RESET);
                 robot.scoreForeLeftServo.setPosition(robot.SCORE_LEFT_FOREBAR_RESET);
+
 
             } else if (gamepad1.b) {
                 //extensionPosition = robot.EXTENSION_COLLAPSED;
@@ -241,7 +246,8 @@ public class brokenBot extends LinearOpMode {
 
                 //boolean toggle for extension in and out
             } else if (gamepad1.dpad_left) {
-                robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_GRAB);
+                robot.scoreForeLeftServo.setPosition(robot.SCORE_LEFT_FOREBAR_SPECIMEN);
+                robot.scoreForeRightServo.setPosition(robot.SCORE_RIGHT_FOREBAR_SPECIMEN);
 
             } else if (gamepad2.dpad_down){
                 liftPosition = robot.LIFT_SCORE_SPECIMEN;
@@ -256,6 +262,7 @@ public class brokenBot extends LinearOpMode {
             } else if (gamepad2.y){
                 robot.extForeRightServo.setPosition(robot.INTAKE_RIGHT_FOREBAR_DEPLOY);
                 robot.extForeLeftServo.setPosition(robot.INTAKE_LEFT_FOREBAR_DEPLOY);
+                robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_GRAB);
             }
 
             if (gamepad2.left_stick_button){

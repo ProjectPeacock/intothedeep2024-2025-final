@@ -58,9 +58,19 @@ public class RRMechOps {
         robot.extendMotor.setTargetPosition(targetPosition);
     }
 
-    public void scoreForeHold(){
-        robot.scoreForeLeftServo.setPosition(robot.SCORE_LEFT_FOREBAR_HALF);
-        robot.scoreForeRightServo.setPosition(robot.SCORE_RIGHT_FOREBAR_HALF);
+    public void scoreForeReset(){
+        robot.scoreForeLeftServo.setPosition(robot.SCORE_LEFT_FOREBAR_RESET);
+        robot.scoreForeRightServo.setPosition(robot.SCORE_RIGHT_FOREBAR_RESET);
+
+    }
+    public void scoreForeGrab(){
+        robot.scoreForeLeftServo.setPosition(robot.SCORE_LEFT_FOREBAR_GRAB);
+        robot.scoreForeRightServo.setPosition(robot.SCORE_RIGHT_FOREBAR_GRAB);
+
+    }
+    public void scoreForeSample(){
+        robot.scoreForeLeftServo.setPosition(robot.SCORE_LEFT_FOREBAR_SPECIMEN);
+        robot.scoreForeRightServo.setPosition(robot.SCORE_RIGHT_FOREBAR_SPECIMEN);
 
     }
 
