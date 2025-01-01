@@ -47,6 +47,10 @@ public class brokenBot extends LinearOpMode {
     private final LinearOpMode opMode = this;
     private final RRMechOps mechOps = new RRMechOps(robot,opMode);
 
+    public boolean transferSample = false;
+    public ElapsedTime sampleTransferTime = new ElapsedTime();
+    public boolean transferReady = false;
+
     double extensionPosition = robot.EXTENSION_COLLAPSED;
 
     double cycletime = 0;
@@ -72,6 +76,7 @@ public class brokenBot extends LinearOpMode {
         double rotate;
         double max;
         double servoWristPosition = robot.INTAKE_WRIST_ROTATED_ZERO;
+
 
 
         robot.init(hardwareMap, true);
@@ -165,6 +170,7 @@ public class brokenBot extends LinearOpMode {
             robot.extendMotor.setPower(1);
 
 
+            transferSample();
 
             /* Here we handle the three buttons that have direct control of the intake speed.
             These control the continuous rotation servo that pulls elements into the robot,
@@ -313,6 +319,8 @@ public class brokenBot extends LinearOpMode {
             }
 
 
+            if(gamepad2.a) transferSample = true;
+
             /*
             This is probably my favorite piece of code on this robot. It's a clever little software
             solution to a problem the robot has.
@@ -451,6 +459,7 @@ public class brokenBot extends LinearOpMode {
                 telemetry.addData("backRight", robot.rightBackDrive.getCurrentPosition());
                 telemetry.addData("motor Lift Front Current", robot.motorLiftFront.getCurrent(CurrentUnit.AMPS));
                 telemetry.addData("motor Lift Back Current", robot.motorLiftBack.getCurrent(CurrentUnit.AMPS));
+                telemetry.addData("motor Extend Current", robot.extendMotor.getCurrent(CurrentUnit.AMPS));
                 telemetry.update();
                 /* send telemetry to the driver of the arm's current position and target position */
                 //telemetry.addData("arm Target Position: ", robot.armMotor.getTargetPosition());
@@ -477,15 +486,39 @@ public class brokenBot extends LinearOpMode {
             }
         }
 
+        public void transferSample(){
+            telemetry.addData("Transfer Sample = ", transferSample);
+
+            if(transferSample){
+                mechOps.extForeBarRetract();
+                mechOps.extensionRetraction();
+                mechOps.extClawRotateZero();
+                mechOps.sampleTransferPrep();
+                if(transferReady){
+                    mechOps.scoreClawClosed();
+                    mechOps.extClawOpen();
+                    if(sampleTransferTime.time() > 0.200){
+                        // move the scoring arm into position
+                        mechOps.sampleScorePosition();
+                    }
+                } else {
+                    mechOps.scoreClawOpen();
+                    if(robot.extendMotor.getCurrentPosition() <= robot.EXTENSION_RESET){
+                        transferReady = true;
+                        sampleTransferTime.reset();
+                    }
+                }
+
+            }
+
+
+        }
+
 
         public void tightenStrings(){
         boolean extensionRetraction = false;
 
         int extensionPosition = 0;
-
-
-
-
 
         robot.extendMotor.setPower(1);
         robot.extendMotor.setTargetPosition(0);
@@ -504,8 +537,5 @@ public class brokenBot extends LinearOpMode {
 
             }
             robot.extendMotor.setTargetPosition((int)robot.EXTENSION_RESET);
-
-
-
         }
     }

@@ -50,7 +50,7 @@ public class RRMechOps {
 
     public void extensionRetraction(){
         robot.extendMotor.setPower(1);
-        robot.extendMotor.setTargetPosition((int)robot.EXTENSION_COLLAPSED);
+        robot.extendMotor.setTargetPosition((int)robot.EXTENSION_RESET);
     }
 
     public void extendOut(int targetPosition){
@@ -73,6 +73,17 @@ public class RRMechOps {
         robot.scoreForeRightServo.setPosition(robot.SCORE_RIGHT_FOREBAR_SPECIMEN);
 
     }
+
+    public void sampleTransferPrep(){
+        robot.scoreForeLeftServo.setPosition(robot.SCORE_LEFT_FOREBAR_RESET);
+        robot.scoreForeRightServo.setPosition(robot.SCORE_RIGHT_FOREBAR_RESET);
+    }
+
+    public void sampleScorePosition(){
+        robot.scoreForeLeftServo.setPosition(robot.SCORE_LEFT_FOREBAR_SPECIMEN);
+        robot.scoreForeRightServo.setPosition(robot.SCORE_RIGHT_FOREBAR_SPECIMEN);
+    }
+
 
     public void scoreClawOpen(){
         robot.scoreGrabServo.setPosition(robot.SCORE_CLAW_OPEN);
