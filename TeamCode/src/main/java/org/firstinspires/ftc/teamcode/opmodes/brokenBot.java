@@ -47,9 +47,7 @@ public class brokenBot extends LinearOpMode {
     private final LinearOpMode opMode = this;
     private final RRMechOps mechOps = new RRMechOps(robot,opMode);
 
-    public boolean transferSample = false;
-    public ElapsedTime sampleTransferTime = new ElapsedTime();
-    public boolean transferReady = false;
+
 
     double extensionPosition = robot.EXTENSION_COLLAPSED;
 
@@ -96,7 +94,7 @@ public class brokenBot extends LinearOpMode {
         mechOps.extClawOpen();
         mechOps.scoreClawOpen();
         mechOps.extClawClose();
-        tightenStrings();
+        mechOps.tightenStrings();
         double botHeading = robot.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 
         // Initializes ElapsedTimes. One for total runtime of the program and the others set up for toggles.
@@ -170,7 +168,7 @@ public class brokenBot extends LinearOpMode {
             robot.extendMotor.setPower(1);
 
 
-            transferSample();
+            mechOps.transferSample();
 
             /* Here we handle the three buttons that have direct control of the intake speed.
             These control the continuous rotation servo that pulls elements into the robot,
@@ -319,7 +317,7 @@ public class brokenBot extends LinearOpMode {
             }
 
 
-            if(gamepad2.a) transferSample = true;
+            if(gamepad2.a) mechOps.transferSample = true;
 
             /*
             This is probably my favorite piece of code on this robot. It's a clever little software
@@ -486,56 +484,6 @@ public class brokenBot extends LinearOpMode {
             }
         }
 
-        public void transferSample(){
-            telemetry.addData("Transfer Sample = ", transferSample);
-
-            if(transferSample){
-                mechOps.extForeBarRetract();
-                mechOps.extensionRetraction();
-                mechOps.extClawRotateZero();
-                mechOps.sampleTransferPrep();
-                if(transferReady){
-                    mechOps.scoreClawClosed();
-                    mechOps.extClawOpen();
-                    if(sampleTransferTime.time() > 0.200){
-                        // move the scoring arm into position
-                        mechOps.sampleScorePosition();
-                    }
-                } else {
-                    mechOps.scoreClawOpen();
-                    if(robot.extendMotor.getCurrentPosition() <= robot.EXTENSION_RESET){
-                        transferReady = true;
-                        sampleTransferTime.reset();
-                    }
-                }
-
-            }
 
 
-        }
-
-
-        public void tightenStrings(){
-        boolean extensionRetraction = false;
-
-        int extensionPosition = 0;
-
-        robot.extendMotor.setPower(1);
-        robot.extendMotor.setTargetPosition(0);
-
-        while(opModeIsActive() && !extensionRetraction){
-                extensionPosition = extensionPosition - 25;
-                robot.extendMotor.setTargetPosition(extensionPosition);
-                if(robot.extendMotor.getCurrent(CurrentUnit.AMPS) > 3){
-                    extensionRetraction = true;
-                    robot.extendMotor.setPower(0);
-                    robot.extendMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                    robot.extendMotor.setTargetPosition(0);
-                    robot.extendMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    robot.extendMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                }
-
-            }
-            robot.extendMotor.setTargetPosition((int)robot.EXTENSION_RESET);
-        }
     }
