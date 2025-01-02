@@ -150,7 +150,7 @@ public class RRMechOps {
                 extForeBarRetract();
                 extensionRetraction();
                 extClawRotateZero();
-                sampleTransferPrep();
+                scoreForeGrab();
                 scoreClawOpen();
                 if(robot.extendMotor.getCurrentPosition() <= robot.EXTENSION_RESET){
                     transferReady = true;

@@ -219,6 +219,7 @@ public class brokenBot extends LinearOpMode {
                 robot.extForeRightServo.setPosition(robot.INTAKE_RIGHT_FOREBAR_DEPLOY);
                 robot.extForeLeftServo.setPosition(robot.INTAKE_LEFT_FOREBAR_DEPLOY);
                 robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_GRAB);
+                mechOps.scoreForeGrab();
 
             }else if (gamepad1.x){
                 extensionPosition = robot.EXTENSION_RESET;
@@ -228,17 +229,22 @@ public class brokenBot extends LinearOpMode {
                 mechOps.scoreForeGrab();
 
             } else if (gamepad1.y){
+                mechOps.scoreForeGrab();
+                mechOps.transferSample();
                 liftPosition = robot.LIFT_SCORE_HIGH_BASKET;
                 mechOps.scoreForeSample();
 
             } else if (gamepad1.dpad_down){
-                robot.scoreForeRightServo.setPosition(robot.SCORE_RIGHT_FOREBAR_RESET);
-                robot.scoreForeLeftServo.setPosition(robot.SCORE_LEFT_FOREBAR_RESET);
+                robot.scoreForeRightServo.setPosition(robot.SCORE_RIGHT_FOREBAR_GRAB);
+                robot.scoreForeLeftServo.setPosition(robot.SCORE_LEFT_FOREBAR_GRAB);
 
-
+            } else if (gamepad1.left_bumper){
+                mechOps.scoreForeGrab();
+                mechOps.extClawOpen();
             } else if (gamepad1.b) {
                 //extensionPosition = robot.EXTENSION_COLLAPSED;
                 liftPosition = robot.LIFT_RESET;
+                mechOps.scoreForeGrab();
             }
             if (gamepad1.dpad_right) {
                 robot.extRotateServo.setPosition(robot.INTAKE_WRIST_ROTATED_ZERO);
@@ -456,6 +462,8 @@ public class brokenBot extends LinearOpMode {
                 telemetry.addData("motor Lift Front Current", robot.motorLiftFront.getCurrent(CurrentUnit.AMPS));
                 telemetry.addData("motor Lift Back Current", robot.motorLiftBack.getCurrent(CurrentUnit.AMPS));
                 telemetry.addData("motor Extend Current", robot.extendMotor.getCurrent(CurrentUnit.AMPS));
+                telemetry.addLine("----------------------------------------");
+                telemetry.addData("intake4BarServoLeft Position = ", robot.extForeLeftServo.getPosition());
                 telemetry.update();
                 /* send telemetry to the driver of the arm's current position and target position */
                 //telemetry.addData("arm Target Position: ", robot.armMotor.getTargetPosition());
