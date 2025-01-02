@@ -220,16 +220,18 @@ public class brokenBot extends LinearOpMode {
             if (gamepad1.a) {
                 /* This is the intaking/collecting arm position */
                 extensionPosition = robot.EXTENSION_TEST;
-                robot.extForeRightServo.setPosition(robot.INTAKE_RIGHT_FOREBAR_DEPLOY);
-                robot.extForeLeftServo.setPosition(robot.INTAKE_LEFT_FOREBAR_DEPLOY);
+
+                mechOps.extForePart();
+                sleep(100);
+                mechOps.extForeBarDeploy();
                 robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_GRAB);
 
             }else if (gamepad1.x){
                 extensionPosition = robot.EXTENSION_RESET;
-                robot.extForeRightServo.setPosition(robot.INTAKE_RIGHT_FOREBAR_RETRACT);
-                robot.extForeLeftServo.setPosition(robot.INTAKE_LEFT_FOREBAR_RETRACT);
+                mechOps.extForeBarRetract();
                 robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_TRANSFER);
                 mechOps.scoreForeGrab();
+                mechOps.extClawRotateZero();
 
             } else if (gamepad1.y){
                 liftPosition = robot.LIFT_SCORE_HIGH_BASKET;
@@ -243,6 +245,8 @@ public class brokenBot extends LinearOpMode {
             } else if (gamepad1.b) {
                 //extensionPosition = robot.EXTENSION_COLLAPSED;
                 liftPosition = robot.LIFT_RESET;
+                mechOps.scoreClawOpen();
+                mechOps.scoreForeGrab();
             }
             if (gamepad1.dpad_right) {
                 robot.extRotateServo.setPosition(robot.INTAKE_WRIST_ROTATED_ZERO);
@@ -252,8 +256,7 @@ public class brokenBot extends LinearOpMode {
 
                 //boolean toggle for extension in and out
             } else if (gamepad1.dpad_left) {
-                robot.scoreForeLeftServo.setPosition(robot.SCORE_LEFT_FOREBAR_SPECIMEN);
-                robot.scoreForeRightServo.setPosition(robot.SCORE_RIGHT_FOREBAR_SPECIMEN);
+                mechOps.scoreForeSample();
 
             } else if (gamepad2.dpad_down){
                 liftPosition = robot.LIFT_SCORE_SPECIMEN;
@@ -320,6 +323,7 @@ public class brokenBot extends LinearOpMode {
 
 
             if(gamepad2.a) transferSample = true;
+            if (gamepad2.y) transferSample = false;
 
             /*
             This is probably my favorite piece of code on this robot. It's a clever little software
@@ -461,27 +465,6 @@ public class brokenBot extends LinearOpMode {
                 telemetry.addData("motor Lift Back Current", robot.motorLiftBack.getCurrent(CurrentUnit.AMPS));
                 telemetry.addData("motor Extend Current", robot.extendMotor.getCurrent(CurrentUnit.AMPS));
                 telemetry.update();
-                /* send telemetry to the driver of the arm's current position and target position */
-                //telemetry.addData("arm Target Position: ", robot.armMotor.getTargetPosition());
-                //telemetry.addData("arm Encoder: ", robot.armMotor.getCurrentPosition());\
-                /*
-                telemetry.addLine("Gamepad 1:");
-                telemetry.addLine("Driving is Enabled.");
-                telemetry.addLine("RB:          Open/Close Claw");
-                telemetry.addLine("A:           Set Elbow Level to Floor");
-                telemetry.addLine("Right Stick: Rotate In/Out Claw");
-                telemetry.addLine("");
-                telemetry.addLine("Gamepad 2:");
-                telemetry.addLine("RB/LB: Extend/Contract Slides");
-                telemetry.addData("lift variable", extensionPosition);
-                telemetry.addData("Lift Target Position",robot.extendMotor.getTargetPosition());
-                telemetry.addData("lift current position", robot.extendMotor.getCurrentPosition());
-                telemetry.addData("liftMotor Current:",((DcMotorEx) robot.extendMotor).getCurrent(CurrentUnit.AMPS));
-                telemetry.addData("Claw Rotated Out: ", clawRotated);
-                telemetry.addData("Claw Opened: ", clawOpened);
-                telemetry.update();
-*/
-
 
             }
         }
@@ -493,9 +476,10 @@ public class brokenBot extends LinearOpMode {
                 mechOps.extForeBarRetract();
                 mechOps.extensionRetraction();
                 mechOps.extClawRotateZero();
-                mechOps.sampleTransferPrep();
+                mechOps.scoreForeGrab();
                 if(transferReady){
                     mechOps.scoreClawClosed();
+                    sleep(500);
                     mechOps.extClawOpen();
                     if(sampleTransferTime.time() > 0.200){
                         // move the scoring arm into position

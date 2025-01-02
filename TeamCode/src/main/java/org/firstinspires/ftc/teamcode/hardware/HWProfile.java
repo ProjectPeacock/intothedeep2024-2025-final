@@ -9,7 +9,6 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
-import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class HWProfile {
@@ -95,18 +94,20 @@ public class HWProfile {
     public final double SCORE_CLAW_CLOSED = 0;
 
 
-    final public double INTAKE_RIGHT_FOREBAR_DEPLOY = .1;//started at 0
+    final public double INTAKE_RIGHT_FOREBAR_DEPLOY = 0.05;//started at 0
+    final public double INTAKE_RIGHT_FOREBAR_DEPLOY_PART = .2;//started at 0
     final public double INTAKE_RIGHT_FOREBAR_RETRACT = .6; // started at 1
-    final public double INTAKE_LEFT_FOREBAR_DEPLOY = .5; //started at 1
+    final public double INTAKE_LEFT_FOREBAR_DEPLOY = .95; //started at 1
+    final public double INTAKE_LEFT_FOREBAR_DEPLOY_PART = .8; //started at 1
     final public double INTAKE_LEFT_FOREBAR_RETRACT = .4; // started at 0
 
     final public double SCORE_RIGHT_FOREBAR_RESET = 0; //started at 1
-    final public double SCORE_RIGHT_FOREBAR_GRAB = 0.1; //started at 1
+    final public double SCORE_RIGHT_FOREBAR_GRAB = 0.15; //started at 1
     final public double SCORE_RIGHT_FOREBAR_SPECIMEN = 1;
     final public double SCORE_RIGHT_FOREBAR_HALF = 0.25;
     final public double SCORE_LEFT_FOREBAR_SPECIMEN = 0;
     final public double SCORE_LEFT_FOREBAR_RESET = 1; //started at 0
-    final public double SCORE_LEFT_FOREBAR_GRAB = 0.9; //started at 0
+    final public double SCORE_LEFT_FOREBAR_GRAB = 0.85; //started at 0
     final public double SCORE_LEFT_FOREBAR_HALF = 0.25;
 
 

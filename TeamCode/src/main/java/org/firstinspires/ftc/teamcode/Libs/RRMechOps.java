@@ -63,6 +63,11 @@ public class RRMechOps {
         robot.scoreForeRightServo.setPosition(robot.SCORE_RIGHT_FOREBAR_RESET);
 
     }
+
+    public void extForePart(){
+        robot.extForeRightServo.setPosition(robot.INTAKE_RIGHT_FOREBAR_DEPLOY_PART);
+        robot.extForeLeftServo.setPosition(robot.INTAKE_LEFT_FOREBAR_DEPLOY_PART);
+    }
     public void scoreForeGrab(){
         robot.scoreForeLeftServo.setPosition(robot.SCORE_LEFT_FOREBAR_GRAB);
         robot.scoreForeRightServo.setPosition(robot.SCORE_RIGHT_FOREBAR_GRAB);
