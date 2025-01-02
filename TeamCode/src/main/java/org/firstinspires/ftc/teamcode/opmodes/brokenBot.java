@@ -47,8 +47,6 @@ public class brokenBot extends LinearOpMode {
     private final LinearOpMode opMode = this;
     private final RRMechOps mechOps = new RRMechOps(robot,opMode);
 
-
-
     double extensionPosition = robot.EXTENSION_COLLAPSED;
 
     double cycletime = 0;
