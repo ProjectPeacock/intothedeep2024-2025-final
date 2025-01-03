@@ -472,6 +472,7 @@ public class brokenBot extends LinearOpMode {
                 telemetry.addData("motor Extend Current", robot.extendMotor.getCurrent(CurrentUnit.AMPS));
                 telemetry.addLine("----------------------------------------");
                 telemetry.addData("intake4BarServoLeft Position = ", robot.extForeLeftServo.getPosition());
+                telemetry.addData("claw", robot.scoreGrabServo.getPosition());
                 telemetry.update();
                 /* send telemetry to the driver of the arm's current position and target position */
                 //telemetry.addData("arm Target Position: ", robot.armMotor.getTargetPosition());

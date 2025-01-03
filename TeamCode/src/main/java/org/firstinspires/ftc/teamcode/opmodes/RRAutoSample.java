@@ -38,6 +38,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.MecanumDrive;
+import org.firstinspires.ftc.teamcode.PinpointDrive;
 import org.firstinspires.ftc.teamcode.hardware.CSAutoParams;
 import org.firstinspires.ftc.teamcode.hardware.HWProfile;
 import org.firstinspires.ftc.teamcode.Libs.RRMechOps;
@@ -112,20 +113,20 @@ public class RRAutoSample extends LinearOpMode{
         Pose2d parkPrepPose = new Pose2d(0, 0, 0);
         Pose2d parkPose = new Pose2d(0, 0, 0);
         double waitSecondsBeforeDrop = 0;
-        MecanumDrive drive = new MecanumDrive(hardwareMap, initPose);
+        PinpointDrive drive = new PinpointDrive(hardwareMap, initPose);
 
 
-        drive = new MecanumDrive(hardwareMap, initPose);
-        sampleScoringPosition = new Pose2d(2, 21, Math.toRadians(135));
-        yellowSample1Position = new Pose2d(31.5, 10, Math.toRadians(-80));
-        yellowSample2Position = new Pose2d(32.5, 20, Math.toRadians(-80));
-        yellowSample3Position = new Pose2d(38.75, 4.5, Math.toRadians(90));
-        midwayPose1 = new Pose2d(10,5, Math.toRadians(90));
+        drive = new PinpointDrive(hardwareMap, initPose);
+        sampleScoringPosition = new Pose2d(6, 23, Math.toRadians(-45));
+        yellowSample1Position = new Pose2d(11, 17, Math.toRadians(0));
+        yellowSample2Position = new Pose2d(12, 26, Math.toRadians(0));
+        yellowSample3Position = new Pose2d(37, 8.1, Math.toRadians(90));
+        midwayPose1 = new Pose2d(14,20, Math.toRadians(-45));
         midwayPose2 = new Pose2d(10,0, Math.toRadians(0));
-        midwayPose3 = new Pose2d(30,0, Math.toRadians(90));
+        midwayPose3 = new Pose2d(33,1, Math.toRadians(90));
         midwayPose4 = new Pose2d(40,15, Math.toRadians(90));
         parkPrepPose = new Pose2d(10, -90, Math.toRadians(-90));
-        parkPose = new Pose2d(1, -100, Math.toRadians(-45));
+        parkPose = new Pose2d(1, -100, Math.toRadians(0));
 
         /**
          * For Sample Scoring into high basket
@@ -137,8 +138,7 @@ public class RRAutoSample extends LinearOpMode{
             if(opModeIsActive()) {
                 robot.motorLiftBack.setPower(1);
                 robot.motorLiftFront.setPower(1);
-                mechOps.raiseLiftHighBasket();
-                mechOps.scoreForeSample();
+
             }
 
             // Drive to scoring position
@@ -149,7 +149,7 @@ public class RRAutoSample extends LinearOpMode{
 
             if(opModeIsActive()) {
                 mechOps.raiseLiftHighBasketPrep();
-                safeWaitSeconds(0.5);
+                safeWaitSeconds(0.75);
             }
 
             Actions.runBlocking(
@@ -173,6 +173,7 @@ public class RRAutoSample extends LinearOpMode{
 
             if(opModeIsActive()) {
                 mechOps.extendOut((int) robot.EXTENSION_OUT_MAX);
+                robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_GRAB);
                 mechOps.liftReset();
                 mechOps.scoreForeGrab();
             }
@@ -187,6 +188,7 @@ public class RRAutoSample extends LinearOpMode{
                 mechOps.extClawClose();
                 safeWaitSeconds(0.25);
                 mechOps.extForeBarRetract();
+                robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_TRANSFER);
                 mechOps.extendOut((int)robot.EXTENSION_RESET);
                 // TODO: Add code to grab a sample from the floor
             }
@@ -232,6 +234,8 @@ public class RRAutoSample extends LinearOpMode{
                 mechOps.liftReset();
                 mechOps.extClawRotateZero();
                 mechOps.autoExtension();
+                mechOps.extendOut((int) robot.EXTENSION_OUT_MAX);
+                robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_GRAB);
             }
 
             //Drive to pickup Sample2 Position

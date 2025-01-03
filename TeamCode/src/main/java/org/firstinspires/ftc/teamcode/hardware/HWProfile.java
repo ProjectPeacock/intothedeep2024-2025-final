@@ -64,9 +64,9 @@ public class HWProfile {
     as far from the starting position, decrease it. */
 
     public final double LIFT_RESET                = 5;
-    public final double LIFT_SPECIMEN_PREP          = 500 ;
+    public final double LIFT_SPECIMEN_PREP          = 1500 ;
     public final double LIFT_SPECIMEN_SCORE = 400;
-    public final double LIFT_SCORE_HIGH_BASKET = 3250;
+    public final double LIFT_SCORE_HIGH_BASKET = 3100;
     public final double LIFT_SCORE_SPECIMEN = 1000;
 
 
@@ -74,7 +74,7 @@ public class HWProfile {
     /* Variables to store the positions that the wrist should be set to when folding in, or folding out. */
     public final double INTAKE_WRIST_ROTATED_ZERO = 0;
     public final double INTAKE_WRIST_ROTATED_NINETY = 0.25;
-    public final double INTAKE_WRIST_ROTATED_180  = 0.6;
+    public final double INTAKE_WRIST_ROTATED_180  = 1;
     public final double INTAKE_WRIST_FOLDED_PARTIAL = .25;
 
 
@@ -95,10 +95,10 @@ public class HWProfile {
     public final double SCORE_CLAW_CLOSED = 0;
 
 
-    final public double INTAKE_RIGHT_FOREBAR_DEPLOY = 0.1;//started at 0
+    final public double INTAKE_RIGHT_FOREBAR_DEPLOY = 0.2;//started at 0
     final public double INTAKE_RIGHT_FOREBAR_DEPLOY_PART = .2;//started at 0
     final public double INTAKE_RIGHT_FOREBAR_RETRACT = .7; // started at 1
-    final public double INTAKE_LEFT_FOREBAR_DEPLOY = .9; //started at 1
+    final public double INTAKE_LEFT_FOREBAR_DEPLOY = .8; //started at 1
     final public double INTAKE_LEFT_FOREBAR_DEPLOY_PART = .8; //started at 1
     final public double INTAKE_LEFT_FOREBAR_RETRACT = .3; // started at 0
 

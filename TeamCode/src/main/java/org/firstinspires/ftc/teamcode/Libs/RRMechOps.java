@@ -145,6 +145,7 @@ public class RRMechOps {
         robot.extForeRightServo.setPosition(robot.INTAKE_RIGHT_FOREBAR_RETRACT);
         robot.extRotateServo.setPosition(robot.INTAKE_WRIST_ROTATED_ZERO);
         robot.extGrabServo.setPosition(robot.INTAKE_CLAW_CLOSED);
+        robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_TRANSFER);
 
     }
 
