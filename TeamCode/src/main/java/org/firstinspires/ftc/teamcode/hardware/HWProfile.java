@@ -63,8 +63,9 @@ public class HWProfile {
     If you'd like it to move further, increase that number. If you'd like it to not move
     as far from the starting position, decrease it. */
 
-    public final double LIFT_RESET                = 0;
-    public final double LIFT_SPECIMEN_PREP          = 135 ;
+    public final double LIFT_RESET                = 5;
+    public final double LIFT_SPECIMEN_PREP          = 500 ;
+    public final double LIFT_SPECIMEN_SCORE = 400;
     public final double LIFT_SCORE_HIGH_BASKET = 3250;
     public final double LIFT_SCORE_SPECIMEN = 1000;
 
@@ -94,28 +95,28 @@ public class HWProfile {
     public final double SCORE_CLAW_CLOSED = 0;
 
 
-    final public double INTAKE_RIGHT_FOREBAR_DEPLOY = 0.15;//started at 0
+    final public double INTAKE_RIGHT_FOREBAR_DEPLOY = 0.1;//started at 0
     final public double INTAKE_RIGHT_FOREBAR_DEPLOY_PART = .2;//started at 0
     final public double INTAKE_RIGHT_FOREBAR_RETRACT = .7; // started at 1
-    final public double INTAKE_LEFT_FOREBAR_DEPLOY = .85; //started at 1
+    final public double INTAKE_LEFT_FOREBAR_DEPLOY = .9; //started at 1
     final public double INTAKE_LEFT_FOREBAR_DEPLOY_PART = .8; //started at 1
     final public double INTAKE_LEFT_FOREBAR_RETRACT = .3; // started at 0
 
     final public double SCORE_RIGHT_FOREBAR_RESET = 0; //started at 1
     final public double SCORE_RIGHT_FOREBAR_GRAB = 0.15; //started at 1
     final public double SCORE_RIGHT_FOREBAR_SPECIMEN = 1;
-    final public double SCORE_RIGHT_FOREBAR_HALF = 0.25;
+    final public double SCORE_RIGHT_FOREBAR_SCORE = 0.75;
     final public double SCORE_LEFT_FOREBAR_SPECIMEN = 0;
     final public double SCORE_LEFT_FOREBAR_RESET = 1; //started at 0
     final public double SCORE_LEFT_FOREBAR_GRAB = 0.85; //started at 0
-    final public double SCORE_LEFT_FOREBAR_HALF = 0.25;
+    final public double SCORE_LEFT_FOREBAR_SCORE = 0.25;
 
 
 
     public final double EXTENSION_TICKS_PER_MM = (111132.0 / 289.0) / 120.0;
     public final double EXTENSION_COLLAPSED = 0 * EXTENSION_TICKS_PER_MM;
     public final double EXTENSION_MAX = 1300;
-    public final double EXTENSION_TEST = 1600;
+    public final double EXTENSION_OUT_MAX = 1600;
     public final int    EXTENSION_DOWN_MAX = 1600;
     public final double EXTENSION_RESET = 15;
 

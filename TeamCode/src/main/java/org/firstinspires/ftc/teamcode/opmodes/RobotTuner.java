@@ -3,23 +3,13 @@ package org.firstinspires.ftc.teamcode.opmodes;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
-import com.qualcomm.hardware.ams.AMSColorSensor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.ServoController;
-import com.qualcomm.robotcore.hardware.ServoControllerEx;
-import com.qualcomm.robotcore.hardware.ServoImplEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.teamcode.Libs.RRMechOps;
 import org.firstinspires.ftc.teamcode.hardware.HWProfile;
 
-import java.util.Locale;
 @Config
 @TeleOp(name="Robot Tuner", group="Robot")
 //@Disabled
@@ -56,11 +46,11 @@ public class RobotTuner extends LinearOpMode {
     public static double l50_SCORE_RIGHT_FOREBAR_RESET = robot.SCORE_RIGHT_FOREBAR_RESET;
     public static double l51_SCORE_RIGHT_FOREBAR_GRAB = robot.SCORE_RIGHT_FOREBAR_GRAB;
     public static double l52_SCORE_RIGHT_FOREBAR_SPECIMEN = robot.SCORE_RIGHT_FOREBAR_SPECIMEN;
-    public static double l53_SCORE_RIGHT_FOREBAR_HALF = robot.SCORE_RIGHT_FOREBAR_HALF;
+    public static double l53_SCORE_RIGHT_FOREBAR_HALF = robot.SCORE_RIGHT_FOREBAR_SCORE;
     public static double l54_SCORE_LEFT_FOREBAR_RESET = robot.SCORE_LEFT_FOREBAR_RESET;
     public static double l55_SCORE_LEFT_FOREBAR_GRAB = robot.SCORE_LEFT_FOREBAR_GRAB;
     public static double l56_SCORE_LEFT_FOREBAR_SPECIMEN = robot.SCORE_LEFT_FOREBAR_SPECIMEN;
-    public static double l57_SCORE_LEFT_FOREBAR_HALF = robot.SCORE_LEFT_FOREBAR_HALF;
+    public static double l57_SCORE_LEFT_FOREBAR_HALF = robot.SCORE_LEFT_FOREBAR_SCORE;
 
     public static double l60_EXTENSION_MAX = robot.EXTENSION_MAX;
     public static double l61_EXTENSION_DOWN_MAX = robot.EXTENSION_DOWN_MAX;

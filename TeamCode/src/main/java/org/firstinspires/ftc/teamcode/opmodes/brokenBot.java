@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -98,6 +97,7 @@ public class brokenBot extends LinearOpMode {
         // Initializes ElapsedTimes. One for total runtime of the program and the others set up for toggles.
         ElapsedTime totalRuntime = new ElapsedTime();
         ElapsedTime clawRuntime = new ElapsedTime();
+        ElapsedTime scoreClawRuntime = new ElapsedTime();
         ElapsedTime rotateClawRuntime = new ElapsedTime();
         ElapsedTime armExtensionRuntime = new ElapsedTime();
         ElapsedTime armClimbRuntime = new ElapsedTime();
@@ -105,6 +105,7 @@ public class brokenBot extends LinearOpMode {
 
         totalRuntime.reset();
         clawRuntime.reset();
+        scoreClawRuntime.reset();
         rotateClawRuntime.reset();
         armExtensionRuntime.reset();
         armClimbRuntime.reset();
@@ -115,7 +116,7 @@ public class brokenBot extends LinearOpMode {
         boolean clawRotated = false;
         boolean armRetracted = true;
         boolean armClimb = false;
-
+        boolean scoreClawOpened = false;
 
 
         /* Run until the driver presses stop */
@@ -195,6 +196,18 @@ public class brokenBot extends LinearOpMode {
                 clawRuntime.reset();
 
             }
+
+            if (gamepad1.left_bumper & scoreClawRuntime.time() > 0.25) {
+                if (scoreClawOpened) {
+                    robot.scoreGrabServo.setPosition(robot.SCORE_CLAW_CLOSED);
+                    scoreClawOpened = false;
+                } else {
+                    robot.scoreGrabServo.setPosition(robot.SCORE_CLAW_OPEN);
+                    scoreClawOpened = true;
+                }
+                scoreClawRuntime.reset();
+
+            }
             /* Here we create a "fudge factor" for the arm position.
             This allows you to adjust (or "fudge") the arm position slightly with the gamepad triggers.
             We want the left trigger to move the arm down, and right trigger to move the arm up.
@@ -215,32 +228,23 @@ public class brokenBot extends LinearOpMode {
 
             if (gamepad1.a) {
                 /* This is the intaking/collecting arm position */
-                extensionPosition = robot.EXTENSION_TEST;
-                robot.extForeRightServo.setPosition(robot.INTAKE_RIGHT_FOREBAR_DEPLOY);
-                robot.extForeLeftServo.setPosition(robot.INTAKE_LEFT_FOREBAR_DEPLOY);
                 robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_GRAB);
-                mechOps.scoreForeGrab();
+                extensionPosition = robot.EXTENSION_OUT_MAX;
+                robot.extForeLeftServo.setPosition(robot.INTAKE_LEFT_FOREBAR_DEPLOY);
+                robot.extForeRightServo.setPosition(robot.INTAKE_RIGHT_FOREBAR_DEPLOY);
 
             }else if (gamepad1.x){
                 extensionPosition = robot.EXTENSION_RESET;
-                robot.extForeRightServo.setPosition(robot.INTAKE_RIGHT_FOREBAR_RETRACT);
-                robot.extForeLeftServo.setPosition(robot.INTAKE_LEFT_FOREBAR_RETRACT);
+                mechOps.extForeBarRetract();
                 robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_TRANSFER);
-                mechOps.scoreForeGrab();
-
             } else if (gamepad1.y){
                 mechOps.scoreForeGrab();
-                mechOps.transferSample();
                 liftPosition = robot.LIFT_SCORE_HIGH_BASKET;
                 mechOps.scoreForeSample();
 
             } else if (gamepad1.dpad_down){
-                robot.scoreForeRightServo.setPosition(robot.SCORE_RIGHT_FOREBAR_GRAB);
-                robot.scoreForeLeftServo.setPosition(robot.SCORE_LEFT_FOREBAR_GRAB);
-
-            } else if (gamepad1.left_bumper){
                 mechOps.scoreForeGrab();
-                mechOps.extClawOpen();
+
             } else if (gamepad1.b) {
                 //extensionPosition = robot.EXTENSION_COLLAPSED;
                 liftPosition = robot.LIFT_RESET;
@@ -254,8 +258,10 @@ public class brokenBot extends LinearOpMode {
 
                 //boolean toggle for extension in and out
             } else if (gamepad1.dpad_left) {
-                robot.scoreForeLeftServo.setPosition(robot.SCORE_LEFT_FOREBAR_SPECIMEN);
-                robot.scoreForeRightServo.setPosition(robot.SCORE_RIGHT_FOREBAR_SPECIMEN);
+                mechOps.specimenPrepPosition();
+
+            } else if (gamepad2.dpad_up) {
+                liftPosition = robot.LIFT_SPECIMEN_PREP;
 
             } else if (gamepad2.dpad_down){
                 liftPosition = robot.LIFT_SCORE_SPECIMEN;
@@ -271,6 +277,8 @@ public class brokenBot extends LinearOpMode {
                 robot.extForeRightServo.setPosition(robot.INTAKE_RIGHT_FOREBAR_DEPLOY);
                 robot.extForeLeftServo.setPosition(robot.INTAKE_LEFT_FOREBAR_DEPLOY);
                 robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_GRAB);
+            } else if (gamepad2.left_bumper){
+                mechOps.autoSampleScorePrep();
             }
 
             if (gamepad2.left_stick_button){
