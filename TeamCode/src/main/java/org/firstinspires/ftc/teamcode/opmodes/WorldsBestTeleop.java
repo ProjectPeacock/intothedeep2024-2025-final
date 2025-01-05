@@ -37,9 +37,9 @@ import java.util.Locale;
 
 
 /** @noinspection ALL*/
-@TeleOp(name="brokenBot", group="Robot")
+@TeleOp(name="Worlds Best Teleop gang", group="Robot")
 //@Disabled
-public class brokenBot extends LinearOpMode {
+public class WorldsBestTeleop extends LinearOpMode {
 
 
     private final static HWProfile robot = new HWProfile();
@@ -319,29 +319,29 @@ public class brokenBot extends LinearOpMode {
                 robot.rightBackDrive.setPower(0);
                 robot.rightFrontDrive.setPower(0);
             }
-                //} else if (gamepad1.b) {
+            //} else if (gamepad1.b) {
                     /*This is about 20° up from the collecting position to clear the barrier
                     Note here that we don't set the wrist position or the intake power when we
                     select this "mode", this means that the intake and wrist will continue what
                     they were doing before we clicked left bumper. */
-                //elbowPosition = robot.ELBOW_CLEAR_BARRIER;
+            //elbowPosition = robot.ELBOW_CLEAR_BARRIER;
 
             if (gamepad2.left_trigger > 0.05 && (mechOps.extensionPosition + (40 * -gamepad2.right_stick_y)) > 0 && (mechOps.extensionPosition + (40 * -gamepad2.right_stick_y)) < robot.EXTENSION_DOWN_MAX){
                 mechOps.extensionPosition += (40 * -gamepad2.right_stick_y);
             }
 
-        if (gamepad2.right_trigger > 0.05 && (liftPosition + (20 * -gamepad2.right_stick_y)) < robot.LIFT_SCORE_HIGH_BASKET && (liftPosition + (20 * -gamepad2.right_stick_y)) > robot.LIFT_RESET){
-            liftPosition += (20 * -gamepad2.right_stick_y);
-        }
+            if (gamepad2.right_trigger > 0.05 && (liftPosition + (20 * -gamepad2.right_stick_y)) < robot.LIFT_SCORE_HIGH_BASKET && (liftPosition + (20 * -gamepad2.right_stick_y)) > robot.LIFT_RESET){
+                liftPosition += (20 * -gamepad2.right_stick_y);
+            }
 
 
-        //} else if (gamepad1.x) {
-                /* This is the correct height to score the sample in the HIGH BASKET */
-                //elbowPosition = robot.ELBOW_SCORE_SAMPLE_IN_LOW;
-                //liftPosition = LIFT_SCORING_IN_HIGH_BASKET;
+            //} else if (gamepad1.x) {
+            /* This is the correct height to score the sample in the HIGH BASKET */
+            //elbowPosition = robot.ELBOW_SCORE_SAMPLE_IN_LOW;
+            //liftPosition = LIFT_SCORING_IN_HIGH_BASKET;
 
 
-                //boolean toggle for claw rotation
+            //boolean toggle for claw rotation
 
             if (gamepad1.right_stick_button && rotateClawRuntime.time() > 0.15) {
                 if (clawRotated) {
@@ -385,10 +385,10 @@ public class brokenBot extends LinearOpMode {
             our armLiftComp, which adjusts the arm height for different lift extensions.
             We also set the target velocity (speed) the motor runs at, and use setMode to run it.*/
 
-                //robot.elbowMotor.setTargetPosition((int) (armPosition + armPositionFudgeFactor + armLiftComp));
+            //robot.elbowMotor.setTargetPosition((int) (armPosition + armPositionFudgeFactor + armLiftComp));
 
-                //((DcMotorEx) robot.armMotor).setVelocity(2100);
-                //robot.armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            //((DcMotorEx) robot.armMotor).setVelocity(2100);
+            //robot.armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
 
             /* Here we set the lift position based on the driver input.
@@ -410,7 +410,7 @@ public class brokenBot extends LinearOpMode {
             we are only incrementing it a small amount each cycle.
              */
 
-                // If the button is pressed and liftPosition is not surpassing the range it should be in, then liftPosition is changed accordingly.
+            // If the button is pressed and liftPosition is not surpassing the range it should be in, then liftPosition is changed accordingly.
 /*          telemetry.addData("Extend Arm = ", "gamepad2.Right_Bumper");
             telemetry.addData("Retract Arm = ", "gamepad2.Left_Bumper");
             // If the button is pressed and liftPosition is not surpassing the range it should be in, then liftPosition is changed accordingly.
@@ -471,11 +471,11 @@ public class brokenBot extends LinearOpMode {
             with just the difference, 0.1 seconds.
 
              */
-                looptime = getRuntime();
-                cycletime = looptime - oldtime;
-                oldtime = looptime;
+            looptime = getRuntime();
+            cycletime = looptime - oldtime;
+            oldtime = looptime;
 
-                //Rumble controller for endgame and flash controller light red
+            //Rumble controller for endgame and flash controller light red
            /* if(totalRuntime.time() > 90 && totalRuntime.time()<90.25){
                 gamepad1.rumble(50);
                 gamepad1.setLedColor(255,0,0,50);
@@ -490,20 +490,20 @@ public class brokenBot extends LinearOpMode {
             }
 */
 
-                telemetry.addData("frontLeft", robot.leftFrontDrive.getCurrentPosition());
-                telemetry.addData("backLeft", robot.leftBackDrive.getCurrentPosition());
-                telemetry.addData("frontRight", robot.rightFrontDrive.getCurrentPosition());
-                telemetry.addData("backRight", robot.rightBackDrive.getCurrentPosition());
-                telemetry.addData("motor Lift Front Current", robot.motorLiftFront.getCurrent(CurrentUnit.AMPS));
-                telemetry.addData("motor Lift Back Current", robot.motorLiftBack.getCurrent(CurrentUnit.AMPS));
-                telemetry.addData("motor Extend Current", robot.extendMotor.getCurrent(CurrentUnit.AMPS));
-                telemetry.addLine("----------------------------------------");
-                telemetry.addData("intake4BarServoLeft Position = ", robot.extForeLeftServo.getPosition());
-                telemetry.addData("claw", robot.scoreGrabServo.getPosition());
-                telemetry.update();
-                /* send telemetry to the driver of the arm's current position and target position */
-                //telemetry.addData("arm Target Position: ", robot.armMotor.getTargetPosition());
-                //telemetry.addData("arm Encoder: ", robot.armMotor.getCurrentPosition());\
+            telemetry.addData("frontLeft", robot.leftFrontDrive.getCurrentPosition());
+            telemetry.addData("backLeft", robot.leftBackDrive.getCurrentPosition());
+            telemetry.addData("frontRight", robot.rightFrontDrive.getCurrentPosition());
+            telemetry.addData("backRight", robot.rightBackDrive.getCurrentPosition());
+            telemetry.addData("motor Lift Front Current", robot.motorLiftFront.getCurrent(CurrentUnit.AMPS));
+            telemetry.addData("motor Lift Back Current", robot.motorLiftBack.getCurrent(CurrentUnit.AMPS));
+            telemetry.addData("motor Extend Current", robot.extendMotor.getCurrent(CurrentUnit.AMPS));
+            telemetry.addLine("----------------------------------------");
+            telemetry.addData("intake4BarServoLeft Position = ", robot.extForeLeftServo.getPosition());
+            telemetry.addData("claw", robot.scoreGrabServo.getPosition());
+            telemetry.update();
+            /* send telemetry to the driver of the arm's current position and target position */
+            //telemetry.addData("arm Target Position: ", robot.armMotor.getTargetPosition());
+            //telemetry.addData("arm Encoder: ", robot.armMotor.getCurrentPosition());\
                 /*
                 telemetry.addLine("Gamepad 1:");
                 telemetry.addLine("Driving is Enabled.");
@@ -523,9 +523,9 @@ public class brokenBot extends LinearOpMode {
 */
 
 
-            }
         }
-
-
-
     }
+
+
+
+}

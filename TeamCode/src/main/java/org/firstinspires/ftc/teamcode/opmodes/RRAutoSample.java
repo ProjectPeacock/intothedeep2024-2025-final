@@ -74,7 +74,7 @@ public class RRAutoSample extends LinearOpMode{
         //Key Pay inputs to selecting Starting Position of robot
         selectStartingPosition();
         mechOps.scoreClawClosed();
-        mechOps.extForePart();
+        mechOps.extForeBarRetract();
 
 
         while (!isStopRequested() && !opModeIsActive()) {
@@ -117,10 +117,10 @@ public class RRAutoSample extends LinearOpMode{
 
 
         drive = new PinpointDrive(hardwareMap, initPose);
-        sampleScoringPosition = new Pose2d(6, 23, Math.toRadians(-45));
-        yellowSample1Position = new Pose2d(11, 17, Math.toRadians(0));
-        yellowSample2Position = new Pose2d(12, 26, Math.toRadians(0));
-        yellowSample3Position = new Pose2d(37, 8.1, Math.toRadians(90));
+        sampleScoringPosition = new Pose2d(7, 25, Math.toRadians(-45));
+        yellowSample1Position = new Pose2d(12, 16, Math.toRadians(-5));
+        yellowSample2Position = new Pose2d(11.5, 25, Math.toRadians(-5));
+        yellowSample3Position = new Pose2d(38, 8.1, Math.toRadians(90));
         midwayPose1 = new Pose2d(14,20, Math.toRadians(-45));
         midwayPose2 = new Pose2d(10,0, Math.toRadians(0));
         midwayPose3 = new Pose2d(33,1, Math.toRadians(90));
@@ -134,13 +134,8 @@ public class RRAutoSample extends LinearOpMode{
         if (startPosition == START_POSITION.BLUE_SAMPLES ||
                 startPosition == START_POSITION.RED_SAMPLES) {
 
-            // Raise Arm to high basket scoring position
-            if(opModeIsActive()) {
-                robot.motorLiftBack.setPower(1);
-                robot.motorLiftFront.setPower(1);
-
-            }
-
+            telemetry.addLine("program has started");
+            telemetry.update();
             // Drive to scoring position
             Actions.runBlocking(
                     drive.actionBuilder(drive.pose)
@@ -148,8 +143,11 @@ public class RRAutoSample extends LinearOpMode{
                             .build());
 
             if(opModeIsActive()) {
+                mechOps.extClawOpen();
+                robot.motorLiftBack.setPower(1);
+                robot.motorLiftFront.setPower(1);
                 mechOps.raiseLiftHighBasketPrep();
-                safeWaitSeconds(0.75);
+                safeWaitSeconds(.95);
             }
 
             Actions.runBlocking(
@@ -159,10 +157,9 @@ public class RRAutoSample extends LinearOpMode{
 
             // Release the sample into the basket
             // Lower the arm
-            if(opModeIsActive()) {
+            if(opModeIsActive()){
                 mechOps.scoreClawOpen();
-                safeWaitSeconds(.2);
-//                // TODO: Add code to release the sample and lower the arm
+
             }
 
             // Drive to prep position
@@ -172,8 +169,11 @@ public class RRAutoSample extends LinearOpMode{
                             .build());
 
             if(opModeIsActive()) {
-                mechOps.extendOut((int) robot.EXTENSION_OUT_MAX);
+                mechOps.scoreClawOpen();
+                mechOps.extensionPosition =  ((int)robot.EXTENSION_OUT_MAX);
+                mechOps.setExtensionPosition();
                 robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_GRAB);
+                mechOps.extForeBarDeploy();
                 mechOps.liftReset();
                 mechOps.scoreForeGrab();
             }
@@ -185,19 +185,17 @@ public class RRAutoSample extends LinearOpMode{
                             .build());
             // Pick up Sample1
             if(opModeIsActive()) {
-                mechOps.extClawClose();
+                safeWaitSeconds(0.2);
+                robot.extGrabServo.setPosition(robot.INTAKE_CLAW_CLOSED);
                 safeWaitSeconds(0.25);
                 mechOps.extForeBarRetract();
                 robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_TRANSFER);
-                mechOps.extendOut((int)robot.EXTENSION_RESET);
+
+
                 // TODO: Add code to grab a sample from the floor
             }
 
             // Raise Arm to high basket scoring position
-            if(opModeIsActive()) {
-                mechOps.autoSampleScorePrep();
-                // TODO: Add code to raise claw to high basket
-            }
 
 
             // Drive to prep position
@@ -208,8 +206,16 @@ public class RRAutoSample extends LinearOpMode{
 
             // Raise arm to high basket scoring position
             if(opModeIsActive()) {
+
+                mechOps.extensionPosition = ((int) robot.EXTENSION_RESET);
+                mechOps.setExtensionPosition();
+                safeWaitSeconds(1);
+                mechOps.scoreClawClosed();
+                safeWaitSeconds(.25);
+                mechOps.extClawOpen();
+
                 mechOps.raiseLiftHighBasketPrep();
-                safeWaitSeconds(.5);
+                safeWaitSeconds(1);
             }
 
             // Drive to scoring position
@@ -221,7 +227,7 @@ public class RRAutoSample extends LinearOpMode{
             // Release sample1 into the basket
             if(opModeIsActive()) {
                 mechOps.scoreClawOpen();
-                safeWaitSeconds(.2);
+
             }
 
             // Drive to prep position
@@ -234,8 +240,10 @@ public class RRAutoSample extends LinearOpMode{
                 mechOps.liftReset();
                 mechOps.extClawRotateZero();
                 mechOps.autoExtension();
-                mechOps.extendOut((int) robot.EXTENSION_OUT_MAX);
+                mechOps.extensionPosition =  ((int)robot.EXTENSION_OUT_MAX);
+                mechOps.setExtensionPosition();
                 robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_GRAB);
+                robot.extGrabServo.setPosition(robot.INTAKE_CLAW_OPEN);
             }
 
             //Drive to pickup Sample2 Position
@@ -248,7 +256,13 @@ public class RRAutoSample extends LinearOpMode{
 
             // Pick up Sample2
             if(opModeIsActive()) {
-                mechOps.autoExtensionReset();
+                robot.extGrabServo.setPosition(robot.INTAKE_CLAW_CLOSED);
+                safeWaitSeconds(.2);
+                robot.extForeLeftServo.setPosition(robot.INTAKE_LEFT_FOREBAR_RETRACT);
+                robot.extForeRightServo.setPosition(robot.INTAKE_RIGHT_FOREBAR_RETRACT);
+                robot.extRotateServo.setPosition(robot.INTAKE_WRIST_ROTATED_ZERO);
+                robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_TRANSFER);
+
             }
 
             // Raise Arm to high basket scoring position
@@ -263,7 +277,7 @@ public class RRAutoSample extends LinearOpMode{
             // Raise arm to high basket scoring position
             if(opModeIsActive()) {
                 mechOps.autoSampleScorePrep();
-                safeWaitSeconds(.5);
+                safeWaitSeconds(.85);
             }
 
             Actions.runBlocking(
@@ -299,7 +313,8 @@ public class RRAutoSample extends LinearOpMode{
 
             if(opModeIsActive()) {
                 mechOps.extClawRotateNinety();
-                mechOps.extendOut((int)robot.EXTENSION_OUT_MAX);
+                mechOps.extensionPosition =  ((int)robot.EXTENSION_OUT_MAX);
+                mechOps.setExtensionPosition();
                 mechOps.autoExtension();
 
             }
@@ -313,6 +328,7 @@ public class RRAutoSample extends LinearOpMode{
             // Pick up Sample3
             if(opModeIsActive()) {
                 mechOps.extClawClose();
+                safeWaitSeconds(.2);
                 mechOps.autoExtensionReset();
             }
 
@@ -328,7 +344,7 @@ public class RRAutoSample extends LinearOpMode{
 
             if(opModeIsActive()) {
                 mechOps.autoSampleScorePrep();
-                safeWaitSeconds(.5);
+                safeWaitSeconds(1);
 
                 // TODO: Add code to raise claw to high basket
             }
