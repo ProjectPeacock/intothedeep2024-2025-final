@@ -237,6 +237,7 @@ public class brokenBot extends LinearOpMode {
                 extensionPosition = robot.EXTENSION_RESET;
                 mechOps.extForeBarRetract();
                 robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_TRANSFER);
+                robot.extRotateServo.setPosition(robot.INTAKE_WRIST_ROTATED_ZERO);
             } else if (gamepad1.y){
                 mechOps.scoreForeGrab();
                 liftPosition = robot.LIFT_SCORE_HIGH_BASKET;

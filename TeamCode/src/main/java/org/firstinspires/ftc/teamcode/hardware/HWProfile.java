@@ -83,11 +83,10 @@ public class HWProfile {
     public final double INTAKE_CLAW_PITCH_TRANSFER = 0.05;
 
 
-
     /* A number in degrees that the triggers can adjust the arm position by */
 
     public final double INTAKE_CLAW_OPEN = .5;
-    public final double INTAKE_CLAW_CLOSED = .1;
+    public final double INTAKE_CLAW_CLOSED = .14;
     public final double INTAKE_CLAW_PARTIAL_OPEN = .6;
 
 
@@ -95,12 +94,12 @@ public class HWProfile {
     public final double SCORE_CLAW_CLOSED = 0;
 
 
-    final public double INTAKE_RIGHT_FOREBAR_DEPLOY = 0.2;//started at 0
+    final public double INTAKE_RIGHT_FOREBAR_DEPLOY = 0.05;//started at 0
     final public double INTAKE_RIGHT_FOREBAR_DEPLOY_PART = .2;//started at 0
-    final public double INTAKE_RIGHT_FOREBAR_RETRACT = .7; // started at 1
-    final public double INTAKE_LEFT_FOREBAR_DEPLOY = .8; //started at 1
+    final public double INTAKE_RIGHT_FOREBAR_RETRACT = .58; // started at 1
+    final public double INTAKE_LEFT_FOREBAR_DEPLOY = .95;//started at 1
     final public double INTAKE_LEFT_FOREBAR_DEPLOY_PART = .8; //started at 1
-    final public double INTAKE_LEFT_FOREBAR_RETRACT = .3; // started at 0
+    final public double INTAKE_LEFT_FOREBAR_RETRACT = .42; // started at 0
 
     final public double SCORE_RIGHT_FOREBAR_RESET = 0; //started at 1
     final public double SCORE_RIGHT_FOREBAR_GRAB = 0.15; //started at 1
