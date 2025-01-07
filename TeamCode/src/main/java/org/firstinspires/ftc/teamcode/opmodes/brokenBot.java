@@ -301,9 +301,11 @@ public class brokenBot extends LinearOpMode {
                 robot.extForeRightServo.setPosition(robot.INTAKE_RIGHT_FOREBAR_RETRACT);
                 robot.extForeLeftServo.setPosition(robot.INTAKE_LEFT_FOREBAR_RETRACT);
             } else if (gamepad2.y){
+
                 robot.extForeRightServo.setPosition(robot.INTAKE_RIGHT_FOREBAR_DEPLOY);
                 robot.extForeLeftServo.setPosition(robot.INTAKE_LEFT_FOREBAR_DEPLOY);
                 robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_GRAB);
+
             } else if (gamepad2.left_bumper){
                 mechOps.autoSampleScorePrep();
             }

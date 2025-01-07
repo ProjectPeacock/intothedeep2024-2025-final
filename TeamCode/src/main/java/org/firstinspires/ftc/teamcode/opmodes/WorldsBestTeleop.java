@@ -190,8 +190,6 @@ public class WorldsBestTeleop extends LinearOpMode {
             robot.motorLiftBack.setTargetPosition((int)liftPosition);
             robot.motorLiftFront.setPower(1);
             robot.motorLiftBack.setPower(1);
-//            robot.extendMotor.setTargetPosition((int)extensionPosition);
-//            robot.extendMotor.setPower(1);
 
 
             mechOps.transferSample();
@@ -261,87 +259,62 @@ public class WorldsBestTeleop extends LinearOpMode {
                 robot.extForeLeftServo.setPosition(robot.INTAKE_LEFT_FOREBAR_DEPLOY);
                 robot.extForeRightServo.setPosition(robot.INTAKE_RIGHT_FOREBAR_DEPLOY);
 
-            }else if (gamepad1.x){
+            } else if (gamepad1.x){
                 mechOps.transferSample = true;
 
             } else if (gamepad1.y){
-                mechOps.scoreForeGrab();
                 liftPosition = robot.LIFT_SCORE_HIGH_BASKET;
                 mechOps.scoreForeSample();
 
-            } else if (gamepad1.dpad_down){
-                mechOps.scoreForeGrab();
 
-            } else if (gamepad1.b) {
-                //mechOps.extensionPosition = (int) robot.EXTENSION_COLLAPSED;
+            } else if (gamepad1.b){
                 liftPosition = robot.LIFT_RESET;
                 mechOps.scoreForeGrab();
             }
+
             if (gamepad1.dpad_right) {
                 robot.extRotateServo.setPosition(robot.INTAKE_WRIST_ROTATED_ZERO);
 
             } else if (gamepad1.dpad_up) {
                 robot.extRotateServo.setPosition(robot.INTAKE_WRIST_ROTATED_NINETY);
 
-                //boolean toggle for extension in and out
-            } else if (gamepad1.dpad_left) {
-                mechOps.specimenPrepPosition();
 
-            } else if (gamepad2.dpad_up) {
+            } else if (gamepad1.dpad_left) {
+                mechOps.scoreForeSpecimen();
+
+            } else if (gamepad1.dpad_right) {
                 liftPosition = robot.LIFT_SPECIMEN_PREP;
 
-            } else if (gamepad2.dpad_down){
+            } else if (gamepad1.dpad_down){
                 liftPosition = robot.LIFT_SCORE_SPECIMEN;
 
             } else if (gamepad2.dpad_left) {
                 robot.scoreGrabServo.setPosition(robot.SCORE_CLAW_CLOSED);
+
             }else if (gamepad2.dpad_right){
                 robot.scoreGrabServo.setPosition(robot.SCORE_CLAW_OPEN);
+
             } else if (gamepad2.b){
                 robot.extForeRightServo.setPosition(robot.INTAKE_RIGHT_FOREBAR_RETRACT);
                 robot.extForeLeftServo.setPosition(robot.INTAKE_LEFT_FOREBAR_RETRACT);
+
             } else if (gamepad2.y){
                 robot.extForeRightServo.setPosition(robot.INTAKE_RIGHT_FOREBAR_DEPLOY);
                 robot.extForeLeftServo.setPosition(robot.INTAKE_LEFT_FOREBAR_DEPLOY);
                 robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_GRAB);
+
             } else if (gamepad2.left_bumper){
                 mechOps.autoSampleScorePrep();
             }
 
-            if (gamepad2.left_stick_button){
-                robot.leftBackDrive.setPower(1);
-                robot.leftFrontDrive.setPower(1);
-                robot.rightBackDrive.setPower(1);
-                robot.rightFrontDrive.setPower(1);
-                sleep(500);
-                robot.leftBackDrive.setPower(0);
-                robot.leftFrontDrive.setPower(0);
-                robot.rightBackDrive.setPower(0);
-                robot.rightFrontDrive.setPower(0);
-            }
-            //} else if (gamepad1.b) {
-                    /*This is about 20° up from the collecting position to clear the barrier
-                    Note here that we don't set the wrist position or the intake power when we
-                    select this "mode", this means that the intake and wrist will continue what
-                    they were doing before we clicked left bumper. */
-            //elbowPosition = robot.ELBOW_CLEAR_BARRIER;
-
             if (gamepad2.left_trigger > 0.05 && (mechOps.extensionPosition + (40 * -gamepad2.right_stick_y)) > 0 && (mechOps.extensionPosition + (40 * -gamepad2.right_stick_y)) < robot.EXTENSION_DOWN_MAX){
-                mechOps.extensionPosition += (40 * -gamepad2.right_stick_y);
+                mechOps.extensionPosition += (80 * -gamepad2.right_stick_y);
             }
 
             if (gamepad2.right_trigger > 0.05 && (liftPosition + (20 * -gamepad2.right_stick_y)) < robot.LIFT_SCORE_HIGH_BASKET && (liftPosition + (20 * -gamepad2.right_stick_y)) > robot.LIFT_RESET){
-                liftPosition += (20 * -gamepad2.right_stick_y);
+                liftPosition += (100 * -gamepad2.right_stick_y);
             }
 
-
-            //} else if (gamepad1.x) {
-            /* This is the correct height to score the sample in the HIGH BASKET */
-            //elbowPosition = robot.ELBOW_SCORE_SAMPLE_IN_LOW;
-            //liftPosition = LIFT_SCORING_IN_HIGH_BASKET;
-
-
-            //boolean toggle for claw rotation
 
             if (gamepad1.right_stick_button && rotateClawRuntime.time() > 0.15) {
                 if (clawRotated) {
@@ -355,155 +328,38 @@ public class WorldsBestTeleop extends LinearOpMode {
                 }
             }
 
-
-            if(gamepad2.a) mechOps.transferSample = true;
-
-            /*
-            This is probably my favorite piece of code on this robot. It's a clever little software
-            solution to a problem the robot has.
-            This robot has an extending lift on the end of an arm shoulder. That arm shoulder should
-            run to a specific angle, and stop there to collect from the field. And the angle that
-            the shoulder should stop at changes based on how long the arm is (how far the lift is extended)
-            so here, we add a compensation factor based on how far the lift is extended.
-            That comp factor is multiplied by the number of mm the lift is extended, which
-            results in the number of degrees we need to fudge our arm up by to keep the end of the arm
-            the same distance from the field.
-            Now we don't need this to happen when the arm is up and in scoring position. So if the arm
-            is above 45°, then we just set armLiftComp to 0. It's only if it's below 45° that we set it
-            to a value.
-             */
-
-           /* if (elbowPosition < 45 * robot.ELBOW_TICKS_PER_DEGREE){
-                elbowLiftComp = (.25568 * mechOps.extensionPosition); //0.25568
-            }
-            else{
-                elbowLiftComp = 0;
-            }
-
-           /* Here we set the target position of our arm to match the variable that was selected
-            by the driver. We add the armPosition Variable to our armPositionFudgeFactor, before adding
-            our armLiftComp, which adjusts the arm height for different lift extensions.
-            We also set the target velocity (speed) the motor runs at, and use setMode to run it.*/
-
-            //robot.elbowMotor.setTargetPosition((int) (armPosition + armPositionFudgeFactor + armLiftComp));
-
-            //((DcMotorEx) robot.armMotor).setVelocity(2100);
-            //robot.armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-
-            /* Here we set the lift position based on the driver input.
-            This is a.... weird, way to set the position of a "closed loop" device. The lift is run
-            with encoders. So it knows exactly where it is, and there's a limit to how far in and
-            out it should run. Normally with mechanisms like this we just tell it to run to an exact
-            position. This works a lot like our arm. Where we click a button and it goes to a position, then stops.
-            But the drivers wanted more "open loop" controls. So we want the lift to keep extending for
-            as long as we hold the bumpers, and when we let go of the bumper, stop where it is at.
-            This allows the driver to manually set the position, and not have to have a bunch of different
-            options for how far out it goes. But it also lets us enforce the end stops for the slide
-            in software. So that the motor can't run past it's endstops and stall.
-            We have our liftPosition variable, which we increment or decrement for every cycle (every
-            time our main robot code runs) that we're holding the button. Now since every cycle can take
-            a different amount of time to complete, and we want the lift to move at a constant speed,
-            we measure how long each cycle takes with the cycletime variable. Then multiply the
-            speed we want the lift to run at (in mm/sec) by the cycletime variable. There's no way
-            that our lift can move 2800mm in one cycle, but since each cycle is only a fraction of a second,
-            we are only incrementing it a small amount each cycle.
-             */
-
-            // If the button is pressed and liftPosition is not surpassing the range it should be in, then liftPosition is changed accordingly.
-/*          telemetry.addData("Extend Arm = ", "gamepad2.Right_Bumper");
-            telemetry.addData("Retract Arm = ", "gamepad2.Left_Bumper");
-            // If the button is pressed and liftPosition is not surpassing the range it should be in, then liftPosition is changed accordingly.
-            if (gamepad2.right_bumper && (mechOps.extensionPosition + 20) < robot.EXTENSION_SCORING_IN_HIGH_BASKET){
-                mechOps.extensionPosition += 20;
-//                liftPosition += 2800 * cycletime;
-            }
-            else if (gamepad2.left_bumper && (mechOps.extensionPosition - 20) > 0){
-                mechOps.extensionPosition -= 20;
-//                liftPosition -= 2800 * cycletime;
-            }
-
-            // Double check.
-            // Checks again if liftPosition is beyond its boundries or not.
-            // If it is outside the boundries, then it limits it to the boundries between 0 and the high bucket lift position.
-            if (mechOps.extensionPosition < 0) {
-                mechOps.extensionPosition = 0;
-            } else if(elbowPosition <= robot.ELBOW_TRAVERSE){
-                if(mechOps.extensionPosition >= robot.EXTENSION_DOWN_MAX){
-                    mechOps.extensionPosition = robot.EXTENSION_DOWN_MAX;
-                }
-            } else if (mechOps.extensionPosition > robot.EXTENSION_SCORING_IN_HIGH_BASKET) {
-                mechOps.extensionPosition = robot.EXTENSION_SCORING_IN_HIGH_BASKET;
-            }
-
-            robot.elbowMotor.setTargetPosition((int) elbowPosition);
-            robot.extendMotor.setTargetPosition(mechOps.extensionPosition);
-
-            robot.elbowMotor.setPower(1);
-            robot.extendMotor.setPower(1);
-
-
-            /* Check to see if our arm is over the current limit, and report via telemetry. */
-            /*if (((DcMotorEx) robot.elbowMotor).isOverCurrent()){
-                telemetry.addLine("MOTOR EXCEEDED CURRENT LIMIT!");
-
-                /* at the very end of the stream, we added a linear actuator kit to try to hang the robot on.
-                 * it didn't end up working... But here's the code we run it with. It just sets the motor
-                 * power to match the inverse of the left stick y.
-                 */
-
-               /* if(gamepad2.left_stick_y > 0){
-                    elbowPosition =- .5;
-                } else if (gamepad2.left_stick_y < 0){
-                    elbowPosition =+ .5;
-                }
-//            robot.hangMotor.setPower(-gamepad2.left_stick_y);
-                robot.servoWrist.setPosition(robot.WRIST_FOLDED_OUT);
-
-            /* This is how we check our loop time. We create three variables:
-            looptime is the current time when we hit this part of the code
-            cycletime is the amount of time in seconds our current loop took
-            oldtime is the time in seconds that the previous loop started at
-
-            we find cycletime by just subtracting the old time from the current time.
-            For example, lets say it is 12:01.1, and then a loop goes by and it's 12:01.2.
-            We can take the current time (12:01.2) and subtract the oldtime (12:01.1) and we're left
-            with just the difference, 0.1 seconds.
-
-             */
             looptime = getRuntime();
             cycletime = looptime - oldtime;
             oldtime = looptime;
 
-            //Rumble controller for endgame and flash controller light red
-           /* if(totalRuntime.time() > 90 && totalRuntime.time()<90.25){
+            //Rumble controller for endgame and flash controller light blue
+            if(totalRuntime.time() > 90 && totalRuntime.time()<90.25){
                 gamepad1.rumble(50);
                 gamepad1.setLedColor(255,0,0,50);
+                gamepad2.rumble(50);
+                gamepad2.setLedColor(255,0,0,50);
             } else if(totalRuntime.time() > 91 && totalRuntime.time()<91.25){
                 gamepad1.rumble(50);
                 gamepad1.setLedColor(255,0,0,50);
+                gamepad2.rumble(50);
+                gamepad2.setLedColor(255,0,0,50);
             } else if(totalRuntime.time() > 92 && totalRuntime.time()<92.25){
                 gamepad1.rumble(50);
                 gamepad1.setLedColor(255,0,0,50);
+                gamepad2.rumble(50);
+                gamepad2.setLedColor(255,0,0,50);
             } else if(totalRuntime.time() > 93) {
-                gamepad1.setLedColor(255, 0, 0, 30000);
+                gamepad2.setLedColor(13, 36, 65, 30000);
+                gamepad1.setLedColor(13, 36, 65, 30000);
             }
-*/
 
-            telemetry.addData("frontLeft", robot.leftFrontDrive.getCurrentPosition());
-            telemetry.addData("backLeft", robot.leftBackDrive.getCurrentPosition());
-            telemetry.addData("frontRight", robot.rightFrontDrive.getCurrentPosition());
-            telemetry.addData("backRight", robot.rightBackDrive.getCurrentPosition());
+
             telemetry.addData("motor Lift Front Current", robot.motorLiftFront.getCurrent(CurrentUnit.AMPS));
             telemetry.addData("motor Lift Back Current", robot.motorLiftBack.getCurrent(CurrentUnit.AMPS));
             telemetry.addData("motor Extend Current", robot.extendMotor.getCurrent(CurrentUnit.AMPS));
             telemetry.addLine("----------------------------------------");
-            telemetry.addData("intake4BarServoLeft Position = ", robot.extForeLeftServo.getPosition());
-            telemetry.addData("claw", robot.scoreGrabServo.getPosition());
+            telemetry.addData("Time Total", totalRuntime.time());
             telemetry.update();
-            /* send telemetry to the driver of the arm's current position and target position */
-            //telemetry.addData("arm Target Position: ", robot.armMotor.getTargetPosition());
-            //telemetry.addData("arm Encoder: ", robot.armMotor.getCurrentPosition());\
                 /*
                 telemetry.addLine("Gamepad 1:");
                 telemetry.addLine("Driving is Enabled.");

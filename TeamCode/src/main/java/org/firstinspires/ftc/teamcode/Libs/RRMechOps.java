@@ -122,6 +122,15 @@ public class RRMechOps {
         robot.scoreForeLeftServo.setPosition(robot.SCORE_LEFT_FOREBAR_GRAB);
     }
 
+    public void autoSpecimenLiftReset(){
+        robot.motorLiftFront.setTargetPosition((int) robot.LIFT_RESET);
+        robot.motorLiftBack.setTargetPosition((int) robot.LIFT_RESET);
+        robot.motorLiftFront.setPower(1);
+        robot.motorLiftBack.setPower(1);
+        robot.scoreForeRightServo.setPosition(robot.SCORE_RIGHT_FOREBAR_SPECIMEN);
+        robot.scoreForeLeftServo.setPosition(robot.SCORE_LEFT_FOREBAR_SPECIMEN);
+    }
+
     public void raiseLiftHighBasketPrep() {
         robot.motorLiftBack.setTargetPosition((int) robot.LIFT_SCORE_HIGH_BASKET);
         robot.motorLiftFront.setTargetPosition((int) robot.LIFT_SCORE_HIGH_BASKET);
@@ -138,7 +147,7 @@ public class RRMechOps {
 
     }
 
-    public void autoExtensionReset(){
+    public void autoMechanismReset(){
         robot.extForeLeftServo.setPosition(robot.INTAKE_LEFT_FOREBAR_RETRACT);
         robot.extForeRightServo.setPosition(robot.INTAKE_RIGHT_FOREBAR_RETRACT);
         robot.extRotateServo.setPosition(robot.INTAKE_WRIST_ROTATED_ZERO);
