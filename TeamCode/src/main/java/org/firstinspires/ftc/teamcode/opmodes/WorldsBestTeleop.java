@@ -99,7 +99,7 @@ public class WorldsBestTeleop extends LinearOpMode {
         ElapsedTime rotateClawRuntime = new ElapsedTime();
         ElapsedTime armExtensionRuntime = new ElapsedTime();
         ElapsedTime armClimbRuntime = new ElapsedTime();
-
+        ElapsedTime twoStageTransferRuntime = new ElapsedTime();
 
         totalRuntime.reset();
         clawRuntime.reset();
@@ -115,6 +115,7 @@ public class WorldsBestTeleop extends LinearOpMode {
         boolean armRetracted = true;
         boolean armClimb = false;
         boolean scoreClawOpened = false;
+        boolean isTransferReady = false;
 
 
 
@@ -232,7 +233,21 @@ public class WorldsBestTeleop extends LinearOpMode {
                 robot.extForeRightServo.setPosition(robot.INTAKE_RIGHT_FOREBAR_DEPLOY);
 
             } else if (gamepad1.x){
-                mechOps.transferSample = true;
+                // ready the transfer (stage 1)
+                if (!isTransferReady) {
+                    mechOps.twoStageTransfer(1);
+                    isTransferReady = true;
+                    if (robot.extendMotor.getCurrentPosition() <= robot.EXTENSION_RESET) {
+                        isTransferReady = true;
+                        twoStageTransferRuntime.reset();
+                    }
+                } else if (isTransferReady && twoStageTransferRuntime.time() < 5) {
+                    mechOps.twoStageTransfer(2);
+                    isTransferReady = false;
+                } else {
+                    isTransferReady = false;
+                }
+
 
             } else if (gamepad1.y){
                 liftPosition = robot.LIFT_SCORE_HIGH_BASKET;
