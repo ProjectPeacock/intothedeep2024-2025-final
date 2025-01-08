@@ -72,6 +72,8 @@ public class RRAuto4Sample extends LinearOpMode{
         selectStartingPosition();
         mechOps.scoreClawClosed();
         mechOps.extForeBarRetract();
+        robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_HOLD);
+        mechOps.tightenStrings();
 
 
         while (!isStopRequested() && !opModeIsActive()) {

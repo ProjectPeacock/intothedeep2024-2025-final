@@ -51,9 +51,7 @@ public class RRAuto5Specimen extends LinearOpMode{
 
     //Define and declare Robot Starting Locations
     public enum START_POSITION {
-        BLUE_SAMPLES,
         BLUE_SPECIMENS,
-        RED_SAMPLES,
         RED_SPECIMENS
     }
 
@@ -102,7 +100,6 @@ public class RRAuto5Specimen extends LinearOpMode{
         Pose2d specimenScoringPosition5 = new Pose2d(0,0,0);
         Pose2d specimenScoringPrep = new Pose2d(0,0,0);
         Pose2d specimenScoringPush = new Pose2d(0, 0, 0);
-        Pose2d sampleScoringPosition = new Pose2d(0, 0, 0);
         Pose2d coloredSample1PositionGrab = new Pose2d(0, 0, 0);
         Pose2d coloredSample2PositionGrab = new Pose2d(0, 0, 0);
         Pose2d coloredSample3PositionGrab = new Pose2d(0, 0, 0);
@@ -112,10 +109,6 @@ public class RRAuto5Specimen extends LinearOpMode{
         Pose2d grabSpecimenPosition = new Pose2d(0, 0, 0);
         Pose2d midwayPose1 = new Pose2d(0, 0, 0);
         Pose2d specimenGrabPrep = new Pose2d(0, 0, 0);
-        Pose2d midwayPose3 = new Pose2d(0, 0, 0);
-        Pose2d midwayPose4 = new Pose2d(0,0,0);
-
-        Pose2d parkPrepPose = new Pose2d(0, 0, 0);
         Pose2d parkPose = new Pose2d(0, 0, 0);
         double waitSecondsBeforeDrop = 0;
         PinpointDrive drive = new PinpointDrive(hardwareMap, initPose);
@@ -128,8 +121,8 @@ public class RRAuto5Specimen extends LinearOpMode{
         specimenScoringPosition4 = new Pose2d(-27,-15, Math.toRadians(0));
         specimenScoringPosition5 = new Pose2d(-27,-20,Math.toRadians(0));
         specimenGrabPrep = new Pose2d(-9, 27.69, Math.toRadians(-180)); // specimen grabbing prep
-        specimenScoringPrep = new Pose2d(-20,0,Math.toRadians(0));
-        specimenScoringPush = new Pose2d(-28, -8, Math.toRadians(0));
+        //specimenScoringPrep = new Pose2d(-20,0,Math.toRadians(0));
+        //specimenScoringPush = new Pose2d(-28, -8, Math.toRadians(0));
         grabSpecimenPosition = new Pose2d(-3, 27, Math.toRadians(-180));
         coloredSample1PositionGrab = new Pose2d(-23, 36, Math.toRadians(117));
         coloredSample1PositionDrop = new Pose2d(-17,34,Math.toRadians(55));

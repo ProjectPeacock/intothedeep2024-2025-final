@@ -52,9 +52,7 @@ public class RRAuto4SampleTest extends LinearOpMode{
     //Define and declare Robot Starting Locations
     public enum START_POSITION {
         BLUE_SAMPLES,
-        BLUE_SPECIMENS,
         RED_SAMPLES,
-        RED_SPECIMENS
     }
 
     public static START_POSITION startPosition;
@@ -74,6 +72,7 @@ public class RRAuto4SampleTest extends LinearOpMode{
         selectStartingPosition();
         mechOps.scoreClawClosed();
         mechOps.extForeBarRetract();
+
 
 
         while (!isStopRequested() && !opModeIsActive()) {

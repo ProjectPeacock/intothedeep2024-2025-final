@@ -37,9 +37,9 @@ import java.util.Locale;
 
 
 /** @noinspection ALL*/
-@TeleOp(name="brokenBot", group="Robot")
+@TeleOp(name="brokenBotTESTPROGRAMTESTCODE", group="Robot")
 //@Disabled
-public class brokenBot extends LinearOpMode {
+public class brokenBotTESTPROGRAM extends LinearOpMode {
 
 
     private final static HWProfile robot = new HWProfile();

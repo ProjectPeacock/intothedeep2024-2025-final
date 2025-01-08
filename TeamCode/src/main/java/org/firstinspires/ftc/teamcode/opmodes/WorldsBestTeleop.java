@@ -117,35 +117,7 @@ public class WorldsBestTeleop extends LinearOpMode {
         boolean scoreClawOpened = false;
 
 
-        /* Run until the driver presses stop */
-//        while (opModeIsActive()) {
-//
-//            mechOps.transferSample();
-//
-//            if (gamepad1.a) {
-//                /* This is the intaking/collecting arm position */
-//                robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_GRAB);
-//                extensionPosition = robot.EXTENSION_OUT_MAX;
-//                robot.extForeLeftServo.setPosition(robot.INTAKE_LEFT_FOREBAR_DEPLOY);
-//                robot.extForeRightServo.setPosition(robot.INTAKE_RIGHT_FOREBAR_DEPLOY);
-//
-//            }else if (gamepad1.x){
-//                mechOps.transferSample = true;
-//
-//            } else if (gamepad1.y){
-//                mechOps.scoreForeGrab();
-//                liftPosition = robot.LIFT_SCORE_HIGH_BASKET;
-//                mechOps.scoreForeSample();
-//
-//            } else if (gamepad1.dpad_down){
-//                mechOps.scoreForeGrab();
-//
-//            } else if (gamepad1.b) {
-//                //extensionPosition = robot.EXTENSION_COLLAPSED;
-//                liftPosition = robot.LIFT_RESET;
-//                mechOps.scoreForeGrab();
-//            }
-//        }
+
 //        requestOpModeStop();
         while(opModeIsActive()){
             double y = -gamepad1.left_stick_y;
