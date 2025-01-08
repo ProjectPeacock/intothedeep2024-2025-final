@@ -233,20 +233,21 @@ public class WorldsBestTeleop extends LinearOpMode {
                 robot.extForeRightServo.setPosition(robot.INTAKE_RIGHT_FOREBAR_DEPLOY);
 
             } else if (gamepad1.x){
-                // ready the transfer (stage 1)
-                if (!isTransferReady) {
-                    mechOps.twoStageTransfer(1);
-                    isTransferReady = true;
-                    if (robot.extendMotor.getCurrentPosition() <= robot.EXTENSION_RESET) {
-                        isTransferReady = true;
-                        twoStageTransferRuntime.reset();
-                    }
-                } else if (isTransferReady && twoStageTransferRuntime.time() < 5) {
-                    mechOps.twoStageTransfer(2);
-                    isTransferReady = false;
-                } else {
-                    isTransferReady = false;
-                }
+                mechOps.transferSample = true;
+//                // ready the transfer (stage 1)
+//                if (!isTransferReady) {
+//                    mechOps.twoStageTransfer(1);
+//                    isTransferReady = true;
+//                    if (robot.extendMotor.getCurrentPosition() <= robot.EXTENSION_RESET) {
+//                        isTransferReady = true;
+//                        twoStageTransferRuntime.reset();
+//                    }
+//                } else if (isTransferReady && twoStageTransferRuntime.time() < 5) {
+//                    mechOps.twoStageTransfer(2);
+//                    isTransferReady = false;
+//                } else {
+//                    isTransferReady = false;
+//                }
 
 
             } else if (gamepad1.y){
