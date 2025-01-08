@@ -12,6 +12,7 @@ public class RRMechOps {
     // variables to control sampleTransfer function
     public boolean transferSample = false;
     public ElapsedTime sampleTransferTime = new ElapsedTime();
+    public ElapsedTime twoStageTransferTime = new ElapsedTime();
     public boolean transferReady = false;
 
     public HWProfile robot;
@@ -210,10 +211,33 @@ public class RRMechOps {
                     sampleTransferTime.reset();
                 }
             }
+        }
+    }
+
+    public void twoStageTransfer(int stage) {
+        if (stage == 1) {
+            extForeBarRetract();
+            this.extensionPosition = (int) robot.EXTENSION_RESET;
+            extClawRotateZero();
+            extPitchReset();
+            scoreForeGrab();
+            scoreClawOpen();
+        } else if (stage == 2) {
+            twoStageTransferTime.reset();
+
+            scoreClawClosed();
+
+            // allow time for the score claw to close before opening the extClaw
+            if (twoStageTransferTime.time() > 0.250) {
+                extClawOpen();
+            }
+
+            // allow time for the extClaw to open out of the way before moving the score claw
+            if(twoStageTransferTime.time() > 0.4) {
+                scoreForeSample();
+            }
 
         }
-
-
     }
 
     public void setExtensionPosition(){
