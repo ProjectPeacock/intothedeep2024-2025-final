@@ -121,17 +121,17 @@ public class RRAuto4Specimen extends LinearOpMode{
 
 
         drive = new PinpointDrive(hardwareMap, initPose);
-        specimenScoringPosition = new Pose2d(-28, 2, Math.toRadians(0));
-        specimenScoringPosition2 = new Pose2d(-27.5, 0, Math.toRadians(0));
-        specimenScoringPosition3 = new Pose2d(-28,-15,Math.toRadians(0));
-        specimenScoringPosition4 = new Pose2d(-28,-20, Math.toRadians(0));
+        specimenScoringPosition = new Pose2d(-29, 2, Math.toRadians(0));
+        specimenScoringPosition2 = new Pose2d(-28.5, 0, Math.toRadians(0));
+        specimenScoringPosition3 = new Pose2d(-29,-15,Math.toRadians(0));
+        specimenScoringPosition4 = new Pose2d(-29.5,-20, Math.toRadians(0));
         specimenScoringPrep = new Pose2d(-20,0,Math.toRadians(0));
         specimenScoringPush = new Pose2d(-28, -8, Math.toRadians(0));
         grabSpecimenPosition = new Pose2d(-2, 27, Math.toRadians(-180));
-        coloredSample1Position = new Pose2d(-50, 40, Math.toRadians(-180));
-        coloredSample2Position = new Pose2d(-47, 48, Math.toRadians(-180));
+        coloredSample1Position = new Pose2d(-50, 35, Math.toRadians(-180));
+        coloredSample2Position = new Pose2d(-47, 45, Math.toRadians(-180));
         coloredSample3Position = new Pose2d(49, -60, Math.toRadians(0));
-        midwayPose1 = new Pose2d(-25, 29, Math.toRadians(-180)); //prep for pushing specimen
+        midwayPose1 = new Pose2d(-25, 30, Math.toRadians(-180)); //prep for pushing specimen
         midwayPose2 = new Pose2d(-50, 35, Math.toRadians(-180)); //behind the specimen
         midwayPose3 = new Pose2d(-10, 38, Math.toRadians(-180));//pushing samples into the human player station
         midwayPose4 = new Pose2d(-15,27, Math.toRadians(-180)); // specimen grab prep

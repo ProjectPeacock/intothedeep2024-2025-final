@@ -43,8 +43,8 @@ import org.firstinspires.ftc.teamcode.hardware.HWProfile;
 import org.firstinspires.ftc.teamcode.Libs.RRMechOps;
 
 
-@Autonomous(name = "Auto - 5 Specimen", group = "Competition", preselectTeleOp = "GoBildaRi3D2425")
-public class RRAuto5Specimen extends LinearOpMode{
+@Autonomous(name = "Auto - 5 Specimen Test", group = "Competition", preselectTeleOp = "GoBildaRi3D2425")
+public class RRAuto5SpecimenTest extends LinearOpMode{
 
     public static String TEAM_NAME = "Project Peacock";
     public static int TEAM_NUMBER = 10355;
@@ -161,10 +161,10 @@ public class RRAuto5Specimen extends LinearOpMode{
             }
 
             // Drive to color sample1 Position
-            Actions.runBlocking(
-                    drive.actionBuilder(drive.pose)
-                            .strafeToLinearHeading(midwayPose1.position, midwayPose1.heading)
-                            .build());
+//            Actions.runBlocking(
+//                    drive.actionBuilder(drive.pose)
+//                            .strafeToLinearHeading(midwayPose1.position, midwayPose1.heading)
+//                            .build());
 
 
 
@@ -184,11 +184,18 @@ public class RRAuto5Specimen extends LinearOpMode{
 
             Actions.runBlocking(
                     drive.actionBuilder(drive.pose)
-                    .strafeToLinearHeading(coloredSample1PositionGrab.position,coloredSample1PositionGrab.heading)
+                            .strafeToLinearHeading(coloredSample1PositionGrab.position,coloredSample1PositionGrab.heading)
                             .build());
 
+            if(opModeIsActive()) {
+                mechOps.extClawOpen();
+                mechOps.extensionPosition =  ((int)robot.EXTENSION_OUT_MAX);
+                mechOps.setExtensionPosition();
+                mechOps.extForeBarDeploy();
+                robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_GRAB);
+                robot.extRotateServo.setPosition(robot.INTAKE_WRIST_ROTATED_NINETY);
+            }
 
-            safeWaitSeconds(.2);
             if(opModeIsActive())mechOps.extClawClose();
             safeWaitSeconds(.25);
 
@@ -213,7 +220,7 @@ public class RRAuto5Specimen extends LinearOpMode{
 
 
 
-            safeWaitSeconds(0.2);
+            //safeWaitSeconds(0.2);
             if(opModeIsActive())mechOps.extClawClose();
             safeWaitSeconds(.2);
 
@@ -233,7 +240,7 @@ public class RRAuto5Specimen extends LinearOpMode{
                             .build());
 
 
-            safeWaitSeconds(0.2);
+            //safeWaitSeconds(0.2);
             if(opModeIsActive())mechOps.extClawClose();
             safeWaitSeconds(.2);
 
@@ -245,7 +252,6 @@ public class RRAuto5Specimen extends LinearOpMode{
 
 
             if(opModeIsActive())mechOps.extClawOpen();
-            safeWaitSeconds(0);
             mechOps.autoMechanismReset();
             mechOps.extensionPosition =  ((int)robot.EXTENSION_RESET);
             mechOps.setExtensionPosition();

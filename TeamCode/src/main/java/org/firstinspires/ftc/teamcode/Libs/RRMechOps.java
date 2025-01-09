@@ -332,6 +332,7 @@ public class RRMechOps {
 
         extForeBarRetract();
         extClawRotateZero();
+        robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_TRANSFER);
         this.extensionPosition = (int) robot.EXTENSION_RESET;
         setExtensionPosition();
         opMode.sleep(1000);

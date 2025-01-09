@@ -262,7 +262,8 @@ public class InspectionMode extends LinearOpMode {
                 liftPosition = robot.LIFT_SCORE_HIGH_BASKET;
                 mechOps.scoreForeSample();
 
-//            }else if (gamepad1.x){
+            }
+            //else if (gamepad1.x){
 //                mechOps.transferSample = true;
 //
 //            } else if (gamepad1.y){
@@ -273,11 +274,15 @@ public class InspectionMode extends LinearOpMode {
 //            } else if (gamepad1.dpad_down){
 //                mechOps.scoreForeGrab();
 //
-//            } else if (gamepad1.b) {
-//                //mechOps.extensionPosition = (int) robot.EXTENSION_COLLAPSED;
-//                liftPosition = robot.LIFT_RESET;
-//                mechOps.scoreForeGrab();
-//            }
+         else if (gamepad1.b) {
+                //mechOps.extensionPosition = (int) robot.EXTENSION_COLLAPSED;
+                liftPosition = robot.LIFT_RESET;
+                mechOps.scoreForeGrab();
+                mechOps.extPitchReset();
+                mechOps.autoMechanismReset();
+                mechOps.extensionPosition = (int) robot.EXTENSION_RESET;
+
+            }
 //            if (gamepad1.dpad_right) {
 //                robot.extRotateServo.setPosition(robot.INTAKE_WRIST_ROTATED_ZERO);
 //
@@ -530,4 +535,4 @@ public class InspectionMode extends LinearOpMode {
         }
 
 
-    }}
+    }

@@ -43,7 +43,7 @@ import org.firstinspires.ftc.teamcode.hardware.HWProfile;
 import org.firstinspires.ftc.teamcode.Libs.RRMechOps;
 
 //@Disabled
-@Autonomous(name = "Auto Samples - 4+0 TEST", group = "Competition", preselectTeleOp = "GoBildaRi3D2425")
+@Autonomous(name = "Auto Samples - 4+0 Faster", group = "Competition", preselectTeleOp = "GoBildaRi3D2425")
 public class RRAuto4SampleTest extends LinearOpMode{
 
     public static String TEAM_NAME = "Project Peacock";
@@ -116,7 +116,7 @@ public class RRAuto4SampleTest extends LinearOpMode{
 
         drive = new PinpointDrive(hardwareMap, initPose);
         sampleScoringPosition = new Pose2d(7, 25, Math.toRadians(-45));
-        yellowSample1Position = new Pose2d(12, 16, Math.toRadians(-5));
+        yellowSample1Position = new Pose2d(12, 18, Math.toRadians(0));
         yellowSample2Position = new Pose2d(11.5, 25, Math.toRadians(-5));
         yellowSample3Position = new Pose2d(38, 8.1, Math.toRadians(90));
         midwayPose1 = new Pose2d(14,20, Math.toRadians(-45));
@@ -189,7 +189,7 @@ public class RRAuto4SampleTest extends LinearOpMode{
                 robot.extGrabServo.setPosition(robot.INTAKE_CLAW_CLOSED);
                 safeWaitSeconds(0.25);
                 mechOps.autoSampleScorePrep();
-                safeWaitSeconds(.25);
+                safeWaitSeconds(1);
 
 
                 // TODO: Add code to grab a sample from the floor
@@ -259,7 +259,7 @@ public class RRAuto4SampleTest extends LinearOpMode{
                 robot.extGrabServo.setPosition(robot.INTAKE_CLAW_CLOSED);
                 safeWaitSeconds(.2);
                 mechOps.autoSampleScorePrep();
-                safeWaitSeconds(.5);
+                safeWaitSeconds(1);
 
             }
 
@@ -328,7 +328,7 @@ public class RRAuto4SampleTest extends LinearOpMode{
                 mechOps.extClawClose();
                 safeWaitSeconds(.2);
                mechOps.autoSampleScorePrep();
-               safeWaitSeconds(.8);
+               safeWaitSeconds(.5);
             }
 
 
