@@ -86,7 +86,7 @@ public class HWProfile {
     /* A number in degrees that the triggers can adjust the arm position by */
 
     public final double INTAKE_CLAW_OPEN = .7;
-    public final double INTAKE_CLAW_CLOSED = .14;
+    public final double INTAKE_CLAW_CLOSED = .15;
     public final double INTAKE_CLAW_PARTIAL_OPEN = .5;
 
 

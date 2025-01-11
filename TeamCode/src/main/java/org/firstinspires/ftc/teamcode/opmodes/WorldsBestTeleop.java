@@ -273,7 +273,13 @@ public class WorldsBestTeleop extends LinearOpMode {
             } else if (gamepad1.dpad_right) {
                 liftPosition = robot.LIFT_SPECIMEN_PREP;
 
+            } else if (gamepad2.dpad_up) {
+                liftPosition = robot.LIFT_SPECIMEN_PREP;
+
             } else if (gamepad1.dpad_down){
+                liftPosition = robot.LIFT_SCORE_SPECIMEN;
+
+            } else if (gamepad2.dpad_down){
                 liftPosition = robot.LIFT_SCORE_SPECIMEN;
 
             } else if (gamepad2.dpad_left) {

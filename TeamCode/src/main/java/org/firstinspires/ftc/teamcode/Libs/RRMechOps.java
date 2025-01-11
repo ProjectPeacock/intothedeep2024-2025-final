@@ -188,7 +188,7 @@ public class RRMechOps {
                 scoreClawClosed();
 
                 // allow time for the score claw to close before opening the extClaw
-                if (sampleTransferTime.time() > 0.250) {
+                if (sampleTransferTime.time() > 0.200) {
                     extClawOpen();
                 }
 

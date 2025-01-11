@@ -160,7 +160,6 @@ public class RRAuto4Specimen extends LinearOpMode{
             //Release the sample into the basket
             // Lower the arm
             if(opModeIsActive()) {
-
                 mechOps.specimenScorePosition();
                 safeWaitSeconds(.45);
                 mechOps.scoreClawOpen();

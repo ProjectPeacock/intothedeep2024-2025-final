@@ -160,7 +160,6 @@ public class RRAuto4SpecimenTest extends LinearOpMode{
             //Release the sample into the basket
             // Lower the arm
             if(opModeIsActive()) {
-
                 mechOps.specimenScorePosition();
                 safeWaitSeconds(.45);
                 mechOps.scoreClawOpen();
@@ -173,11 +172,11 @@ public class RRAuto4SpecimenTest extends LinearOpMode{
                     drive.actionBuilder(drive.pose)
                             .splineTo(midwayPose1.position, midwayPose1.heading)
                             .splineTo(midwayPose2.position, midwayPose2.heading)
-                            .splineTo(coloredSample1Position.position, coloredSample1Position.heading)
-                            .splineTo(midwayPose3.position, midwayPose3.heading)
-                            .splineTo(coloredSample1Position.position, coloredSample1Position.heading)
-                            .splineTo(coloredSample2Position.position, coloredSample2Position.heading)
-                            .splineTo(midwayPose3.position, midwayPose3.heading)
+                            .strafeToLinearHeading(coloredSample1Position.position, coloredSample1Position.heading)
+                            .strafeToLinearHeading(midwayPose3.position, midwayPose3.heading)
+                            .strafeToLinearHeading(coloredSample1Position.position, coloredSample1Position.heading)
+                            .strafeToLinearHeading(coloredSample2Position.position, coloredSample2Position.heading)
+                            .strafeToLinearHeading(midwayPose3.position, midwayPose3.heading)
                             .build());
 
 
@@ -197,7 +196,7 @@ public class RRAuto4SpecimenTest extends LinearOpMode{
             Actions.runBlocking(
                     drive.actionBuilder(drive.pose)
                             // .strafeToLinearHeading(midwayPose4.position, midwayPose4.heading)
-                            .splineTo(grabSpecimenPosition.position, grabSpecimenPosition.heading)
+                            .strafeToLinearHeading(grabSpecimenPosition.position, grabSpecimenPosition.heading)
                             .build());
 
             // Raise Arm to high basket scoring position
@@ -211,7 +210,7 @@ public class RRAuto4SpecimenTest extends LinearOpMode{
             Actions.runBlocking(
                     drive.actionBuilder(drive.pose)
                             // .strafeToLinearHeading(specimenScoringPrep.position,specimenScoringPrep.heading)
-                            .splineTo(specimenScoringPosition2.position, specimenScoringPosition2.heading)
+                            .strafeToLinearHeading(specimenScoringPosition2.position, specimenScoringPosition2.heading)
                             .build());
 
 
@@ -232,7 +231,7 @@ public class RRAuto4SpecimenTest extends LinearOpMode{
             Actions.runBlocking(
                     drive.actionBuilder(drive.pose)
                             //.strafeToLinearHeading(midwayPose4.position, midwayPose4.heading)
-                            .splineTo(grabSpecimenPosition.position,grabSpecimenPosition.heading)
+                            .strafeToLinearHeading(grabSpecimenPosition.position,grabSpecimenPosition.heading)
                             .build());
 
 
@@ -257,7 +256,7 @@ public class RRAuto4SpecimenTest extends LinearOpMode{
             Actions.runBlocking(
                     drive.actionBuilder(drive.pose)
                             // .strafeToLinearHeading(specimenScoringPrep.position,specimenScoringPrep.heading)
-                            .splineTo(specimenScoringPosition3.position, specimenScoringPosition3.heading)
+                            .strafeToLinearHeading(specimenScoringPosition3.position, specimenScoringPosition3.heading)
                             .build());
             // Drive to specimen scoring position
 
@@ -278,7 +277,7 @@ public class RRAuto4SpecimenTest extends LinearOpMode{
             Actions.runBlocking(
                     drive.actionBuilder(drive.pose)
                             //.strafeToLinearHeading(midwayPose4.position, midwayPose4.heading)
-                            .splineTo(grabSpecimenPosition.position,grabSpecimenPosition.heading)
+                            .strafeToLinearHeading(grabSpecimenPosition.position,grabSpecimenPosition.heading)
                             .build());
 
 
@@ -303,7 +302,7 @@ public class RRAuto4SpecimenTest extends LinearOpMode{
             Actions.runBlocking(
                     drive.actionBuilder(drive.pose)
                             // .strafeToLinearHeading(specimenScoringPrep.position,specimenScoringPrep.heading)
-                            .splineTo(specimenScoringPosition4.position, specimenScoringPosition4.heading)
+                            .strafeToLinearHeading(specimenScoringPosition4.position, specimenScoringPosition4.heading)
                             .build());
             // Drive to specimen scoring position
 
