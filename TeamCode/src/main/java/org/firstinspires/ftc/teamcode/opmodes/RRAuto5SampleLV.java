@@ -392,43 +392,7 @@ public class RRAuto5SampleLV extends LinearOpMode{
             }
 
             // Drive to prep position
-            Actions.runBlocking(
-                    drive.actionBuilder(drive.pose)
-                            .strafeToLinearHeading(yellowSample4PositionHP.position, yellowSample4PositionHP.heading)
-                            .build());
-
-
-            if(opModeIsActive()) {
-                mechOps.liftReset();
-                mechOps.extClawRotateZero();
-                mechOps.autoExtension();
-                mechOps.extensionPosition =  ((int)robot.EXTENSION_OUT_MAX);
-                mechOps.setExtensionPosition();
-                robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_GRAB);
-                robot.extGrabServo.setPosition(robot.INTAKE_CLAW_OPEN);
-            }
-
-
-
-
-            if(opModeIsActive()) {
-                safeWaitSeconds(.75);
-                robot.extGrabServo.setPosition(robot.INTAKE_CLAW_CLOSED);
-                safeWaitSeconds(.2);
-                mechOps.autoSampleScorePrep();
-
-            }
-
-            Actions.runBlocking(
-                    drive.actionBuilder(drive.pose)
-                            .strafeToLinearHeading(sampleScoringPosition.position, sampleScoringPosition.heading)
-                            .build());
-
-            // Release sample1 into the basket
-            if(opModeIsActive()) {
-                mechOps.scoreClawOpen();
-            }
-
+            
             Actions.runBlocking(
                     drive.actionBuilder(drive.pose)
                             .strafeToLinearHeading(midwayPose1.position, midwayPose1.heading)
