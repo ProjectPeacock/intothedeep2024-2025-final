@@ -180,8 +180,6 @@ public class RRAuto4Specimen extends LinearOpMode{
                             .build());
 
 
-            // Push Color Sample1 into the Observation area
-            // Drive to color sample1 Position
 
             // Grab the specimen
             if(opModeIsActive()) {
@@ -189,13 +187,9 @@ public class RRAuto4Specimen extends LinearOpMode{
                 mechOps.liftReset();
                 mechOps.scoreForeSpecimen();
 
-                //robot.elbowMotor.setPower(1);
-                //robot.elbowMotor.setTargetPosition(robot.ELBOW_TRAVERSE);
             }
-
             Actions.runBlocking(
                     drive.actionBuilder(drive.pose)
-                           // .strafeToLinearHeading(midwayPose4.position, midwayPose4.heading)
                             .strafeToLinearHeading(grabSpecimenPosition.position, grabSpecimenPosition.heading)
                             .build());
 
@@ -209,14 +203,11 @@ public class RRAuto4Specimen extends LinearOpMode{
 
             Actions.runBlocking(
                     drive.actionBuilder(drive.pose)
-                           // .strafeToLinearHeading(specimenScoringPrep.position,specimenScoringPrep.heading)
                             .strafeToLinearHeading(specimenScoringPosition2.position, specimenScoringPosition2.heading)
                             .build());
 
 
 
-            // Score the specimen on the high bar
-            // Lower the arm
 
             if(opModeIsActive())mechOps.specimenScorePosition();
                 safeWaitSeconds(.5);
@@ -226,11 +217,9 @@ public class RRAuto4Specimen extends LinearOpMode{
             if(opModeIsActive())mechOps.scoreForeSpecimen();
 
 
-            // Push Color Sample1 into the Observation area
-            // Drive to color sample1 Position
+
             Actions.runBlocking(
                     drive.actionBuilder(drive.pose)
-                            //.strafeToLinearHeading(midwayPose4.position, midwayPose4.heading)
                             .strafeToLinearHeading(grabSpecimenPosition.position,grabSpecimenPosition.heading)
                             .build());
 
@@ -240,28 +229,12 @@ public class RRAuto4Specimen extends LinearOpMode{
                 mechOps.scoreClawClosed();
                 safeWaitSeconds(.35);
                 mechOps.specimenPrepPosition();
-
-
-                //robot.elbowMotor.setPower(1);
-                //robot.elbowMotor.setTargetPosition((int) robot.ELBOW_SCORE_SPECIMEN);
-
-                //robot.servoClaw.setPosition(robot.CLAW_OPEN);
-                // TODO: Add code to release the sample and lower the arm
             }
 
-            // Raise Arm to high basket scoring position
-            if(opModeIsActive()) {
-                // TODO: Add code to raise claw to specimen high bar
-            }
             Actions.runBlocking(
                     drive.actionBuilder(drive.pose)
-                           // .strafeToLinearHeading(specimenScoringPrep.position,specimenScoringPrep.heading)
                             .strafeToLinearHeading(specimenScoringPosition3.position, specimenScoringPosition3.heading)
                             .build());
-            // Drive to specimen scoring position
-
-            // Score the specimen on the high bar
-            // Lower the arm
 
 
 //
@@ -276,7 +249,6 @@ public class RRAuto4Specimen extends LinearOpMode{
 //
             Actions.runBlocking(
                     drive.actionBuilder(drive.pose)
-                            //.strafeToLinearHeading(midwayPose4.position, midwayPose4.heading)
                             .strafeToLinearHeading(grabSpecimenPosition.position,grabSpecimenPosition.heading)
                             .build());
 
@@ -287,27 +259,14 @@ public class RRAuto4Specimen extends LinearOpMode{
                 safeWaitSeconds(.35);
                 mechOps.specimenPrepPosition();
 
-
-                //robot.elbowMotor.setPower(1);
-                //robot.elbowMotor.setTargetPosition((int) robot.ELBOW_SCORE_SPECIMEN);
-
-                //robot.servoClaw.setPosition(robot.CLAW_OPEN);
                 // TODO: Add code to release the sample and lower the arm
             }
 
-            // Raise Arm to high basket scoring position
-            if(opModeIsActive()) {
-                // TODO: Add code to raise claw to specimen high bar
-            }
+
             Actions.runBlocking(
                     drive.actionBuilder(drive.pose)
-                            // .strafeToLinearHeading(specimenScoringPrep.position,specimenScoringPrep.heading)
                             .strafeToLinearHeading(specimenScoringPosition4.position, specimenScoringPosition4.heading)
                             .build());
-            // Drive to specimen scoring position
-
-            // Score the specimen on the high bar
-            // Lower the arm
 
 
 //

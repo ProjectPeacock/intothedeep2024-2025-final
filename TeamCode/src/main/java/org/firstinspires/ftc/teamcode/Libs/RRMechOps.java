@@ -188,7 +188,7 @@ public class RRMechOps {
                 scoreClawClosed();
 
                 // allow time for the score claw to close before opening the extClaw
-                if (sampleTransferTime.time() > 0.200) {
+                if (sampleTransferTime.time() > 0.100){
                     extClawOpen();
                 }
 
@@ -200,10 +200,11 @@ public class RRMechOps {
                     transferReady = false;
                 }
             } else {
+                extPitchReset();
                 extForeBarRetract();
                 this.extensionPosition = (int) robot.EXTENSION_RESET;
                 extClawRotateZero();
-                extPitchReset();
+
                 scoreForeGrab();
                 scoreClawOpen();
                 if (robot.extendMotor.getCurrentPosition() <= robot.EXTENSION_RESET) {
@@ -228,7 +229,7 @@ public class RRMechOps {
             scoreClawClosed();
 
             // allow time for the score claw to close before opening the extClaw
-            if (twoStageTransferTime.time() > 0.250) {
+            if (twoStageTransferTime.time() > 0.150) {
                 extClawOpen();
             }
 
@@ -330,9 +331,10 @@ public class RRMechOps {
         opMode.sleep(200);
 
 
+        robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_TRANSFER);
         extForeBarRetract();
         extClawRotateZero();
-        robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_TRANSFER);
+
         this.extensionPosition = (int) robot.EXTENSION_RESET;
         setExtensionPosition();
         opMode.sleep(1000);

@@ -43,7 +43,7 @@ import org.firstinspires.ftc.teamcode.hardware.HWProfile;
 import org.firstinspires.ftc.teamcode.Libs.RRMechOps;
 
 //@Disabled
-@Autonomous(name = "Auto Samples - 5+0 LEVIATHAN", group = "Competition", preselectTeleOp = "GoBildaRi3D2425")
+@Autonomous(name = "Auto Samples - TOP SECRET LEVIATHAN", group = "Competition", preselectTeleOp = "GoBildaRi3D2425")
 public class RRAuto5SampleLV extends LinearOpMode{
 
     public static String TEAM_NAME = "Project Peacock";
@@ -117,16 +117,16 @@ public class RRAuto5SampleLV extends LinearOpMode{
 
         drive = new PinpointDrive(hardwareMap, initPose);
         sampleScoringPosition = new Pose2d(7, 25, Math.toRadians(-45));
-        yellowSample1Position = new Pose2d(10, 17, Math.toRadians(-5));
-        yellowSample2Position = new Pose2d(9, 28, Math.toRadians(-5));
+        yellowSample1Position = new Pose2d(10, 18, Math.toRadians(-10));
+        yellowSample2Position = new Pose2d(7, 29, Math.toRadians(-5));
         yellowSample3Position = new Pose2d(37.5, 8.1, Math.toRadians(90));
-        yellowSample4PositionHP = new Pose2d(2,-47.2, Math.toRadians(-90));
-        midwayPose1 = new Pose2d(14,20, Math.toRadians(-45));
+        yellowSample4PositionHP = new Pose2d(5,-45, Math.toRadians(-90));
+        midwayPose1 = new Pose2d(16,20, Math.toRadians(-45));
         midwayPose2 = new Pose2d(10,0, Math.toRadians(0));
         midwayPose3 = new Pose2d(33,1, Math.toRadians(90));
         midwayPose4 = new Pose2d(40,15, Math.toRadians(90));
         parkPrepPose = new Pose2d(10, -90, Math.toRadians(-90));
-        parkPose = new Pose2d(14, 21, Math.toRadians(0));
+        parkPose = new Pose2d(15, 45, Math.toRadians(0));
 
         /**
          * For Sample Scoring into high basket
@@ -144,6 +144,29 @@ public class RRAuto5SampleLV extends LinearOpMode{
                 mechOps.raiseLiftHighBasketPrep();
                 //safeWaitSeconds(.8);
             }
+
+            Actions.runBlocking(
+                    drive.actionBuilder(drive.pose)
+                            .strafeToLinearHeading(midwayPose1.position, midwayPose1.heading)
+                            .strafeToLinearHeading(sampleScoringPosition.position, sampleScoringPosition.heading)
+                            .build());
+
+
+            if(opModeIsActive()) {
+                mechOps.scoreClawOpen();
+                mechOps.extClawOpen();
+                mechOps.extensionPosition =  ((int)robot.EXTENSION_OUT_MAX);
+                mechOps.setExtensionPosition();
+                robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_GRAB);
+                robot.extGrabServo.setPosition(robot.INTAKE_CLAW_OPEN);
+            }
+
+
+
+
+            // Release sample1 into the basket
+
+
             Actions.runBlocking(
                     drive.actionBuilder(drive.pose)
                             .strafeToLinearHeading(yellowSample4PositionHP.position, yellowSample4PositionHP.heading)
@@ -154,39 +177,21 @@ public class RRAuto5SampleLV extends LinearOpMode{
                 mechOps.liftReset();
                 mechOps.extClawRotateZero();
                 mechOps.autoExtension();
-                mechOps.extensionPosition =  ((int)robot.EXTENSION_OUT_MAX);
-                mechOps.setExtensionPosition();
-                robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_GRAB);
-                robot.extGrabServo.setPosition(robot.INTAKE_CLAW_OPEN);
-            }
-
-
-
-
-            if(opModeIsActive()) {
-                safeWaitSeconds(.75);
+                safeWaitSeconds(.5);
                 robot.extGrabServo.setPosition(robot.INTAKE_CLAW_CLOSED);
+                mechOps.extClawClose();
                 safeWaitSeconds(.2);
                 mechOps.autoSampleScorePrep();
-
             }
+
 
             Actions.runBlocking(
                     drive.actionBuilder(drive.pose)
                             .strafeToLinearHeading(sampleScoringPosition.position, sampleScoringPosition.heading)
                             .build());
 
-            // Release sample1 into the basket
-            if(opModeIsActive()) {
-                mechOps.scoreClawOpen();
-            }
 
 
-            Actions.runBlocking(
-                    drive.actionBuilder(drive.pose)
-                            .strafeToLinearHeading(midwayPose1.position, midwayPose1.heading)
-                            .strafeToLinearHeading(sampleScoringPosition.position, sampleScoringPosition.heading)
-                            .build());
 
             // Release the sample into the basket
             // Lower the arm
@@ -217,6 +222,7 @@ public class RRAuto5SampleLV extends LinearOpMode{
                 mechOps.scoreForeGrab();
                 mechOps.scoreClawOpen();
                 safeWaitSeconds(0.2);
+                mechOps.extClawClose();
                 robot.extGrabServo.setPosition(robot.INTAKE_CLAW_CLOSED);
                 safeWaitSeconds(0.25);
                 mechOps.autoSampleScorePrep();
@@ -284,6 +290,7 @@ public class RRAuto5SampleLV extends LinearOpMode{
                 mechOps.scoreForeGrab();
                 mechOps.scoreClawOpen();
                 safeWaitSeconds(0.2);
+                mechOps.extClawClose();
                 robot.extGrabServo.setPosition(robot.INTAKE_CLAW_CLOSED);
                 safeWaitSeconds(0.25);
                 mechOps.autoSampleScorePrep();
@@ -310,89 +317,54 @@ public class RRAuto5SampleLV extends LinearOpMode{
                             .strafeToLinearHeading(sampleScoringPosition.position, sampleScoringPosition.heading)
                             .build());
 
+
             // Release sample1 into the basket
             if(opModeIsActive()) {
                 mechOps.scoreClawOpen();
+                    mechOps.extClawRotateNinety();
+                    mechOps.extensionPosition =  ((int)robot.EXTENSION_OUT_MAX);
+                    mechOps.setExtensionPosition();
+                    mechOps.autoExtension();
             }
 
 
             // Drive to prep position
             Actions.runBlocking(
                     drive.actionBuilder(drive.pose)
-                            .strafeToLinearHeading(midwayPose1.position, midwayPose1.heading)
-                            .build());
-
-
-            if(opModeIsActive()) {
-                mechOps.liftReset();
-            }
-
-
-
-            // Drive to Sample3 Position
-
-            Actions.runBlocking(
-                    drive.actionBuilder(drive.pose)
                             .strafeToLinearHeading(midwayPose3.position, midwayPose3.heading)
-                            .build());
-
-            if(opModeIsActive()) {
-                mechOps.extClawRotateNinety();
-                mechOps.extensionPosition =  ((int)robot.EXTENSION_OUT_MAX);
-                mechOps.setExtensionPosition();
-                mechOps.autoExtension();
-
-            }
-
-            Actions.runBlocking(
-                    drive.actionBuilder(drive.pose)
-                            .strafeToLinearHeading(yellowSample3Position.position, yellowSample3Position.heading)
+                            .strafeToLinearHeading(yellowSample3Position.position,yellowSample3Position.heading)
                             .build());
 
 
             // Pick up Sample3
             if(opModeIsActive()) {
+                mechOps.liftReset();
+                mechOps.scoreForeGrab();
                 mechOps.extClawClose();
-                safeWaitSeconds(.2);
+                robot.extGrabServo.setPosition(robot.INTAKE_CLAW_CLOSED);
+                safeWaitSeconds(.4);
                 mechOps.autoSampleScorePrep();
                 //safeWaitSeconds(.5);
             }
 
 
-
-
-
-            // Drive to scoring position
-//            Actions.runBlocking(
-//                    drive.actionBuilder(drive.pose)
-//                            .strafeToLinearHeading(midwayPose1.position, midwayPose1.heading)
-//                            .build());
-//
-//            if(opModeIsActive()) {
-//                mechOps.autoSampleScorePrep();
-//                safeWaitSeconds(1);
-//
-//                // TODO: Add code to raise claw to high basket
-//            }
-
-
-
             Actions.runBlocking(
                     drive.actionBuilder(drive.pose)
+                            .strafeToLinearHeading(midwayPose1.position, midwayPose1.heading)
                             .strafeToLinearHeading(sampleScoringPosition.position, sampleScoringPosition.heading)
                             .build());
 
             // Release the sample into the basket
             // Lower the arm
             if(opModeIsActive()) {
-                safeWaitSeconds(.1);
+                //safeWaitSeconds(.1);
                 mechOps.scoreClawOpen();
 
                 // TODO: Add code to release the sample and lower the arm
             }
 
             // Drive to prep position
-            
+
             Actions.runBlocking(
                     drive.actionBuilder(drive.pose)
                             .strafeToLinearHeading(midwayPose1.position, midwayPose1.heading)
@@ -401,7 +373,7 @@ public class RRAuto5SampleLV extends LinearOpMode{
 
             if(opModeIsActive()) {
                 mechOps.liftReset();
-                safeWaitSeconds(.1);
+                robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_GRAB);
             }
             Actions.runBlocking(
                     drive.actionBuilder(drive.pose)
@@ -430,8 +402,8 @@ public class RRAuto5SampleLV extends LinearOpMode{
                             TEAM_NAME, " ", TEAM_NUMBER);
                     telemetry.addData("---------------------------------------","");
                     telemetry.addData("Select Starting Position using XYAB on Logitech (or ▢ΔOX on Playstayion) on gamepad 1:","");
-                    telemetry.addData("    Samples   ", "(X / ▢)");
-                    telemetry.addData("    More Samples    ", "(B / O)");
+                    telemetry.addData("    ?????   ", "(X / ▢)");
+                    telemetry.addData("    Don't worry bout it    ", "(B / O)");
                     if(gamepad1.x){
                         startPosition = START_POSITION.BLUE_SAMPLES;
                         menuActive = false;

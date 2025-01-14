@@ -142,7 +142,6 @@ public class RRAuto5Sample extends LinearOpMode{
                 robot.motorLiftBack.setPower(1);
                 robot.motorLiftFront.setPower(1);
                 mechOps.raiseLiftHighBasketPrep();
-                //safeWaitSeconds(.8);
             }
 
             Actions.runBlocking(
@@ -151,8 +150,7 @@ public class RRAuto5Sample extends LinearOpMode{
                             .strafeToLinearHeading(sampleScoringPosition.position, sampleScoringPosition.heading)
                             .build());
 
-            // Release the sample into the basket
-            // Lower the arm
+
             if(opModeIsActive()){
                 mechOps.scoreClawOpen();
                 mechOps.extensionPosition =  ((int)robot.EXTENSION_OUT_MAX);
@@ -160,12 +158,6 @@ public class RRAuto5Sample extends LinearOpMode{
                 robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_GRAB);
                 mechOps.extForeBarDeploy();
             }
-
-            // Drive to prep position
-//            Actions.runBlocking(
-//                    drive.actionBuilder(drive.pose)
-//                            .strafeToLinearHeading(midwayPose1.position, midwayPose1.heading)
-//                            .build());
 
 
             // Drive to pick up Sample1 Position
@@ -186,28 +178,6 @@ public class RRAuto5Sample extends LinearOpMode{
                 safeWaitSeconds(1);
             }
 
-            // Raise Arm to high basket scoring position
-
-
-            // Drive to prep position
-//            Actions.runBlocking(
-//                    drive.actionBuilder(drive.pose)
-//                            .strafeToLinearHeading(midwayPose1.position, midwayPose1.heading)
-//                            .build());
-//
-//            // Raise arm to high basket scoring position
-//            if(opModeIsActive()) {
-//
-//                mechOps.extensionPosition = ((int) robot.EXTENSION_RESET);
-//                mechOps.setExtensionPosition();
-//                safeWaitSeconds(1);
-//                mechOps.scoreClawClosed();
-//                safeWaitSeconds(.25);
-//                mechOps.extClawOpen();
-//
-//                mechOps.raiseLiftHighBasketPrep();
-//                safeWaitSeconds(1);
-//            }
 
             // Drive to scoring position
             Actions.runBlocking(
@@ -226,11 +196,6 @@ public class RRAuto5Sample extends LinearOpMode{
 
             }
 
-            // Drive to prep position
-//            Actions.runBlocking(
-//                    drive.actionBuilder(drive.pose)
-//                            .strafeToLinearHeading(midwayPose1.position, midwayPose1.heading)
-//                            .build());
 
 
             //Drive to pickup Sample2 Position
@@ -256,17 +221,7 @@ public class RRAuto5Sample extends LinearOpMode{
             // Raise Arm to high basket scoring position
 
 
-//            // Drive to prep position
-//            Actions.runBlocking(
-//                    drive.actionBuilder(drive.pose)
-//                            .strafeToLinearHeading(midwayPose1.position, midwayPose1.heading)
-//                            .build());
 //
-//            // Raise arm to high basket scoring position
-//            if(opModeIsActive()) {
-//                mechOps.autoSampleScorePrep();
-//                safeWaitSeconds(.85);
-//            }
 
             Actions.runBlocking(
                     drive.actionBuilder(drive.pose)
@@ -320,25 +275,6 @@ public class RRAuto5Sample extends LinearOpMode{
                 mechOps.autoSampleScorePrep();
                 //safeWaitSeconds(.5);
             }
-
-
-
-
-
-            // Drive to scoring position
-//            Actions.runBlocking(
-//                    drive.actionBuilder(drive.pose)
-//                            .strafeToLinearHeading(midwayPose1.position, midwayPose1.heading)
-//                            .build());
-//
-//            if(opModeIsActive()) {
-//                mechOps.autoSampleScorePrep();
-//                safeWaitSeconds(1);
-//
-//                // TODO: Add code to raise claw to high basket
-//            }
-
-
 
             Actions.runBlocking(
                     drive.actionBuilder(drive.pose)

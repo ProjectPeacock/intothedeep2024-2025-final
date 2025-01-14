@@ -121,14 +121,14 @@ public class RRAuto5Specimen extends LinearOpMode{
         specimenScoringPosition4 = new Pose2d(-28,-15, Math.toRadians(0));
         specimenScoringPosition5 = new Pose2d(-28,-20,Math.toRadians(0));
         specimenGrabPrep = new Pose2d(-9, 27.69, Math.toRadians(-180)); // specimen grabbing prep
-        //specimenScoringPrep = new Pose2d(-20,0,Math.toRadians(0));
+        specimenScoringPrep = new Pose2d(-20,0,Math.toRadians(0));
         //specimenScoringPush = new Pose2d(-28, -8, Math.toRadians(0));
         grabSpecimenPosition = new Pose2d(-3.25, 27, Math.toRadians(-180));
-        coloredSample1PositionGrab = new Pose2d(-23, 36, Math.toRadians(117));
+        coloredSample1PositionGrab = new Pose2d(-23, 36, Math.toRadians(120));
         coloredSample1PositionDrop = new Pose2d(-17,34,Math.toRadians(55));
-        coloredSample2PositionGrab = new Pose2d(-20.5, 28, Math.toRadians(122));
+        coloredSample2PositionGrab = new Pose2d(-20.5, 28, Math.toRadians(115));
         coloredSample2PositionDrop = new Pose2d(-21,25,Math.toRadians(50));
-        coloredSample3PositionGrab = new Pose2d(-22,20,Math.toRadians(123));
+        coloredSample3PositionGrab = new Pose2d(-22,20,Math.toRadians(115));
         coloredSample3PositionDrop = new Pose2d(-14, 20, Math.toRadians(60));
         midwayPose1 = new Pose2d(-19, 30, Math.toRadians(103)); //prep for grabbing first sample
         parkPose = new Pose2d(-20, -20, Math.toRadians(-180));
@@ -158,21 +158,6 @@ public class RRAuto5Specimen extends LinearOpMode{
                 safeWaitSeconds(.25);
                 mechOps.scoreClawOpen();
                 mechOps.autoSpecimenLiftReset();
-            }
-
-            // Drive to color sample1 Position
-            Actions.runBlocking(
-                    drive.actionBuilder(drive.pose)
-                            .strafeToLinearHeading(midwayPose1.position, midwayPose1.heading)
-                            .build());
-
-
-
-            // Push Color Sample1 into the Observation area
-            // Drive to color sample1 Position
-
-            // Grab the specimen
-            if(opModeIsActive()) {
                 mechOps.extClawOpen();
                 mechOps.extensionPosition =  ((int)robot.EXTENSION_OUT_MAX);
                 mechOps.setExtensionPosition();
@@ -181,16 +166,24 @@ public class RRAuto5Specimen extends LinearOpMode{
                 robot.extRotateServo.setPosition(robot.INTAKE_WRIST_ROTATED_NINETY);
             }
 
-
+            // Drive to color sample1 Position
             Actions.runBlocking(
                     drive.actionBuilder(drive.pose)
-                    .strafeToLinearHeading(coloredSample1PositionGrab.position,coloredSample1PositionGrab.heading)
+                            .strafeToLinearHeading(midwayPose1.position, midwayPose1.heading)
+                            .strafeToLinearHeading(coloredSample1PositionGrab.position,coloredSample1PositionGrab.heading)
                             .build());
 
 
-            safeWaitSeconds(.2);
+
+
+            // Push Color Sample1 into the Observation area
+            // Drive to color sample1 Position
+
+            // Grab the specimen
+
+            safeWaitSeconds(.1);
             if(opModeIsActive())mechOps.extClawClose();
-            safeWaitSeconds(.25);
+            safeWaitSeconds(.2);
 
 
             Actions.runBlocking(
@@ -213,9 +206,9 @@ public class RRAuto5Specimen extends LinearOpMode{
 
 
 
-            safeWaitSeconds(0.2);
+            safeWaitSeconds(0.1);
             if(opModeIsActive())mechOps.extClawClose();
-            safeWaitSeconds(.2);
+            safeWaitSeconds(.25);
 
 
             Actions.runBlocking(
@@ -233,9 +226,9 @@ public class RRAuto5Specimen extends LinearOpMode{
                             .build());
 
 
-            safeWaitSeconds(0.2);
+            safeWaitSeconds(0.1);
             if(opModeIsActive())mechOps.extClawClose();
-            safeWaitSeconds(.2);
+            safeWaitSeconds(.25);
 
 
             Actions.runBlocking(
@@ -244,13 +237,13 @@ public class RRAuto5Specimen extends LinearOpMode{
                             .build());
 
 
-            if(opModeIsActive())mechOps.extClawOpen();
-            safeWaitSeconds(0);
-            mechOps.autoMechanismReset();
-            mechOps.extensionPosition =  ((int)robot.EXTENSION_RESET);
-            mechOps.setExtensionPosition();
-            mechOps.scoreForeSpecimen();
-
+            if(opModeIsActive()) {
+                mechOps.extClawOpen();
+                mechOps.autoMechanismReset();
+                mechOps.extensionPosition = ((int) robot.EXTENSION_RESET);
+                mechOps.setExtensionPosition();
+                mechOps.scoreForeSpecimen();
+            }
 
             Actions.runBlocking(
                     drive.actionBuilder(drive.pose)
@@ -260,7 +253,7 @@ public class RRAuto5Specimen extends LinearOpMode{
 
             if(opModeIsActive()) {
                 mechOps.scoreClawClosed();
-                safeWaitSeconds(.2);
+                safeWaitSeconds(.1);
                 mechOps.specimenPrepPosition();
             }
 
@@ -273,7 +266,7 @@ public class RRAuto5Specimen extends LinearOpMode{
 
             Actions.runBlocking(
                     drive.actionBuilder(drive.pose)
-                            // .strafeToLinearHeading(specimenScoringPrep.position,specimenScoringPrep.heading)
+                             .strafeToLinearHeading(specimenScoringPrep.position,specimenScoringPrep.heading)
                             .strafeToLinearHeading(specimenScoringPosition2.position, specimenScoringPosition2.heading)
                             .build());
 
@@ -297,7 +290,7 @@ public class RRAuto5Specimen extends LinearOpMode{
             // Grab the specimen
             if(opModeIsActive()) {
                 mechOps.scoreClawClosed();
-                //safeWaitSeconds(.25);
+                safeWaitSeconds(.1);
                 mechOps.specimenPrepPosition();
             }
 
@@ -328,7 +321,7 @@ public class RRAuto5Specimen extends LinearOpMode{
             // Grab the specimen
             if(opModeIsActive()) {
                 mechOps.scoreClawClosed();
-                //safeWaitSeconds(.25);
+                safeWaitSeconds(.1);
                 mechOps.specimenPrepPosition();
             }
 
@@ -342,7 +335,7 @@ public class RRAuto5Specimen extends LinearOpMode{
 
             if(opModeIsActive()) {
                 mechOps.specimenScorePosition();
-                safeWaitSeconds(.5);
+                safeWaitSeconds(.25);
                 mechOps.scoreClawOpen();
                 safeWaitSeconds(.2);
                 mechOps.autoSpecimenLiftReset();
@@ -359,7 +352,7 @@ public class RRAuto5Specimen extends LinearOpMode{
             // Grab the specimen
             if(opModeIsActive()) {
                 mechOps.scoreClawClosed();
-                //safeWaitSeconds(.25);
+                safeWaitSeconds(.1);
                 mechOps.specimenPrepPosition();
 
 

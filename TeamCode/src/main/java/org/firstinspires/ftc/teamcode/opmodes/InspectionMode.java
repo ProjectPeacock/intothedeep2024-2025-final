@@ -513,8 +513,8 @@ public class InspectionMode extends LinearOpMode {
 //            //telemetry.addData("arm Target Position: ", robot.armMotor.getTargetPosition());
 //            //telemetry.addData("arm Encoder: ", robot.armMotor.getCurrentPosition());\
 //                /*
-//                telemetry.addLine("Gamepad 1:");
-//                telemetry.addLine("Driving is Enabled.");
+                telemetry.addLine("Gamepad 1, A/X Button: MAX POSITION");
+                telemetry.addLine("Gamepad 1 B/O: RESET Position");
 //                telemetry.addLine("RB:          Open/Close Claw");
 //                telemetry.addLine("A:           Set Elbow Level to Floor");
 //                telemetry.addLine("Right Stick: Rotate In/Out Claw");

@@ -73,7 +73,7 @@ public class HWProfile {
 
     /* Variables to store the positions that the wrist should be set to when folding in, or folding out. */
     public final double INTAKE_WRIST_ROTATED_ZERO = 0;
-    public final double INTAKE_WRIST_ROTATED_NINETY = 0.25;
+    public final double INTAKE_WRIST_ROTATED_NINETY = 0.33;
     public final double INTAKE_WRIST_ROTATED_180  = 1;
     public final double INTAKE_WRIST_FOLDED_PARTIAL = .25;
 
@@ -86,7 +86,7 @@ public class HWProfile {
     /* A number in degrees that the triggers can adjust the arm position by */
 
     public final double INTAKE_CLAW_OPEN = .7;
-    public final double INTAKE_CLAW_CLOSED = .15;
+    public final double INTAKE_CLAW_CLOSED = .16;
     public final double INTAKE_CLAW_PARTIAL_OPEN = .5;
 
 
@@ -94,12 +94,12 @@ public class HWProfile {
     public final double SCORE_CLAW_CLOSED = .15;
 
 
-    final public double INTAKE_RIGHT_FOREBAR_DEPLOY = 0.05;//started at 0
+    final public double INTAKE_RIGHT_FOREBAR_DEPLOY = 0.15;//started at 0
     final public double INTAKE_RIGHT_FOREBAR_DEPLOY_PART = .2;//started at 0
-    final public double INTAKE_RIGHT_FOREBAR_RETRACT = .6; // started at 1
-    final public double INTAKE_LEFT_FOREBAR_DEPLOY = .95;//started at 1
+    final public double INTAKE_RIGHT_FOREBAR_RETRACT = .65; // started at 1
+    final public double INTAKE_LEFT_FOREBAR_DEPLOY = .9;//started at 1
     final public double INTAKE_LEFT_FOREBAR_DEPLOY_PART = .8; //started at 1
-    final public double INTAKE_LEFT_FOREBAR_RETRACT = .4; // started at 0
+    final public double INTAKE_LEFT_FOREBAR_RETRACT = .35; // started at 0
 
     final public double SCORE_RIGHT_FOREBAR_RESET = 0; //started at 1
     final public double SCORE_RIGHT_FOREBAR_GRAB = 0.15; //started at 1

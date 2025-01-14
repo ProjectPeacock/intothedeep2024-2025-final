@@ -43,8 +43,8 @@ import org.firstinspires.ftc.teamcode.hardware.HWProfile;
 import org.firstinspires.ftc.teamcode.Libs.RRMechOps;
 
 //@Disabled
-@Autonomous(name = "Auto Samples - 4+0 Faster", group = "Competition", preselectTeleOp = "GoBildaRi3D2425")
-public class RRAuto4SampleFaster extends LinearOpMode{
+@Autonomous(name = "Auto Samples - 4+0", group = "Competition", preselectTeleOp = "GoBildaRi3D2425")
+public class RRAuto4SampleV1 extends LinearOpMode{
 
     public static String TEAM_NAME = "Project Peacock";
     public static int TEAM_NUMBER = 10355;
@@ -72,7 +72,8 @@ public class RRAuto4SampleFaster extends LinearOpMode{
         selectStartingPosition();
         mechOps.scoreClawClosed();
         mechOps.extForeBarRetract();
-
+        robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_HOLD);
+        mechOps.tightenStrings();
 
 
         while (!isStopRequested() && !opModeIsActive()) {
@@ -116,7 +117,7 @@ public class RRAuto4SampleFaster extends LinearOpMode{
 
         drive = new PinpointDrive(hardwareMap, initPose);
         sampleScoringPosition = new Pose2d(7, 25, Math.toRadians(-45));
-        yellowSample1Position = new Pose2d(12, 16, Math.toRadians(-5));
+        yellowSample1Position = new Pose2d(12, 18, Math.toRadians(0));
         yellowSample2Position = new Pose2d(11.5, 25, Math.toRadians(-5));
         yellowSample3Position = new Pose2d(38, 8.1, Math.toRadians(90));
         midwayPose1 = new Pose2d(14,20, Math.toRadians(-45));
@@ -124,7 +125,7 @@ public class RRAuto4SampleFaster extends LinearOpMode{
         midwayPose3 = new Pose2d(33,1, Math.toRadians(90));
         midwayPose4 = new Pose2d(40,15, Math.toRadians(90));
         parkPrepPose = new Pose2d(10, -90, Math.toRadians(-90));
-        parkPose = new Pose2d(1, -75, Math.toRadians(0));
+        parkPose = new Pose2d(1, -100, Math.toRadians(0));
 
         /**
          * For Sample Scoring into high basket
@@ -167,8 +168,6 @@ public class RRAuto4SampleFaster extends LinearOpMode{
                             .build());
 
             if(opModeIsActive()) {
-                mechOps.liftReset();
-                mechOps.scoreForeGrab();
                 mechOps.scoreClawOpen();
                 mechOps.extensionPosition =  ((int)robot.EXTENSION_OUT_MAX);
                 mechOps.setExtensionPosition();
@@ -188,8 +187,8 @@ public class RRAuto4SampleFaster extends LinearOpMode{
                 safeWaitSeconds(0.2);
                 robot.extGrabServo.setPosition(robot.INTAKE_CLAW_CLOSED);
                 safeWaitSeconds(0.25);
-                mechOps.autoSampleScorePrep();
-                safeWaitSeconds(1);
+                mechOps.extForeBarRetract();
+                robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_TRANSFER);
 
 
                 // TODO: Add code to grab a sample from the floor
@@ -199,24 +198,24 @@ public class RRAuto4SampleFaster extends LinearOpMode{
 
 
             // Drive to prep position
-//            Actions.runBlocking(
-//                    drive.actionBuilder(drive.pose)
-//                            .strafeToLinearHeading(midwayPose1.position, midwayPose1.heading)
-//                            .build());
-//
-//            // Raise arm to high basket scoring position
-//            if(opModeIsActive()) {
-//
-//                mechOps.extensionPosition = ((int) robot.EXTENSION_RESET);
-//                mechOps.setExtensionPosition();
-//                safeWaitSeconds(1);
-//                mechOps.scoreClawClosed();
-//                safeWaitSeconds(.25);
-//                mechOps.extClawOpen();
-//
-//                mechOps.raiseLiftHighBasketPrep();
-//                safeWaitSeconds(1);
-//            }
+            Actions.runBlocking(
+                    drive.actionBuilder(drive.pose)
+                            .strafeToLinearHeading(midwayPose1.position, midwayPose1.heading)
+                            .build());
+
+            // Raise arm to high basket scoring position
+            if(opModeIsActive()) {
+
+                mechOps.extensionPosition = ((int) robot.EXTENSION_RESET);
+                mechOps.setExtensionPosition();
+                safeWaitSeconds(1);
+                mechOps.scoreClawClosed();
+                safeWaitSeconds(.25);
+                mechOps.extClawOpen();
+
+                mechOps.raiseLiftHighBasketPrep();
+                safeWaitSeconds(1);
+            }
 
             // Drive to scoring position
             Actions.runBlocking(
@@ -258,25 +257,27 @@ public class RRAuto4SampleFaster extends LinearOpMode{
             if(opModeIsActive()) {
                 robot.extGrabServo.setPosition(robot.INTAKE_CLAW_CLOSED);
                 safeWaitSeconds(.2);
-                mechOps.autoSampleScorePrep();
-                safeWaitSeconds(1);
+                robot.extForeLeftServo.setPosition(robot.INTAKE_LEFT_FOREBAR_RETRACT);
+                robot.extForeRightServo.setPosition(robot.INTAKE_RIGHT_FOREBAR_RETRACT);
+                robot.extRotateServo.setPosition(robot.INTAKE_WRIST_ROTATED_ZERO);
+                robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_TRANSFER);
 
             }
 
             // Raise Arm to high basket scoring position
 
 
-//            // Drive to prep position
-//            Actions.runBlocking(
-//                    drive.actionBuilder(drive.pose)
-//                            .strafeToLinearHeading(midwayPose1.position, midwayPose1.heading)
-//                            .build());
-//
-//            // Raise arm to high basket scoring position
-//            if(opModeIsActive()) {
-//                mechOps.autoSampleScorePrep();
-//                safeWaitSeconds(.85);
-//            }
+            // Drive to prep position
+            Actions.runBlocking(
+                    drive.actionBuilder(drive.pose)
+                            .strafeToLinearHeading(midwayPose1.position, midwayPose1.heading)
+                            .build());
+
+            // Raise arm to high basket scoring position
+            if(opModeIsActive()) {
+                mechOps.autoSampleScorePrep();
+                safeWaitSeconds(.85);
+            }
 
             Actions.runBlocking(
                     drive.actionBuilder(drive.pose)
@@ -327,8 +328,7 @@ public class RRAuto4SampleFaster extends LinearOpMode{
             if(opModeIsActive()) {
                 mechOps.extClawClose();
                 safeWaitSeconds(.2);
-               mechOps.autoSampleScorePrep();
-               safeWaitSeconds(.5);
+                mechOps.autoMechanismReset();
             }
 
 
@@ -336,17 +336,17 @@ public class RRAuto4SampleFaster extends LinearOpMode{
 
 
             // Drive to scoring position
-//            Actions.runBlocking(
-//                    drive.actionBuilder(drive.pose)
-//                            .strafeToLinearHeading(midwayPose1.position, midwayPose1.heading)
-//                            .build());
-//
-//            if(opModeIsActive()) {
-//                mechOps.autoSampleScorePrep();
-//                safeWaitSeconds(1);
-//
-//                // TODO: Add code to raise claw to high basket
-//            }
+            Actions.runBlocking(
+                    drive.actionBuilder(drive.pose)
+                            .strafeToLinearHeading(midwayPose1.position, midwayPose1.heading)
+                            .build());
+
+            if(opModeIsActive()) {
+                mechOps.autoSampleScorePrep();
+                safeWaitSeconds(1);
+
+                // TODO: Add code to raise claw to high basket
+            }
 
 
 
@@ -383,11 +383,8 @@ public class RRAuto4SampleFaster extends LinearOpMode{
 
         }
         //end of if (startPosition == BLUE_SAMPLES || RED_SAMPLES)
-    }
 
-    /**
-     *
-     */
+    }
 
     //Method to select starting position using X, Y, A, B buttons on gamepad
     public void selectStartingPosition() {
@@ -404,8 +401,8 @@ public class RRAuto4SampleFaster extends LinearOpMode{
                             TEAM_NAME, " ", TEAM_NUMBER);
                     telemetry.addData("---------------------------------------","");
                     telemetry.addData("Select Starting Position using XYAB on Logitech (or ▢ΔOX on Playstayion) on gamepad 1:","");
-                    telemetry.addData("    Samples   ", "(X / ▢)");
-                    telemetry.addData("    More Samples    ", "(B / O)");
+                    telemetry.addData("    4 Samples   ", "(X / ▢)");
+                    telemetry.addData("    4 Samples ish    ", "(B / O)");
                     if(gamepad1.x){
                         startPosition = START_POSITION.BLUE_SAMPLES;
                         menuActive = false;
