@@ -90,7 +90,7 @@ public class WorldsBestTeleop extends LinearOpMode {
         mechOps.scoreClawOpen();
         mechOps.extClawClose();
         mechOps.tightenStrings();
-        robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_GRAB);
+        mechOps.extPitchGrab();
         double botHeading = robot.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 
         // Initializes ElapsedTimes. One for total runtime of the program and the others set up for toggles.

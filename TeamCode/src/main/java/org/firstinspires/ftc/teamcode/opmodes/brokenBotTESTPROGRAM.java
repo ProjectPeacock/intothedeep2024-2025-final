@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -38,7 +39,7 @@ import java.util.Locale;
 
 /** @noinspection ALL*/
 @TeleOp(name="brokenBotTESTPROGRAMTESTCODE", group="Robot")
-//@Disabled
+@Disabled
 public class brokenBotTESTPROGRAM extends LinearOpMode {
 
 

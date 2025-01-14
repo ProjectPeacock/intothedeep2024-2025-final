@@ -28,6 +28,7 @@ import com.acmerobotics.roadrunner.ftc.GoBildaPinpointDriver;
 import com.acmerobotics.roadrunner.ftc.GoBildaPinpointDriverRR;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
@@ -61,7 +62,7 @@ For support, contact tech@gobilda.com
  */
 
 @TeleOp(name="goBILDA® PinPoint Odometry Example", group="Linear OpMode")
-//@Disabled
+@Disabled
 public class SensorGoBildaPinpointExample extends LinearOpMode {
 
     GoBildaPinpointDriverRR odo; // Declare OpMode member for the Odometry Computer

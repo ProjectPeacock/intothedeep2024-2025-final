@@ -157,7 +157,13 @@ public class RRMechOps {
 
     }
 
+    public void extPitchGrab(){
+        robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_GRAB);
+    }
 
+    public void extPitchTransfer(){
+        robot.extPitchServo.setPosition(robot.INTAKE_CLAW_PITCH_TRANSFER);
+    }
     /**
      * Method: transferSample()
      * How it works:

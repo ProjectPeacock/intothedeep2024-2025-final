@@ -34,6 +34,7 @@ import static com.qualcomm.robotcore.util.ElapsedTime.Resolution.SECONDS;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -42,7 +43,7 @@ import org.firstinspires.ftc.teamcode.hardware.CSAutoParams;
 import org.firstinspires.ftc.teamcode.hardware.HWProfile;
 import org.firstinspires.ftc.teamcode.Libs.RRMechOps;
 
-
+@Disabled
 @Autonomous(name = "Auto - 4 Specimen Test", group = "Competition", preselectTeleOp = "GoBildaRi3D2425")
 public class RRAuto4SpecimenTest extends LinearOpMode{
 

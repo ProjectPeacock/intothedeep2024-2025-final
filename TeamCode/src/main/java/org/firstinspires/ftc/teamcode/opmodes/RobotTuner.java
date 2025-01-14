@@ -5,6 +5,7 @@ import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Libs.RRMechOps;
@@ -12,7 +13,7 @@ import org.firstinspires.ftc.teamcode.hardware.HWProfile;
 
 @Config
 @TeleOp(name="Robot Tuner", group="Robot")
-//@Disabled
+@Disabled
 public class RobotTuner extends LinearOpMode {
 
 
